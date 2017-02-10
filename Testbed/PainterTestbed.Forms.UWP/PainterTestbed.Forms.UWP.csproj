@@ -127,7 +127,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Testbed\Forms\PainterTestbed.Forms\PainterTestbed.Forms.csproj">
+    <ProjectReference Include="..\Forms\PainterTestbed.Forms\PainterTestbed.Forms.csproj">
       <Project>{bbac0c3f-512b-45c8-9da6-fbae2d5bb19b}</Project>
       <Name>PainterTestbed.Forms</Name>
     </ProjectReference>
