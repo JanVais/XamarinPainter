@@ -2,7 +2,7 @@
 An easy to use view in which you can draw with multiple colors and thicknesses for Xamarin and Xamarin.Forms
 
 # Currently in development
-This project is no where near a finished product at the moment, do not use it as everything can be changed and re-factored.
+This project is nowhere near a finished product at the moment, do not use it as everything can be changed and re-factored.
 
 # Expected features:
 ## Platforms
