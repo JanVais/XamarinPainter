@@ -8,8 +8,8 @@ This project is nowhere near a finished product at the moment, do not use it as 
 ## Platforms
 * Xamarin.iOS
 * Xamarin.Droid
-* Xamarin.WinPhone
-* Xamarin.Forms (iOS, Android and WindowsPhone)
+* Xamarin.UWP
+* Xamarin.Forms (iOS, Android and UWP)
 
 ## Customization
 * Stroke color
