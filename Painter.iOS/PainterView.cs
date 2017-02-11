@@ -61,7 +61,10 @@ namespace Painter.iOS
 
 			StrokeColor = UIColor.Blue;
 
+			//BackgroundColor = UIColor.Clear;
+			Opaque = false;
 			ImageView = new UIImageView();
+			ImageView.Opaque = false;
 			AddSubview(ImageView);
 		}
 
@@ -70,12 +73,9 @@ namespace Painter.iOS
 		private void drawPath()
 		{
 			UIGraphics.BeginImageContextWithOptions(Frame.Size, false, UIScreen.MainScreen.Scale);//Support Retina when drawing
-
-			BackgroundColor = UIColor.White;
-			Layer.BorderColor = UIColor.Black.CGColor;
-
 			CGContext context = UIGraphics.GetCurrentContext();
-			context.SetLineCap(CGLineCap.Butt);//TODO decide to make this an abstract (requires support on Android and WP)
+
+			context.SetLineCap(CGLineCap.Round);//TODO decide to make this an abstract (requires support on Android and WP)
 			context.SetLineJoin(CGLineJoin.Round);//TODO decide to make this an abstract (requires support on Android and WP)
 
 			foreach (var stroke in Strokes)
@@ -98,10 +98,13 @@ namespace Painter.iOS
 				context.StrokePath();
 			}
 
+			//Get the image
 			UIImage image = UIGraphics.GetImageFromCurrentImageContext();
 
+			//End the CGContext
 			UIGraphics.EndImageContext();
 
+			//Display the image
 			ImageView.Image = image;
 		}
 
@@ -133,7 +136,7 @@ namespace Painter.iOS
 			CurrentPath.LineCapStyle = CGLineCap.Round;
 			CurrentPath.LineJoinStyle = CGLineJoin.Bevel;
 
-			var loc = (touches.AnyObject as UITouch).GetPreciseLocation(this);
+			var loc = (touches.AnyObject as UITouch).LocationInView(this);
 			CurrentPath.MoveTo(loc);
 			CurrentStroke.Points.Add(new Point(loc.X, loc.Y));
 		}
@@ -142,7 +145,7 @@ namespace Painter.iOS
 		{
 			base.TouchesMoved(touches, evt);
 
-			var loc = (touches.AnyObject as UITouch).GetPreciseLocation(this);
+			var loc = (touches.AnyObject as UITouch).LocationInView(this);
 			CurrentPath.AddLineTo(loc);
 			CurrentStroke.Points.Add(new Point(loc.X, loc.Y));
 
@@ -153,8 +156,9 @@ namespace Painter.iOS
 		{
 			base.TouchesEnded(touches, evt);
 
-			var loc = (touches.AnyObject as UITouch).GetPreciseLocation(this);
+			var loc = (touches.AnyObject as UITouch).LocationInView(this);
 			CurrentStroke.Points.Add(new Point(loc.X, loc.Y));
+			CurrentPath.AddLineTo(loc);
 
 			Strokes.Add(CurrentStroke);
 			drawPath();
@@ -168,13 +172,11 @@ namespace Painter.iOS
 			base.TouchesCancelled(touches, evt);
 		}
 
-		//Layout
 		public override void LayoutSubviews()
 		{
-			var w = Frame.Width;
-			var h = Frame.Height;
+			base.LayoutSubviews();
 
-			ImageView.Frame = Frame;
+			ImageView.Frame = new CGRect(0, 0, Frame.Width, Frame.Height);
 		}
 	}
 }

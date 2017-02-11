@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,30 +19,46 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3" customClass="PainterView" misplaced="YES">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bxh-7A-c6Q" customClass="PainterView">
+                                <rect key="frame" x="0.0" y="567" width="375" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QSV-rz-dHp" customClass="PainterView">
+                                <rect key="frame" x="0.0" y="28" width="375" height="100"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQB-Cy-Mok" customClass="PainterView">
+                                <rect key="frame" x="0.0" y="136" width="375" height="423"/>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
                         <constraints>
-                            <constraint firstItem="3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="7nj-SD-VhT"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="3" secondAttribute="bottom" id="aYH-cX-FP8"/>
-                            <constraint firstItem="3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="eDZ-mW-WRK"/>
-                            <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" id="jHf-Vx-fBE"/>
+                            <constraint firstItem="QSV-rz-dHp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="3Lf-a3-Jfd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="QSV-rz-dHp" secondAttribute="trailing" constant="-16" id="5M6-Vq-Tkq"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Bxh-7A-c6Q" secondAttribute="trailing" constant="-16" id="5tS-YJ-lww"/>
+                            <constraint firstItem="SQB-Cy-Mok" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="136" id="Euu-3d-vIT"/>
+                            <constraint firstItem="Bxh-7A-c6Q" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="567" id="J2I-br-V52"/>
+                            <constraint firstItem="Bxh-7A-c6Q" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="RlH-yk-Jf2"/>
+                            <constraint firstItem="SQB-Cy-Mok" firstAttribute="top" secondItem="QSV-rz-dHp" secondAttribute="bottom" constant="8" id="Ziv-ao-OzV"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="SQB-Cy-Mok" secondAttribute="trailing" constant="-16" id="cQ5-yn-6HZ"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Bxh-7A-c6Q" secondAttribute="bottom" id="fxS-6I-1ZD"/>
+                            <constraint firstItem="QSV-rz-dHp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="iOG-3O-60r"/>
+                            <constraint firstItem="Bxh-7A-c6Q" firstAttribute="top" secondItem="SQB-Cy-Mok" secondAttribute="bottom" constant="8" id="l71-fi-h1F"/>
+                            <constraint firstItem="SQB-Cy-Mok" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="nlm-tx-C0a"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="painterView" destination="3" id="AFX-Tf-k1J"/>
-                        <outlet property="painterView" destination="8bC-Xf-vdC" id="name-outlet-8bC-Xf-vdC"/>
+                        <outlet property="v1" destination="QSV-rz-dHp" id="Nba-nO-xBM"/>
+                        <outlet property="v2" destination="SQB-Cy-Mok" id="E63-SJ-0Hp"/>
+                        <outlet property="v3" destination="Bxh-7A-c6Q" id="iBL-gR-FW1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-0.8" y="-0.4497751"/>
+            <point key="canvasLocation" x="-0.80000000000000004" y="-0.44977511244377816"/>
         </scene>
     </scenes>
 </document>

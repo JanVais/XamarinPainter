@@ -21,6 +21,8 @@ namespace PainterTestbed.iOS
 		protected ViewController(IntPtr handle) : base(handle)
 		{
 			// Note: this .ctor should not contain any initialization logic.
+
+
 		}
 
 		public override void ViewDidLoad()
