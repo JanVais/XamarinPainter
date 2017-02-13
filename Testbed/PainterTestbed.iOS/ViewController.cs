@@ -9,6 +9,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Foundation;
 using Painter;
 using Painter.iOS;
@@ -35,6 +36,11 @@ namespace PainterTestbed.iOS
 		{
 			base.DidReceiveMemoryWarning();
 			// Release any cached data, images, etc that aren't in use.
+		}
+
+		partial void saveJson(NSObject sender)
+		{
+			Debug.WriteLine(v1.GetJson());
 		}
 	}
 }

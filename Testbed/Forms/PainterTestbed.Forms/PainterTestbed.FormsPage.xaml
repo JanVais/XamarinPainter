@@ -2,12 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:PainterTestbed.Forms" xmlns:painter="clr-namespace:Painter.Forms;assembly=Painter.Forms" x:Class="PainterTestbed.Forms.PainterTestbed_FormsPage">
 	<Grid BackgroundColor="Gray">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="1*"/>
-			<RowDefinition Height="8*"/>
+			<RowDefinition Height="9*"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
-		<painter:PainterView Grid.Row="0" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-		<painter:PainterView Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-		<painter:PainterView Grid.Row="2" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+		<painter:PainterView x:Name="painterView" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+		<Button Grid.Row="1" BackgroundColor="White" Text="GetJson" Clicked="Handle_Clicked"/>
 	</Grid>
 </ContentPage>

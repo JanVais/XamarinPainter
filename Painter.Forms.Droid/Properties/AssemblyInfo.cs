@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following attributes. 
@@ -7,9 +7,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("Painter.Forms.Droid")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Gappless")]
+[assembly: AssemblyCompany("Nitrocrime")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Gappless")]
+[assembly: AssemblyCopyright("Nitrocrime")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

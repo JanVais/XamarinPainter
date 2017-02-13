@@ -33,3 +33,8 @@ using System.Runtime.CompilerServices;
 
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
+
+
+[assembly: InternalsVisibleTo("Painter.Forms.Droid")]
+[assembly: InternalsVisibleTo("Painter.Forms.iOS")]
+[assembly: InternalsVisibleTo("Painter.Forms.WindowsPhone")]

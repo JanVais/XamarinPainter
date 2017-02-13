@@ -22,38 +22,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bxh-7A-c6Q" customClass="PainterView">
-                                <rect key="frame" x="0.0" y="567" width="375" height="100"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QSV-rz-dHp" customClass="PainterView">
-                                <rect key="frame" x="0.0" y="28" width="375" height="100"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQB-Cy-Mok" customClass="PainterView">
-                                <rect key="frame" x="0.0" y="136" width="375" height="423"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="595"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GkK-aS-0j1">
+                                <rect key="frame" x="0.0" y="603" width="375" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Save JSON"/>
+                                <connections>
+                                    <action selector="saveJson:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hVM-Uv-mSo"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
                         <constraints>
-                            <constraint firstItem="QSV-rz-dHp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="3Lf-a3-Jfd"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="QSV-rz-dHp" secondAttribute="trailing" constant="-16" id="5M6-Vq-Tkq"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Bxh-7A-c6Q" secondAttribute="trailing" constant="-16" id="5tS-YJ-lww"/>
-                            <constraint firstItem="SQB-Cy-Mok" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="136" id="Euu-3d-vIT"/>
-                            <constraint firstItem="Bxh-7A-c6Q" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="567" id="J2I-br-V52"/>
-                            <constraint firstItem="Bxh-7A-c6Q" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="RlH-yk-Jf2"/>
-                            <constraint firstItem="SQB-Cy-Mok" firstAttribute="top" secondItem="QSV-rz-dHp" secondAttribute="bottom" constant="8" id="Ziv-ao-OzV"/>
+                            <constraint firstItem="SQB-Cy-Mok" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Euu-3d-vIT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="SQB-Cy-Mok" secondAttribute="trailing" constant="-16" id="cQ5-yn-6HZ"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Bxh-7A-c6Q" secondAttribute="bottom" id="fxS-6I-1ZD"/>
-                            <constraint firstItem="QSV-rz-dHp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="iOG-3O-60r"/>
-                            <constraint firstItem="Bxh-7A-c6Q" firstAttribute="top" secondItem="SQB-Cy-Mok" secondAttribute="bottom" constant="8" id="l71-fi-h1F"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="SQB-Cy-Mok" secondAttribute="bottom" constant="72" id="llk-so-nef"/>
                             <constraint firstItem="SQB-Cy-Mok" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="nlm-tx-C0a"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="v1" destination="QSV-rz-dHp" id="Nba-nO-xBM"/>
-                        <outlet property="v2" destination="SQB-Cy-Mok" id="E63-SJ-0Hp"/>
-                        <outlet property="v3" destination="Bxh-7A-c6Q" id="iBL-gR-FW1"/>
+                        <outlet property="v1" destination="SQB-Cy-Mok" id="sTU-Lc-nPf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

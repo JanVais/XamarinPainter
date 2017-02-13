@@ -11,8 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
+using Newtonsoft.Json;
 using Painter.Abstractions;
 using UIKit;
 
@@ -66,6 +68,12 @@ namespace Painter.iOS
 			ImageView = new UIImageView();
 			ImageView.Opaque = false;
 			AddSubview(ImageView);
+		}
+
+		//Exports
+		public string GetJson()
+		{
+			return JsonConvert.SerializeObject(Strokes);
 		}
 
 

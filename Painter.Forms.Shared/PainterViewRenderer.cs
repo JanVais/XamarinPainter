@@ -11,6 +11,7 @@ using System;
 using Painter;
 using Painter.Forms;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 #if __IOS__
 using Xamarin.Forms.Platform.iOS;
@@ -53,6 +54,20 @@ namespace Painter.Forms.Droid
 #endif
 				SetNativeControl(native);
 			}
+
+			if (e.OldElement != null)
+			{
+				e.OldElement.GetJsonEvent -= HandleGetJson;
+			}
+			if (e.NewElement != null)
+			{
+				e.NewElement.GetJsonEvent += HandleGetJson;
+			}
+		}
+
+		private void HandleGetJson(object sender, PainterView.JsonImageEventHandler e)
+		{
+			e.Json = Task.Run(() => (Control as NativePainterView).GetJson());
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Android.App;
 
@@ -8,9 +8,9 @@ using Android.App;
 [assembly: AssemblyTitle("PainterTestbed.Droid")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Gappless")]
+[assembly: AssemblyCompany("Nitrocrime")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Gappless")]
+[assembly: AssemblyCopyright("Nitrocrime")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
