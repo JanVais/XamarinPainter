@@ -58,16 +58,30 @@ namespace Painter.Forms.Droid
 			if (e.OldElement != null)
 			{
 				e.OldElement.GetJsonEvent -= HandleGetJson;
+				e.OldElement.ClearEvent -= ClearImage;
+				e.OldElement.LoadJsonEvent -= LoadJson;
 			}
 			if (e.NewElement != null)
 			{
 				e.NewElement.GetJsonEvent += HandleGetJson;
+				e.NewElement.ClearEvent += ClearImage;
+				e.NewElement.LoadJsonEvent += LoadJson;
 			}
 		}
 
-		private void HandleGetJson(object sender, PainterView.JsonImageEventHandler e)
+		private void HandleGetJson(object sender, PainterView.SaveJsonImageHandler e)
 		{
-			e.Json = Task.Run(() => (Control as NativePainterView).GetJson());
+			e.Json = Task.Run(() => Control.GetJson());
+		}
+
+		private void ClearImage(object sender, EventArgs e)
+		{
+			Control.Clear();
+		}
+
+		private void LoadJson(object sender, PainterView.LoadJsonEventHandler e)
+		{
+			Control.LoadJson(e.Json);
 		}
 	}
 }

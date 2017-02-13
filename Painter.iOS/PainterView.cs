@@ -76,6 +76,26 @@ namespace Painter.iOS
 			return JsonConvert.SerializeObject(Strokes);
 		}
 
+		//Imports
+		public void LoadJson(string json)
+		{
+			try
+			{
+				Strokes = JsonConvert.DeserializeObject<List<Stroke>>(json);
+				drawPath();
+			}
+			catch (Exception e)
+			{
+				//Invalid json
+			}
+		}
+
+
+		public void Clear()
+		{
+			Strokes.Clear();
+			drawPath();
+		}
 
 		//Draw the paths
 		private void drawPath()

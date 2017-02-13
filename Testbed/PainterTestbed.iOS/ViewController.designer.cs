@@ -21,6 +21,12 @@ namespace PainterTestbed.iOS
 		[Outlet]
 		Painter.iOS.PainterView v3 { get; set; }
 
+		[Action ("clear:")]
+		partial void clear (Foundation.NSObject sender);
+
+		[Action ("loadJson:")]
+		partial void loadJson (Foundation.NSObject sender);
+
 		[Action ("saveJson:")]
 		partial void saveJson (Foundation.NSObject sender);
 		

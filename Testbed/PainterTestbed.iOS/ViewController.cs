@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Foundation;
 using Painter;
 using Painter.iOS;
@@ -40,7 +41,36 @@ namespace PainterTestbed.iOS
 
 		partial void saveJson(NSObject sender)
 		{
-			Debug.WriteLine(v1.GetJson());
+			try
+			{
+				var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+				var filename = Path.Combine(path, "image.json");
+				File.WriteAllText(filename, v1.GetJson());
+			}
+			catch (Exception e)
+			{
+
+			}
+		}
+
+		partial void loadJson(NSObject sender)
+		{
+			try
+			{
+				var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+				var filename = Path.Combine(path, "image.json");
+				var json = File.ReadAllText(filename);
+				v1.LoadJson(json);
+			}
+			catch (Exception e)
+			{
+				
+			}
+		}
+
+		partial void clear(NSObject sender)
+		{
+			v1.Clear();
 		}
 	}
 }

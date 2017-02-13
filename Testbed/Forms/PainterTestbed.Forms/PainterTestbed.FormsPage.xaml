@@ -5,7 +5,14 @@
 			<RowDefinition Height="9*"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
-		<painter:PainterView x:Name="painterView" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-		<Button Grid.Row="1" BackgroundColor="White" Text="GetJson" Clicked="Handle_Clicked"/>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="1*"/>
+		</Grid.ColumnDefinitions>
+		<painter:PainterView x:Name="painterView" Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+		<Button Grid.Row="1" Grid.Column="0" BackgroundColor="White" Text="Save JSON" Clicked="SaveJson"/>
+		<Button Grid.Row="1" Grid.Column="1" BackgroundColor="White" Text="Clear" Clicked="Clear"/>
+		<Button Grid.Row="1" Grid.Column="2" BackgroundColor="White" Text="Load JSON" Clicked="LoadJson"/>
 	</Grid>
 </ContentPage>
