@@ -25,28 +25,37 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQB-Cy-Mok" customClass="PainterView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="595"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GkK-aS-0j1">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GkK-aS-0j1">
                                 <rect key="frame" x="0.0" y="603" width="100" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="4iV-O0-Muw"/>
+                                    <constraint firstAttribute="width" constant="100" id="TH7-6h-N70"/>
+                                </constraints>
                                 <state key="normal" title="Save JSON"/>
                                 <connections>
                                     <action selector="saveJson:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hVM-Uv-mSo"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PZU-YB-HYk">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PZU-YB-HYk">
                                 <rect key="frame" x="275" y="603" width="100" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="6dn-bi-eEB"/>
+                                    <constraint firstAttribute="width" constant="100" id="BjI-VH-h6E"/>
+                                </constraints>
                                 <state key="normal" title="Load JSON"/>
                                 <connections>
                                     <action selector="loadJson:" destination="BYZ-38-t0r" eventType="touchUpInside" id="I1s-de-UDh"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xXc-0R-OdV">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xXc-0R-OdV">
                                 <rect key="frame" x="137" y="603" width="100" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="JIO-x9-xSx"/>
+                                    <constraint firstAttribute="height" constant="64" id="dmu-z0-L4R"/>
+                                </constraints>
                                 <state key="normal" title="Clear"/>
                                 <connections>
                                     <action selector="clear:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uBV-Qj-ZHE"/>
@@ -55,10 +64,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="PZU-YB-HYk" secondAttribute="bottom" id="0sE-Hc-6pG"/>
+                            <constraint firstItem="GkK-aS-0j1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="4rx-Ur-pfZ"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="xXc-0R-OdV" secondAttribute="bottom" id="7lk-jl-QqS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PZU-YB-HYk" secondAttribute="trailing" constant="-16" id="BPp-l0-MLg"/>
                             <constraint firstItem="SQB-Cy-Mok" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Euu-3d-vIT"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GkK-aS-0j1" secondAttribute="bottom" id="LfT-r0-lng"/>
                             <constraint firstAttribute="trailingMargin" secondItem="SQB-Cy-Mok" secondAttribute="trailing" constant="-16" id="cQ5-yn-6HZ"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="SQB-Cy-Mok" secondAttribute="bottom" constant="72" id="llk-so-nef"/>
                             <constraint firstItem="SQB-Cy-Mok" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="nlm-tx-C0a"/>
+                            <constraint firstItem="xXc-0R-OdV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zVQ-53-DUl"/>
                         </constraints>
                     </view>
                     <connections>

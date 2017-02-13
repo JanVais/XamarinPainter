@@ -68,6 +68,18 @@ namespace Painter.iOS
 			ImageView = new UIImageView();
 			ImageView.Opaque = false;
 			AddSubview(ImageView);
+
+			NSNotificationCenter.DefaultCenter.AddObserver(UIDevice.OrientationDidChangeNotification, HandleOrientationChange);
+		}
+
+		~PainterView()
+		{
+			NSNotificationCenter.DefaultCenter.RemoveObserver(this);
+		}
+
+		void HandleOrientationChange(NSNotification obj)
+		{
+			drawPath();
 		}
 
 		//Exports
@@ -89,7 +101,6 @@ namespace Painter.iOS
 				//Invalid json
 			}
 		}
-
 
 		public void Clear()
 		{
