@@ -8,7 +8,7 @@
 //
 //
 using System;
-namespace Painter
+namespace Painter.Abstractions
 {
 	public class Color
 	{
