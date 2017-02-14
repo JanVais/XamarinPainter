@@ -14,7 +14,6 @@ This project is nowhere near a finished product at the moment, do not use it as 
 ## Customization
 * Stroke color
 * Stroke thickness
-* Background color
 * Background image
 
 ## Exporting
