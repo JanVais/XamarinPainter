@@ -9,8 +9,7 @@ This project is nowhere near a finished product at the moment, do not use it as 
 * Xamarin.iOS
 * Xamarin.Droid
 * Xamarin.UWP
-* Xamarin.WindowsPhone8
-* Xamarin.Forms (iOS, Android, UWP and WP8)
+* Xamarin.Forms (iOS, Android and UWP)
 
 ## Customization
 * Stroke color
@@ -30,4 +29,5 @@ This project is nowhere near a finished product at the moment, do not use it as 
 * Load a file from the device
 * Load a background image
 
-
+## WindowsPhone 8
+There will be no support for WindowsPhone 8 due to it's near deprication
