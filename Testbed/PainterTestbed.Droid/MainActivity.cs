@@ -17,7 +17,6 @@ namespace PainterTestbed.Droid
 
 			PainterView v = (PainterView)FindViewById(Resource.Id.painterView1);
 
-
 		}
 	}
 }

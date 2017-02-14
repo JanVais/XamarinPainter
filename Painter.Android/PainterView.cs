@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Util;
 using Android.Graphics;
+using Newtonsoft.Json;
 
 namespace Painter.Android
 {
@@ -19,6 +20,10 @@ namespace Painter.Android
 		private Context context;
 		private Canvas canvas;
 		private ImageView imageView;
+		private Bitmap image;
+		private DisplayMetrics metrics;
+		private Abstractions.Stroke currentStroke;
+		private List<Abstractions.Stroke> strokes = new List<Abstractions.Stroke>();
 
 		public PainterView(Context context) : base(context)
 		{
@@ -43,11 +48,8 @@ namespace Painter.Android
 		{
 			imageView = new ImageView(context);
 			imageView.SetBackgroundColor(Color.Transparent);
-			imageView.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
 			AddView(imageView);
 		}
-
-		private Abstractions.Stroke stroke;
 
 		protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
 		{
@@ -57,27 +59,98 @@ namespace Painter.Android
 				return;
 
 			IWindowManager windowManager = Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
-			DisplayMetrics metrics = new DisplayMetrics();
+			metrics = new DisplayMetrics();
 			windowManager.DefaultDisplay.GetMetrics(metrics);
 
-			var image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
-			canvas = new Canvas(image);
-			imageView.SetImageBitmap(image);
+			if (image == null)
+			{
+				image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
+				canvas = new Canvas(image);
+				imageView.SetImageBitmap(image);
+			}
 
 			DrawStrokes();
 		}
 
+		protected override IParcelable OnSaveInstanceState()
+		{
+			var state = base.OnSaveInstanceState();
+
+			var savedState = new SavedImageState(state)
+			{
+				Json = JsonConvert.SerializeObject(strokes)
+			};
+
+			imageView.SetImageBitmap(null);
+			imageView = null;
+
+			image.Recycle();
+			image.Dispose();
+			image = null;
+
+			canvas.Dispose();
+			canvas = null;
+
+			GC.Collect();
+
+			return savedState;
+		}
+
+		protected override void OnRestoreInstanceState(IParcelable state)
+		{
+			var savedState = state as SavedImageState;
+			if (savedState != null)
+			{
+				base.OnRestoreInstanceState(savedState.SuperState);
+				strokes = JsonConvert.DeserializeObject<List<Abstractions.Stroke>>(savedState.Json);
+			}
+			else
+				base.OnRestoreInstanceState(state);
+			RequestLayout();
+		}
+
 		private void DrawStrokes()
 		{
-			//canvas.DrawLine(0, 0, Width, Height, new Paint() { Color = Color.Black, StrokeWidth = 3.0f });
+			canvas.DrawColor(Color.Transparent, PorterDuff.Mode.Clear);
 
-			if (stroke != null && stroke.Points.Count > 0)
+			foreach (var stroke in strokes)
 			{
 				double lastX = stroke.Points[0].X;
 				double lastY = stroke.Points[0].Y;
+
+				var paint = new Paint()
+				{
+					Color = new Color((byte)(stroke.StrokeColor.R * 255.0), (byte)(stroke.StrokeColor.G * 255.0), (byte)(stroke.StrokeColor.B * 255.0), (byte)(stroke.StrokeColor.A * 255.0)),
+					StrokeWidth = stroke.Thickness * metrics.Density,
+					AntiAlias = true
+				};
+
 				foreach (var p in stroke.Points)
 				{
-					canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, new Paint() { Color = Color.Blue, StrokeWidth = 3.0f });
+					canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
+					lastX = p.X;
+					lastY = p.Y;
+				}
+			}
+		}
+
+		private void DrawCurrentStroke()
+		{
+			if (currentStroke != null && currentStroke.Points.Count > 0)
+			{
+				double lastX = currentStroke.Points[0].X;
+				double lastY = currentStroke.Points[0].Y;
+
+				var paint = new Paint()
+				{
+					Color = new Color((byte)(currentStroke.StrokeColor.R * 255.0), (byte)(currentStroke.StrokeColor.G * 255.0), (byte)(currentStroke.StrokeColor.B * 255.0), (byte)(currentStroke.StrokeColor.A * 255.0)),
+					StrokeWidth = currentStroke.Thickness * metrics.Density,
+					AntiAlias = true
+				};
+
+				foreach (var p in currentStroke.Points)
+				{
+					canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
 					lastX = p.X;
 					lastY = p.Y;
 				}
@@ -89,19 +162,22 @@ namespace Painter.Android
 			switch (e.Action)
 			{
 				case MotionEventActions.Down:
-					stroke = new Abstractions.Stroke();
-
-					stroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
+					currentStroke = new Abstractions.Stroke()
+					{
+						StrokeColor = new Abstractions.Color(0, 0, 1, 1)
+					};
+					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
 
 					return true;
 				case MotionEventActions.Move:
+					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
 
-					stroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
-					DrawStrokes();
+					DrawCurrentStroke();
 					Invalidate();
 					break;
 				case MotionEventActions.Up:
-
+					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
+					strokes.Add(currentStroke);
 					break;
 				default:
 					return false;
