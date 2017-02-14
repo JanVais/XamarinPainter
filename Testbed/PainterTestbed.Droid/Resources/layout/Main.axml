@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minWidth="25px"
@@ -11,5 +10,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/painterView1"
-        android:gravity="fill" />
-</LinearLayout>
+        android:layout_above="@+id/linearLayout1">
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/linearLayout1"
+            android:layout_below="@+id/painterView1"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:text="Save Json"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:onClick="saveJson"
+                android:id="@+id/save_btn" />
+            <Button
+                android:text="Clear"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:onClick="clearImage"
+                android:id="@+id/clear_btn" />
+            <Button
+                android:text="Load Json"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:id="@+id/load_btn"
+                android:onClick="loadJson"
+                android:layout_marginRight="0.0dp" />
+        </RelativeLayout>
+    </Painter.Android.PainterView>
+</RelativeLayout>

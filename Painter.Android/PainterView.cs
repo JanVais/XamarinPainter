@@ -51,6 +51,37 @@ namespace Painter.Android
 			AddView(imageView);
 		}
 
+
+		//Exports
+		public string GetJson()
+		{
+			return JsonConvert.SerializeObject(strokes);
+		}
+
+		//Imports
+		public void LoadJson(string json)
+		{
+			try
+			{
+				strokes = JsonConvert.DeserializeObject<List<Abstractions.Stroke>>(json);
+				DrawStrokes();
+				Invalidate();
+			}
+			catch (System.Exception e)
+			{
+				//Invalid json
+				System.Diagnostics.Debug.WriteLine(e);
+			}
+		}
+
+		public void Clear()
+		{
+			strokes.Clear();
+			canvas.DrawColor(Color.Transparent, PorterDuff.Mode.Clear);
+			Invalidate();
+		}
+
+
 		protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
 		{
 			base.OnLayout(changed, left, top, right, bottom);

@@ -9,25 +9,23 @@
 //
 using System;
 using Xamarin.Forms;
-using WorkingWithFiles.iOS;
 using System.IO;
 using System.Threading.Tasks;
 using WorkingWithFiles;
-using Foundation;
 using System.Linq;
+using PainterTestbed.Droid;
 
-[assembly: Dependency(typeof(SaveAndLoad_iOS))]
+[assembly: Dependency(typeof(SaveAndLoad_Android))]
 
-namespace PainterTestbed.iOS
+namespace PainterTestbed.Droid
 {
-	public class SaveAndLoad_iOS : ISaveAndLoad
+	public class SaveAndLoad_Android : ISaveAndLoad
 	{
 		public static string DocumentsPath
 		{
 			get
 			{
-				var documentsDirUrl = NSFileManager.DefaultManager.GetUrls(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User).Last();
-				return documentsDirUrl.Path;
+				return Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 			}
 		}
 
