@@ -13,6 +13,12 @@ namespace PainterTestbed.iOS
 	partial class ViewController
 	{
 		[Outlet]
+		UIKit.UIStepper stepper { get; set; }
+
+		[Outlet]
+		UIKit.UILabel stepper_lbl { get; set; }
+
+		[Outlet]
 		Painter.iOS.PainterView v1 { get; set; }
 
 		[Outlet]
@@ -29,9 +35,31 @@ namespace PainterTestbed.iOS
 
 		[Action ("saveJson:")]
 		partial void saveJson (Foundation.NSObject sender);
+
+		[Action ("setBlueColor:")]
+		partial void setBlueColor (Foundation.NSObject sender);
+
+		[Action ("setGreenColor:")]
+		partial void setGreenColor (Foundation.NSObject sender);
+
+		[Action ("setRedColor:")]
+		partial void setRedColor (Foundation.NSObject sender);
+
+		[Action ("setStepperValue:")]
+		partial void setStepperValue (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (stepper != null) {
+				stepper.Dispose ();
+				stepper = null;
+			}
+
+			if (stepper_lbl != null) {
+				stepper_lbl.Dispose ();
+				stepper_lbl = null;
+			}
+
 			if (v1 != null) {
 				v1.Dispose ();
 				v1 = null;

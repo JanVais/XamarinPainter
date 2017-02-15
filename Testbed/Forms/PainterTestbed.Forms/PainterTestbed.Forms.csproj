@@ -63,6 +63,10 @@
       <Project>{4d495bf7-f5b1-4957-b514-bd2c9e37c195}</Project>
       <Name>Painter.Forms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Painter\Painter.csproj">
+      <Project>{F1878F71-C855-4683-91F8-CD9EF98E67FE}</Project>
+      <Name>Painter</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IO\" />

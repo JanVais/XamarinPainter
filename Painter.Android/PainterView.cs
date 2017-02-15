@@ -17,6 +17,10 @@ namespace Painter.Android
 {
 	public class PainterView : RelativeLayout
 	{
+		public Abstractions.Color StrokeColor { get; set; }
+		public double StrokeThickness { get; set; } = 1.0;
+
+
 		private Context context;
 		private Canvas canvas;
 		private ImageView imageView;
@@ -152,7 +156,7 @@ namespace Painter.Android
 				var paint = new Paint()
 				{
 					Color = new Color((byte)(stroke.StrokeColor.R * 255.0), (byte)(stroke.StrokeColor.G * 255.0), (byte)(stroke.StrokeColor.B * 255.0), (byte)(stroke.StrokeColor.A * 255.0)),
-					StrokeWidth = stroke.Thickness * metrics.Density,
+					StrokeWidth = (float)stroke.Thickness * metrics.Density,
 					AntiAlias = true
 				};
 
@@ -175,7 +179,7 @@ namespace Painter.Android
 				var paint = new Paint()
 				{
 					Color = new Color((byte)(currentStroke.StrokeColor.R * 255.0), (byte)(currentStroke.StrokeColor.G * 255.0), (byte)(currentStroke.StrokeColor.B * 255.0), (byte)(currentStroke.StrokeColor.A * 255.0)),
-					StrokeWidth = currentStroke.Thickness * metrics.Density,
+					StrokeWidth = (float)currentStroke.Thickness * metrics.Density,
 					AntiAlias = true
 				};
 

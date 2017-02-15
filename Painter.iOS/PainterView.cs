@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreAnimation;
 using CoreGraphics;
 using Foundation;
 using Newtonsoft.Json;
@@ -20,18 +21,72 @@ using UIKit;
 
 namespace Painter.iOS
 {
+	class BezierView : UIView
+	{
+		public UIBezierPath CurrentPath { get; set; }
+		private CAShapeLayer shapeLayer;
+		private Color currentColor;
+
+		public BezierView()
+		{
+			shapeLayer = (CAShapeLayer)CAShapeLayer.Create();
+			shapeLayer.FillColor = new UIColor(0, 0, 0, 0).CGColor;
+			Layer.AddSublayer(shapeLayer);
+		}
+
+		public void Stroke()
+		{
+			if (currentColor == null || CurrentPath == null)
+				return;
+			
+			UIColor c = new UIColor((nfloat)currentColor.R, (nfloat)currentColor.G, (nfloat)currentColor.B, (nfloat)currentColor.A);
+
+			shapeLayer.StrokeColor = c.CGColor;
+			shapeLayer.LineWidth = CurrentPath.LineWidth;
+			shapeLayer.Path = CurrentPath.CGPath;
+		}
+
+		public void CreateNewPath(Stroke stroke)
+		{
+			CurrentPath = UIBezierPath.Create();
+
+			CurrentPath.LineWidth = (float)stroke.Thickness;
+			CurrentPath.LineCapStyle = CGLineCap.Round;
+			CurrentPath.LineJoinStyle = CGLineJoin.Bevel;
+
+			currentColor = stroke.StrokeColor;
+		}
+
+		public void MoveTo(CGPoint p)
+		{
+			CurrentPath.MoveTo(p);
+		}
+
+		public void AddLineTo(CGPoint p)
+		{
+			CurrentPath.AddLineTo(p);
+		}
+
+		public void Clear()
+		{
+			CurrentPath = null;
+			shapeLayer.Path = null;
+		}
+	}
+
 	[Register("PainterView")]
 	[DesignTimeVisible(true)]
 	public class PainterView : UIView
 	{
 		//Public UI
-		public UIColor StrokeColor { get; set; }
+		public Color StrokeColor { get; set; }
+		public double StrokeThickness { get; set; } = 1.0;
 
 		//Private UI
-		private UIBezierPath CurrentPath { get; set; }
 		private List<Stroke> Strokes { get; set; }
 		private Stroke CurrentStroke { get; set; }
 		private UIImageView ImageView { get; set; }
+		private BezierView CurrentPathView { get; set; }
 
 		//Constructors
 		public PainterView()
@@ -61,13 +116,18 @@ namespace Painter.iOS
 		{
 			Strokes = new List<Stroke>();
 
-			StrokeColor = UIColor.Blue;
+			StrokeColor = new Color(0, 0, 1, 1);
 
-			//BackgroundColor = UIColor.Clear;
 			Opaque = false;
 			ImageView = new UIImageView();
 			ImageView.Opaque = false;
 			AddSubview(ImageView);
+			SendSubviewToBack(ImageView);
+
+			CurrentPathView = new BezierView();
+			CurrentPathView.Opaque = false;
+			AddSubview(CurrentPathView);
+			BringSubviewToFront(CurrentPathView);
 
 			NSNotificationCenter.DefaultCenter.AddObserver(UIDevice.OrientationDidChangeNotification, HandleOrientationChange);
 		}
@@ -105,10 +165,11 @@ namespace Painter.iOS
 		public void Clear()
 		{
 			Strokes.Clear();
+			CurrentPathView.Clear();
 			drawPath();
 		}
 
-		//Draw the paths
+		//Draw the paths to the UIImage view
 		private void drawPath()
 		{
 			UIGraphics.BeginImageContextWithOptions(Frame.Size, false, UIScreen.MainScreen.Scale);//Support Retina when drawing
@@ -122,7 +183,7 @@ namespace Painter.iOS
 				if (stroke.Points.Count == 0)
 					continue;
 
-				context.SetLineWidth(stroke.Thickness);
+				context.SetLineWidth((float)stroke.Thickness);
 				context.SetStrokeColor(new UIColor((float)stroke.StrokeColor.R, (float)stroke.StrokeColor.G, (float)stroke.StrokeColor.B, (float)stroke.StrokeColor.A).CGColor);
 
 				var p = UIBezierPath.Create();
@@ -151,10 +212,9 @@ namespace Painter.iOS
 		//Drawing
 		public override void Draw(CGRect rect)
 		{
-			if (CurrentPath != null && !CurrentPath.Empty)
+			if (CurrentPathView != null)
 			{
-				StrokeColor.SetStroke();
-				CurrentPath.Stroke();
+				CurrentPathView.Stroke();
 			}
 		}
 
@@ -162,21 +222,16 @@ namespace Painter.iOS
 		{
 			base.TouchesBegan(touches, evt);
 
-			nfloat r, g, b, a;
-			StrokeColor.GetRGBA(out r, out g, out b, out a);
-
 			CurrentStroke = new Stroke()
 			{
-				StrokeColor = new Color(r, g, b, a)
+				StrokeColor = StrokeColor,
+				Thickness = StrokeThickness
 			};
 
-			CurrentPath = UIBezierPath.Create();
-			CurrentPath.LineWidth = 1.0f;
-			CurrentPath.LineCapStyle = CGLineCap.Round;
-			CurrentPath.LineJoinStyle = CGLineJoin.Bevel;
+			CurrentPathView.CreateNewPath(CurrentStroke);
 
 			var loc = (touches.AnyObject as UITouch).LocationInView(this);
-			CurrentPath.MoveTo(loc);
+			CurrentPathView.MoveTo(loc);
 			CurrentStroke.Points.Add(new Point(loc.X, loc.Y));
 		}
 
@@ -185,7 +240,7 @@ namespace Painter.iOS
 			base.TouchesMoved(touches, evt);
 
 			var loc = (touches.AnyObject as UITouch).LocationInView(this);
-			CurrentPath.AddLineTo(loc);
+			CurrentPathView.AddLineTo(loc);
 			CurrentStroke.Points.Add(new Point(loc.X, loc.Y));
 
 			SetNeedsDisplay();
@@ -197,12 +252,12 @@ namespace Painter.iOS
 
 			var loc = (touches.AnyObject as UITouch).LocationInView(this);
 			CurrentStroke.Points.Add(new Point(loc.X, loc.Y));
-			CurrentPath.AddLineTo(loc);
+			CurrentPathView.AddLineTo(loc);
 
 			Strokes.Add(CurrentStroke);
 			drawPath();
 
-			CurrentPath = null;
+			CurrentPathView.Clear();
 			SetNeedsDisplay();
 		}
 
@@ -216,6 +271,7 @@ namespace Painter.iOS
 			base.LayoutSubviews();
 
 			ImageView.Frame = new CGRect(0, 0, Frame.Width, Frame.Height);
+			CurrentPathView.Frame = ImageView.Frame;
 		}
 	}
 }

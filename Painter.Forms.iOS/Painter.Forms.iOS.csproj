@@ -82,6 +82,10 @@
       <Project>{4ED89649-B990-43DC-A789-0B1E5380FCF9}</Project>
       <Name>Painter.iOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Painter\Painter.csproj">
+      <Project>{F1878F71-C855-4683-91F8-CD9EF98E67FE}</Project>
+      <Name>Painter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Painter.Forms.Shared\Painter.Forms.Shared.projitems" Label="Shared" Condition="Exists('..\Painter.Forms.Shared\Painter.Forms.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

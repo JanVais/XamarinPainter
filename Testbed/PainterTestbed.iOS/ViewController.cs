@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using Foundation;
 using Painter;
+using Painter.Abstractions;
 using Painter.iOS;
 using UIKit;
 
@@ -31,6 +32,7 @@ namespace PainterTestbed.iOS
 		{
 			base.ViewDidLoad();
 			// Perform any additional setup after loading the view, typically from a nib.
+
 		}
 
 		public override void DidReceiveMemoryWarning()
@@ -71,6 +73,27 @@ namespace PainterTestbed.iOS
 		partial void clear(NSObject sender)
 		{
 			v1.Clear();
+		}
+
+		partial void setBlueColor(NSObject sender)
+		{
+			v1.StrokeColor = new Color(0, 0, 1);
+		}
+
+		partial void setGreenColor(NSObject sender)
+		{
+			v1.StrokeColor = new Color(0, 1, 0);
+		}
+
+		partial void setRedColor(NSObject sender)
+		{
+			v1.StrokeColor = new Color(1, 0, 0);
+		}
+
+		partial void setStepperValue(NSObject sender)
+		{
+			stepper_lbl.Text = stepper.Value.ToString("##");
+			v1.StrokeThickness = stepper.Value;
 		}
 	}
 }

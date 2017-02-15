@@ -53,7 +53,7 @@ namespace Painter.Forms.Droid
 			{
 				// Instantiate the native control and assign it to the Control property
 #if __ANDROID__
-                var native = new NativePainterView(Xamarin.Forms.Forms.Context);
+				var native = new NativePainterView(Xamarin.Forms.Forms.Context);
 #elif __IOS__
 				var native = new NativePainterView(new CoreGraphics.CGRect(0, 0, e.NewElement.Bounds.Width, e.NewElement.Bounds.Height));
 				native.Opaque = false;
@@ -68,12 +68,20 @@ namespace Painter.Forms.Droid
 				e.OldElement.GetJsonEvent -= HandleGetJson;
 				e.OldElement.ClearEvent -= ClearImage;
 				e.OldElement.LoadJsonEvent -= LoadJson;
+				e.NewElement.SetStrokeColorEvent -= SetStrokeColorEvent;
+				e.NewElement.GetStrokeColorEvent -= GetStrokeColorEvent;
+				e.NewElement.SetStrokeThicknessEvent -= SetStrokeThicknessEvent;
+				e.NewElement.GetStrokeThicknessEvent -= GetStrokeThicknessEvent;
 			}
 			if (e.NewElement != null)
 			{
 				e.NewElement.GetJsonEvent += HandleGetJson;
 				e.NewElement.ClearEvent += ClearImage;
 				e.NewElement.LoadJsonEvent += LoadJson;
+				e.NewElement.SetStrokeColorEvent += SetStrokeColorEvent;
+				e.NewElement.GetStrokeColorEvent += GetStrokeColorEvent;
+				e.NewElement.SetStrokeThicknessEvent += SetStrokeThicknessEvent;
+				e.NewElement.GetStrokeThicknessEvent += GetStrokeThicknessEvent;
 			}
 		}
 
@@ -90,6 +98,26 @@ namespace Painter.Forms.Droid
 		private void LoadJson(object sender, PainterView.LoadJsonEventHandler e)
 		{
 			Control.LoadJson(e.Json);
+		}
+
+		private void SetStrokeColorEvent(object sender, PainterView.ColorHandler e)
+		{
+			Control.StrokeColor = e.setColor;
+		}
+
+		private void GetStrokeColorEvent(object sender, PainterView.ColorHandler e)
+		{
+			e.getColor = Task.Run(() => Control.StrokeColor);
+		}
+
+		private void SetStrokeThicknessEvent(object sender, PainterView.ThicknessHandler e)
+		{
+			Control.StrokeThickness = e.setThickness;
+		}
+
+		private void GetStrokeThicknessEvent(object sender, PainterView.ThicknessHandler e)
+		{
+			e.getThickness = Task.Run(() => Control.StrokeThickness);
 		}
 	}
 }

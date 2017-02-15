@@ -16,7 +16,7 @@ namespace Painter.Abstractions
 	{
 		public List<Point> Points { get; set; }
 		public Color StrokeColor { get; set; }
-		public float Thickness { get; set; }
+		public double Thickness { get; set; }
 		public bool ClosePath { get; set; }
 
 		public Stroke()
