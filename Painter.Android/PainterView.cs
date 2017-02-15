@@ -17,10 +17,11 @@ namespace Painter.Android
 {
 	public class PainterView : RelativeLayout
 	{
+		//Public UI
 		public Abstractions.Color StrokeColor { get; set; }
-		public double StrokeThickness { get; set; } = 1.0;
+		public double StrokeThickness { get; set; }
 
-
+		//Private
 		private Context context;
 		private Canvas canvas;
 		private ImageView imageView;
@@ -52,6 +53,10 @@ namespace Painter.Android
 		{
 			imageView = new ImageView(context);
 			imageView.SetBackgroundColor(Color.Transparent);
+
+			StrokeColor = new Abstractions.Color(0, 0, 1);
+			StrokeThickness = 1.0;
+
 			AddView(imageView);
 		}
 
@@ -199,7 +204,8 @@ namespace Painter.Android
 				case MotionEventActions.Down:
 					currentStroke = new Abstractions.Stroke()
 					{
-						StrokeColor = new Abstractions.Color(0, 0, 1, 1)
+						StrokeColor = StrokeColor,
+						Thickness = StrokeThickness,
 					};
 					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
 

@@ -12,6 +12,7 @@ namespace PainterTestbed.Droid
 	public class MainActivity : Activity
 	{
 		PainterView painter;
+		TextView stepper_lbl;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -21,6 +22,7 @@ namespace PainterTestbed.Droid
 			SetContentView(Resource.Layout.Main);
 
 			painter = (PainterView)FindViewById(Resource.Id.painterView1);
+			stepper_lbl = (TextView)FindViewById(Resource.Id.stepper_lbl);
 		}
 
 		[Export("saveJson")]
@@ -59,6 +61,42 @@ namespace PainterTestbed.Droid
 				string content = streamReader.ReadToEnd();
 				painter.LoadJson(content);
 			}
+		}
+
+		[Export("setRedColor")]
+		public void setRedColor(View v)
+		{
+			painter.StrokeColor = new Painter.Abstractions.Color(1, 0, 0);
+		}
+
+		[Export("setGreenColor")]
+		public void setGreenColor(View v)
+		{
+			painter.StrokeColor = new Painter.Abstractions.Color(0, 1, 0);
+		}
+
+		[Export("setBlueColor")]
+		public void setBlueColor(View v)
+		{
+			painter.StrokeColor = new Painter.Abstractions.Color(0, 0, 1);
+		}
+
+		[Export("stepperSubtract")]
+		public void stepperSubtract(View v)
+		{
+			painter.StrokeThickness--;
+			if (painter.StrokeThickness <= 0.0)
+				painter.StrokeThickness = 1.0;
+			stepper_lbl.Text = painter.StrokeThickness.ToString("##");
+		}
+
+		[Export("stepperAdd")]
+		public void stepperAdd(View v)
+		{
+			painter.StrokeThickness++;
+			if (painter.StrokeThickness >= 100.0)
+				painter.StrokeThickness = 100.0;
+			stepper_lbl.Text = painter.StrokeThickness.ToString("##");
 		}
 	}
 }

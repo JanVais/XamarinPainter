@@ -112,6 +112,10 @@
       <Project>{46FDEF94-AC8C-4B45-84EE-E648024E63E5}</Project>
       <Name>Painter.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Painter\Painter.csproj">
+      <Project>{F1878F71-C855-4683-91F8-CD9EF98E67FE}</Project>
+      <Name>Painter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
