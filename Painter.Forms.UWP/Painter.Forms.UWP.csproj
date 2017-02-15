@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{90d66980-59f0-47bf-9614-d15b68f9372e}</ProjectGuid>
+    <ProjectGuid>{90D66980-59F0-47BF-9614-D15B68F9372E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Painter.Forms.UWP</RootNamespace>
@@ -107,10 +107,20 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Painter.Forms.UWP.rd.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Painter.Forms\Painter.Forms.csproj">
+      <Project>{4d495bf7-f5b1-4957-b514-bd2c9e37c195}</Project>
+      <Name>Painter.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Painter.UWP\Painter.UWP.csproj">
+      <Project>{a4daaf3c-d12e-4805-bb5c-d9fbb5e6189f}</Project>
+      <Name>Painter.UWP</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\Painter.Forms.Shared\Painter.Forms.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

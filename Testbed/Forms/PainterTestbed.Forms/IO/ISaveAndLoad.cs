@@ -10,7 +10,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace WorkingWithFiles
+namespace PainterTestbed
 {
 	public interface ISaveAndLoad
 	{
