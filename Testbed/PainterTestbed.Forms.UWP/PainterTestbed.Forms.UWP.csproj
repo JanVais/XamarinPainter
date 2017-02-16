@@ -132,6 +132,10 @@
       <Project>{90d66980-59f0-47bf-9614-d15b68f9372e}</Project>
       <Name>Painter.Forms.UWP</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Painter\Painter.csproj">
+      <Project>{f1878f71-c855-4683-91f8-cd9ef98e67fe}</Project>
+      <Name>Painter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Forms\PainterTestbed.Forms\PainterTestbed.Forms.csproj">
       <Project>{bbac0c3f-512b-45c8-9da6-fbae2d5bb19b}</Project>
       <Name>PainterTestbed.Forms</Name>

@@ -119,6 +119,10 @@
       <Project>{a4daaf3c-d12e-4805-bb5c-d9fbb5e6189f}</Project>
       <Name>Painter.UWP</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Painter\Painter.csproj">
+      <Project>{f1878f71-c855-4683-91f8-cd9ef98e67fe}</Project>
+      <Name>Painter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Painter.Forms.Shared\Painter.Forms.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

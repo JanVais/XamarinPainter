@@ -23,7 +23,7 @@ namespace PainterTestbed.Forms.UWP
 		public async Task<string> LoadTextAsync(string filename)
 		{
 			Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-			Windows.Storage.StorageFile ticketsFile = storageFolder.CreateFileAsync(filename, Windows.Storage.CreationCollisionOption.OpenIfExists).GetResults();
+			Windows.Storage.StorageFile ticketsFile = await storageFolder.CreateFileAsync(filename, Windows.Storage.CreationCollisionOption.OpenIfExists);
 			return await Windows.Storage.FileIO.ReadTextAsync(ticketsFile);
 		}
 
