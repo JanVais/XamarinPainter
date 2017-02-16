@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Painter.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -48,6 +49,36 @@ namespace PainterTestbed.UWP
 			Windows.Storage.StorageFile ticketsFile = await storageFolder.CreateFileAsync("image.json", Windows.Storage.CreationCollisionOption.OpenIfExists);
 			string json = await Windows.Storage.FileIO.ReadTextAsync(ticketsFile);
 			painterView.LoadJson(json);
+		}
+
+		private void setRedColor(object sender, TappedRoutedEventArgs e)
+		{
+			painterView.StrokeColor = new Color(1, 0, 0);
+		}
+
+		private void setGreenColor(object sender, TappedRoutedEventArgs e)
+		{
+			painterView.StrokeColor = new Color(0, 1, 0);
+		}
+
+		private void setBlueColor(object sender, TappedRoutedEventArgs e)
+		{
+			painterView.StrokeColor = new Color(0, 0, 1);
+		}
+
+		private void stepperAdd(object sender, TappedRoutedEventArgs e)
+		{
+			painterView.StrokeThickness++;
+			if (painterView.StrokeThickness >= 100)
+				painterView.StrokeThickness = 100;
+			stepper_lbl.Text = painterView.StrokeThickness.ToString("#");
+		}
+		private void stepperSub(object sender, TappedRoutedEventArgs e)
+		{
+			painterView.StrokeThickness--;
+			if (painterView.StrokeThickness <= 0)
+				painterView.StrokeThickness = 1.0;
+			stepper_lbl.Text = painterView.StrokeThickness.ToString("#");
 		}
 	}
 }

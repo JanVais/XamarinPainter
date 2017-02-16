@@ -7,8 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:painter="using:Painter.UWP"
     mc:Ignorable="d">
-	<Grid Background="Gray" VerticalAlignment="Stretch">
+	<Grid Background="Gray" VerticalAlignment="Stretch" Padding="0,10,0,0">
 		<Grid.RowDefinitions>
+			<RowDefinition Height="1*"/>
 			<RowDefinition Height="9*"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
@@ -17,9 +18,27 @@
 			<ColumnDefinition Width="1*"/>
 			<ColumnDefinition Width="1*"/>
 		</Grid.ColumnDefinitions>
-		<painter:PainterView Name="painterView" Grid.Row="0" Grid.ColumnSpan="3"/>
-		<Button Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Tapped="SaveJson">Save Json</Button>
-		<Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Tapped="Clear">Clear</Button>
-		<Button Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" Tapped="LoadJson">Load Json</Button>
+		<Grid Padding="10" Grid.ColumnSpan="3" HorizontalAlignment="Stretch">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="auto" />
+				<ColumnDefinition Width="auto" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" Tapped="setRedColor" >Red</Button>
+			<Button Grid.Column="1" Tapped="setGreenColor" >Green</Button>
+			<Button Grid.Column="2" Tapped="setBlueColor" >Blue</Button>
+
+			<TextBlock Name="stepper_lbl" Grid.Column="4" VerticalAlignment="Center" Padding="0,0,10,0">1</TextBlock>
+			<Button Grid.Column="5" Tapped="stepperSub" >-</Button>
+			<Button Grid.Column="6" Tapped="stepperAdd" >+</Button>
+		</Grid>
+		<painter:PainterView Name="painterView" Grid.Row="1" Grid.ColumnSpan="3"/>
+		<Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Tapped="SaveJson">Save Json</Button>
+		<Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Tapped="Clear">Clear</Button>
+		<Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" Tapped="LoadJson">Load Json</Button>
 	</Grid>
 </Page>

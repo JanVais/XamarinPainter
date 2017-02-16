@@ -31,16 +31,58 @@ namespace Painter.UWP
 	/// </summary>
 	public sealed partial class PainterView : UserControl
 	{
-		List<Stroke> strokes;
-		Stroke currentStroke;
+		//Public UI
+		private Color _strokeColor;
+		public Color StrokeColor
+		{
+			get
+			{
+				return _strokeColor;
+			}
+			set
+			{
+				_strokeColor = value;
+				updateStroke();
+			}
+		}
+		public double _strokeThickness;
+		public double StrokeThickness
+		{
+			get
+			{
+				return _strokeThickness;
+			}
+			set
+			{
+				_strokeThickness = value;
+				updateStroke();
+			}
+		}
+
+		private void updateStroke()
+		{
+			InkDrawingAttributes inkDrawingAttributes = new InkDrawingAttributes();
+			inkDrawingAttributes.Color = new Windows.UI.Color()
+			{
+				R = (byte)(_strokeColor.R * 255.0),
+				G = (byte)(_strokeColor.G * 255.0),
+				B = (byte)(_strokeColor.B * 255.0),
+				A = (byte)(_strokeColor.A * 255.0),
+			};
+			inkDrawingAttributes.Size = new Size(StrokeThickness, StrokeThickness);
+			inkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(inkDrawingAttributes);
+		}
+
+		//Private
+		private List<Stroke> strokes;
+		private Stroke currentStroke;
 
 		public PainterView()
 		{
 			this.InitializeComponent();
 
-			InkDrawingAttributes inkDrawingAttributes = new InkDrawingAttributes();
-			inkDrawingAttributes.Color = Windows.UI.Colors.Blue;
-			inkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(inkDrawingAttributes);
+			StrokeColor = new Color(0, 0, 1, 1);
+			StrokeThickness = 1;
 
 			inkCanvas.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse | Windows.UI.Core.CoreInputDeviceTypes.Pen | Windows.UI.Core.CoreInputDeviceTypes.Touch;
 
@@ -91,7 +133,14 @@ namespace Painter.UWP
 				InkStroke curStroke = builder.CreateStroke(points);
 
 				InkDrawingAttributes strokeDrawingAttributes = new InkDrawingAttributes();
-				strokeDrawingAttributes.Color = Windows.UI.ColorHelper.FromArgb((byte)(stroke.StrokeColor.A * 255.0), (byte)(stroke.StrokeColor.R * 255.0), (byte)(stroke.StrokeColor.G * 255.0), (byte)(stroke.StrokeColor.B * 255.0));
+				strokeDrawingAttributes.Color = new Windows.UI.Color()
+				{
+					R = (byte)(stroke.StrokeColor.R * 255.0),
+					G = (byte)(stroke.StrokeColor.G * 255.0),
+					B = (byte)(stroke.StrokeColor.B * 255.0),
+					A = (byte)(stroke.StrokeColor.A * 255.0),
+				};
+				strokeDrawingAttributes.Size = new Size(stroke.Thickness, stroke.Thickness);
 				curStroke.DrawingAttributes = strokeDrawingAttributes;
 
 				inkCanvas.InkPresenter.StrokeContainer.AddStroke(curStroke);
@@ -104,8 +153,8 @@ namespace Painter.UWP
 
 			currentStroke = new Stroke()
 			{
-				StrokeColor = new Color(0, 0, 1, 1),
-				Thickness = 1
+				StrokeColor = StrokeColor,
+				Thickness = StrokeThickness
 			};
 			currentStroke.Points.Add(new Abstractions.Point(pos.X, pos.Y));
 		}
