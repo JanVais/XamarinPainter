@@ -33,6 +33,7 @@ namespace PainterTestbed.iOS
 			base.ViewDidLoad();
 			// Perform any additional setup after loading the view, typically from a nib.
 
+			v1.LoadImage("background.jpg");
 		}
 
 		public override void DidReceiveMemoryWarning()

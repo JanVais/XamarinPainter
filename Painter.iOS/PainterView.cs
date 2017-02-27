@@ -38,7 +38,7 @@ namespace Painter.iOS
 		{
 			if (currentColor == null || CurrentPath == null)
 				return;
-			
+
 			UIColor c = new UIColor((nfloat)currentColor.R, (nfloat)currentColor.G, (nfloat)currentColor.B, (nfloat)currentColor.A);
 
 			shapeLayer.StrokeColor = c.CGColor;
@@ -86,6 +86,7 @@ namespace Painter.iOS
 		private List<Stroke> Strokes { get; set; }
 		private Stroke CurrentStroke { get; set; }
 		private UIImageView ImageView { get; set; }
+		private UIImageView BackgroundImage { get; set; }
 		private BezierView CurrentPathView { get; set; }
 
 		//Constructors
@@ -94,12 +95,12 @@ namespace Painter.iOS
 			Initialize();
 		}
 
-		public PainterView(NSCoder coder) : base (coder)
+		public PainterView(NSCoder coder) : base(coder)
 		{
 			Initialize();
 		}
 
-		public PainterView(IntPtr ptr) : base (ptr)
+		public PainterView(IntPtr ptr) : base(ptr)
 		{
 			Initialize();
 		}
@@ -108,6 +109,19 @@ namespace Painter.iOS
 		{
 			Frame = frame;
 			Initialize();
+		}
+
+		public PainterView(string imageUri, bool inResources = true)
+		{
+			Initialize();
+		}
+
+		public void LoadImage(string imageUri, bool inResources = true)
+		{
+			BackgroundImage = new UIImageView();
+			BackgroundImage.Image = UIImage.FromBundle("Background");
+			AddSubview(BackgroundImage);
+			BringSubviewToFront(BackgroundImage);
 		}
 
 

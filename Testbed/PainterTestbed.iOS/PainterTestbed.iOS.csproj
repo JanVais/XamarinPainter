@@ -101,6 +101,9 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <InProject>false</InProject>
     </ImageAsset>
+    <ImageAsset Include="Resources\Resources.xcassets\Contents.json" />
+    <ImageAsset Include="Resources\Resources.xcassets\Image.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Resources.xcassets\Image.imageset\background.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -131,6 +134,11 @@
       <Project>{4ED89649-B990-43DC-A789-0B1E5380FCF9}</Project>
       <Name>Painter.iOS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\background.jpg">
+      <Link>Resources\background.jpg</Link>
+    </BundleResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
