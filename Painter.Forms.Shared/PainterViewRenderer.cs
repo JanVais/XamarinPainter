@@ -72,6 +72,7 @@ namespace Painter.Forms.Droid
 				e.NewElement.GetStrokeColorEvent -= GetStrokeColorEvent;
 				e.NewElement.SetStrokeThicknessEvent -= SetStrokeThicknessEvent;
 				e.NewElement.GetStrokeThicknessEvent -= GetStrokeThicknessEvent;
+				e.NewElement.SetImagePathEvent -= SetImagePathEvent;
 			}
 			if (e.NewElement != null)
 			{
@@ -82,7 +83,10 @@ namespace Painter.Forms.Droid
 				e.NewElement.GetStrokeColorEvent += GetStrokeColorEvent;
 				e.NewElement.SetStrokeThicknessEvent += SetStrokeThicknessEvent;
 				e.NewElement.GetStrokeThicknessEvent += GetStrokeThicknessEvent;
+				e.NewElement.SetImagePathEvent += SetImagePathEvent;
 			}
+
+			e.NewElement.RendererInitialized();
 		}
 
 		private void HandleGetJson(object sender, PainterView.SaveJsonImageHandler e)
@@ -118,6 +122,11 @@ namespace Painter.Forms.Droid
 		private void GetStrokeThicknessEvent(object sender, PainterView.ThicknessHandler e)
 		{
 			e.getThickness = Task.Run(() => Control.StrokeThickness);
+		}
+
+		private void SetImagePathEvent(object sender, PainterView.SetImageHandler e)
+		{
+			Control.LoadImage(e.Path, e.InResources);
 		}
 	}
 }

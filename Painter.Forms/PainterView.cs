@@ -16,6 +16,12 @@ namespace Painter.Forms
 {
 	public class PainterView : View
 	{
+		public event EventHandler Initialized;
+		internal void RendererInitialized()
+		{
+			Initialized?.Invoke(this, null);
+		}
+
 		internal event EventHandler<SaveJsonImageHandler> GetJsonEvent;
 		internal event EventHandler ClearEvent;
 		internal event EventHandler<LoadJsonEventHandler> LoadJsonEvent;
@@ -23,6 +29,7 @@ namespace Painter.Forms
 		internal event EventHandler<ColorHandler> GetStrokeColorEvent;
 		internal event EventHandler<ThicknessHandler> SetStrokeThicknessEvent;
 		internal event EventHandler<ThicknessHandler> GetStrokeThicknessEvent;
+		internal event EventHandler<SetImageHandler> SetImagePathEvent;
 
 		public Abstractions.Color StrokeColor
 		{
@@ -61,6 +68,12 @@ namespace Painter.Forms
 			return args.Json;
 		}
 
+		public void LoadImage(string imageUri, bool InResources = true)
+		{
+			var args = new SetImageHandler() { Path = imageUri, InResources = InResources };
+			SetImagePathEvent?.Invoke(this, args);
+		}
+
 		public void Clear()
 		{
 			ClearEvent?.Invoke(this, null);
@@ -91,6 +104,12 @@ namespace Painter.Forms
 		{
 			public double setThickness { get; set; }
 			public Task<double> getThickness { get; set; } = Task.FromResult<double>(1.0);
+		}
+
+		internal class SetImageHandler : EventArgs
+		{
+			public string Path { get; set; }
+			public bool InResources { get; set; }
 		}
 	}
 }

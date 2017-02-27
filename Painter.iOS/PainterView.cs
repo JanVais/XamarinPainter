@@ -119,11 +119,10 @@ namespace Painter.iOS
 		public void LoadImage(string imageUri, bool inResources = true)
 		{
 			BackgroundImage = new UIImageView();
-			BackgroundImage.Image = UIImage.FromBundle("Background");
+			BackgroundImage.Image = UIImage.FromFile(imageUri);
 			AddSubview(BackgroundImage);
-			BringSubviewToFront(BackgroundImage);
+			SendSubviewToBack(BackgroundImage);
 		}
-
 
 		//Initialize
 		private void Initialize()
@@ -285,6 +284,8 @@ namespace Painter.iOS
 			base.LayoutSubviews();
 
 			ImageView.Frame = new CGRect(0, 0, Frame.Width, Frame.Height);
+			if (BackgroundImage != null)
+				BackgroundImage.Frame = new CGRect(0, 0, BackgroundImage.Image.Size.Width, BackgroundImage.Image.Size.Height);
 			CurrentPathView.Frame = ImageView.Frame;
 		}
 	}

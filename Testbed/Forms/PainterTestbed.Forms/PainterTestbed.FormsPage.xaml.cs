@@ -21,6 +21,8 @@ namespace PainterTestbed.Forms
 		public PainterTestbed_FormsPage()
 		{
 			InitializeComponent();
+
+			painterView.Initialized += (sender, e) => painterView.LoadImage("background.jpg");
 		}
 
 		private async void SaveJson(object sender, System.EventArgs e)
