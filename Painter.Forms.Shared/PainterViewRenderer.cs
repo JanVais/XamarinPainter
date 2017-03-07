@@ -1,10 +1,10 @@
-﻿//
+//
 // PainterViewRenderer.cs
 //
 // Author:
 //     Miley Hollenberg
 //
-// Copyright (c) 2017 Nitrocrime 2017
+// Copyright (c) 2017 Nitrocrime
 //
 //
 using System;
@@ -126,7 +126,8 @@ namespace Painter.Forms.Droid
 
 		private void SetImagePathEvent(object sender, PainterView.SetImageHandler e)
 		{
-			Control.LoadImage(e.Path, e.InResources);
+			//TODO implement on Android and UWP
+			//Control.LoadImage(e.Path, e.InResources);
 		}
 	}
 }

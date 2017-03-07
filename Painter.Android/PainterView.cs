@@ -106,6 +106,7 @@ namespace Painter.Android
 			{
 				image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
 				canvas = new Canvas(image);
+
 				imageView.SetImageBitmap(image);
 			}
 
@@ -162,7 +163,8 @@ namespace Painter.Android
 				{
 					Color = new Color((byte)(stroke.StrokeColor.R * 255.0), (byte)(stroke.StrokeColor.G * 255.0), (byte)(stroke.StrokeColor.B * 255.0), (byte)(stroke.StrokeColor.A * 255.0)),
 					StrokeWidth = (float)stroke.Thickness * metrics.Density,
-					AntiAlias = true
+					AntiAlias = true,
+					StrokeCap = Paint.Cap.Round
 				};
 
 				foreach (var p in stroke.Points)
@@ -185,7 +187,8 @@ namespace Painter.Android
 				{
 					Color = new Color((byte)(currentStroke.StrokeColor.R * 255.0), (byte)(currentStroke.StrokeColor.G * 255.0), (byte)(currentStroke.StrokeColor.B * 255.0), (byte)(currentStroke.StrokeColor.A * 255.0)),
 					StrokeWidth = (float)currentStroke.Thickness * metrics.Density,
-					AntiAlias = true
+					AntiAlias = true,
+					StrokeCap = Paint.Cap.Round
 				};
 
 				foreach (var p in currentStroke.Points)
