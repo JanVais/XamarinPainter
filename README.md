@@ -27,6 +27,3 @@ This project is nowhere near a finished product at the moment, do not use it as 
 * Load a JSON string
 * Load a file from the device
 * Load a background image
-
-## WindowsPhone 8
-There will be no support for WindowsPhone 8 due to it's near deprecation
