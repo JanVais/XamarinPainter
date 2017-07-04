@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>com.nitrocrime.XamarinPainter.Forms</id>
+		<version>0.1.4</version>
+		<title>Xamarin Forms Painter</title>
+		<authors>Miley Hollenberg</authors>
+		<owners>Miley Hollenberg</owners>
+		<licenseUrl>https://github.com/zezioen/XamarinPainter/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/zezioen/XamarinPainter/</projectUrl>
+		<iconUrl>https://github.com/zezioen/XamarinPainter/blob/master/icon.png?raw=true</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>A simple painter widget for Xamarin</description>
+		<releaseNotes>Initial test release</releaseNotes>
+		<copyright>Copyright 2017</copyright>
+		<tags>painter xamarin forms ios android uwp</tags>
+		<dependencies>
+			<group targetFramework="MonoAndroid">
+				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Newtonsoft.Json" version="9.0" />
+			</group>
+			<group targetFramework="UAP10.0">
+				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Newtonsoft.Json" version="9.0" />
+			</group>
+			<group targetFramework="Xamarin.iOS10">
+				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Newtonsoft.Json" version="9.0" />
+			</group>
+			<group targetFramework="portable-net45+win8+wp8+UAP10">
+				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Newtonsoft.Json" version="9.0" />
+			</group>
+			<group targetFramework="portable-net45+win+wp8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10">
+				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Newtonsoft.Json" version="9.0" />
+			</group>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="Painter/bin/Release/Painter.dll" target="lib\portable-net45+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Painter.dll" />
+		<file src="Painter/bin/Release/Painter.dll" target="lib\portable-net45+win+wp8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Painter.dll" />
+		
+		<file src="Painter.Forms/bin/Release/Painter.Forms.dll" target="lib\portable-net45+win8+wp8\Painter.Forms.dll" />
+		<file src="Painter.Forms/bin/Release/Painter.Forms.dll" target="lib\portable-net45+win+wp8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Painter.Forms.dll" />
+		
+		<file src="Painter.Forms.Droid/bin/Release/Painter.dll" target="lib\MonoAndroid\Painter.dll" />
+		<file src="Painter.Forms.Droid/bin/Release/Painter.Forms.dll" target="lib\MonoAndroid\Painter.Forms.dll" />
+		<file src="Painter.Forms.Droid/bin/Release/Painter.Android.dll" target="lib\MonoAndroid\Painter.Android.dll" />
+		<file src="Painter.Forms.Droid/bin/Release/Painter.Forms.Droid.dll" target="lib\MonoAndroid\Painter.Forms.Droid.dll" />
+		
+		<file src="Painter.Forms.UWP/bin/Release/Painter.dll" target="lib\UAP10\Painter.dll" />
+		<file src="Painter.Forms.UWP/bin/Release/Painter.Forms.dll" target="lib\UAP10\Painter.Forms.dll" />
+		<file src="Painter.Forms.UWP/bin/Release/Painter.UWP.dll" target="lib\UAP10\Painter.UWP.dll" />
+		<file src="Painter.Forms.UWP/bin/Release/Painter.Forms.UWP.dll" target="lib\UAP10\Painter.Forms.UWP.dll" />
+		
+		<file src="Painter.Forms.iOS/bin/Release/Painter.dll" target="lib\Xamarin.iOS10\Painter.dll" />
+		<file src="Painter.Forms.iOS/bin/Release/Painter.Forms.dll" target="lib\Xamarin.iOS10\Painter.Forms.dll" />
+		<file src="Painter.Forms.iOS/bin/Release/Painter.iOS.dll" target="lib\Xamarin.iOS10\Painter.iOS.dll" />
+		<file src="Painter.Forms.iOS/bin/Release/Painter.Forms.iOS.dll" target="lib\Xamarin.iOS10\Painter.Forms.iOS.dll" />
+	</files>
+</package>
