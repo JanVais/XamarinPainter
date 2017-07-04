@@ -101,9 +101,15 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <InProject>false</InProject>
     </ImageAsset>
-    <ImageAsset Include="Resources\Resources.xcassets\Contents.json" />
-    <ImageAsset Include="Resources\Resources.xcassets\Image.imageset\Contents.json" />
-    <ImageAsset Include="Resources\Resources.xcassets\Image.imageset\background.jpg" />
+    <ImageAsset Include="Resources\Resources.xcassets\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Resources.xcassets\Image.imageset\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Resources.xcassets\Image.imageset\background.jpg">
+      <InProject>false</InProject>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

@@ -101,8 +101,8 @@ namespace Painter.Android
 			IWindowManager windowManager = Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
 			metrics = new DisplayMetrics();
 			windowManager.DefaultDisplay.GetMetrics(metrics);
-
-			if (image == null)
+            
+            if (image == null)
 			{
 				image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
 				canvas = new Canvas(image);

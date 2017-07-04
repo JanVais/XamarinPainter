@@ -1,5 +1,4 @@
 {
-  "locked": false,
   "version": 1,
   "targets": {
     "UAP,Version=v10.0": {
@@ -14851,5 +14850,8 @@
       "Newtonsoft.Json >= 9.0.1"
     ],
     "UAP,Version=v10.0": []
+  },
+  "packageFolders": {
+    "C:\\Users\\zezioen\\.nuget\\packages\\": {}
   }
 }

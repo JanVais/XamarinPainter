@@ -40,3 +40,6 @@ Thumbs.db
 *.dotCover
 
 *Resource.designer.cs
+*.exe
+*.bak
+*.nupkg
