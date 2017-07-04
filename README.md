@@ -24,7 +24,7 @@ You Must define a Width and Height on Android or the plugin will crash since it 
 
 
 # Currently in development
-This project is nowhere near a finished product at the moment, do not use it as everything can be changed and re-factored.
+This project is nowhere near a finished product at the moment, keep in mind that the code may be refactored in the future which can break your current implementation (though I'll try not to break it)
 
 # Expected features:
 ## Platforms
