@@ -235,6 +235,8 @@ namespace Painter.iOS
 		{
 			base.TouchesBegan(touches, evt);
 
+            //System.Diagnostics.Debug.WriteLine("Start touch");
+
 			CurrentStroke = new Stroke()
 			{
 				StrokeColor = StrokeColor,
