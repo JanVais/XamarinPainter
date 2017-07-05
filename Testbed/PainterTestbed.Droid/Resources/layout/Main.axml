@@ -80,10 +80,17 @@
                 android:onClick="saveJson"
                 android:id="@+id/save_btn" />
             <Button
+                android:text="Save image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/save_btn"
+                android:onClick="saveImage"
+                android:id="@+id/saveImg_btn" />
+            <Button
                 android:text="Clear"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
+                android:layout_toLeftOf="@+id/load_btn"
                 android:onClick="clearImage"
                 android:id="@+id/clear_btn" />
             <Button

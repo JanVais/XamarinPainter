@@ -12,6 +12,10 @@ using Android.Widget;
 using Android.Util;
 using Android.Graphics;
 using Newtonsoft.Json;
+using Java.Nio;
+using static Android.Graphics.Bitmap;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace Painter.Android
 {
@@ -19,6 +23,7 @@ namespace Painter.Android
 	{
 		//Public UI
 		public Abstractions.Color StrokeColor { get; set; }
+        public Abstractions.Color BackgroundColor { get; set; } = new Abstractions.Color(0, 0, 0, 0); //TODO expose to Forms
 		public double StrokeThickness { get; set; }
 
 		//Private
@@ -29,6 +34,7 @@ namespace Painter.Android
 		private DisplayMetrics metrics;
 		private Abstractions.Stroke currentStroke;
 		private List<Abstractions.Stroke> strokes = new List<Abstractions.Stroke>();
+        private PainterExport export = new PainterExport();
 
 		public PainterView(Context context) : base(context)
 		{
@@ -42,8 +48,7 @@ namespace Painter.Android
 			Initialize();
 		}
 
-		public PainterView(Context context, IAttributeSet attrs, int defStyle) :
-			base(context, attrs, defStyle)
+		public PainterView(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
 		{
 			this.context = context;
 			Initialize();
@@ -67,8 +72,19 @@ namespace Painter.Android
 			return JsonConvert.SerializeObject(strokes);
 		}
 
-		//Imports
-		public void LoadJson(string json)
+        public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
+        {
+            return await export.GetCurrentImageAsPNG(width, height, strokes, scaling, quality, BackgroundColor);
+        }
+
+        public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
+        {
+            return await export.GetCurrentImageAsJPG(width, height, strokes, scaling, quality, BackgroundColor);
+        }
+
+
+        //Imports
+        public void LoadJson(string json)
 		{
 			try
 			{
@@ -102,7 +118,7 @@ namespace Painter.Android
 			metrics = new DisplayMetrics();
 			windowManager.DefaultDisplay.GetMetrics(metrics);
             
-            if (image == null)
+            if (image == null && Width != 0 && Height != 0)
 			{
 				image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
 				canvas = new Canvas(image);
@@ -152,8 +168,8 @@ namespace Painter.Android
 
 		private void DrawStrokes()
 		{
-			canvas.DrawColor(Color.Transparent, PorterDuff.Mode.Clear);
-
+            canvas.DrawColor(new Color((byte)(BackgroundColor.R * 255), (byte)(BackgroundColor.G * 255), (byte)(BackgroundColor.B * 255), (byte)(BackgroundColor.A * 255)), PorterDuff.Mode.Src);
+            
 			foreach (var stroke in strokes)
 			{
 				double lastX = stroke.Points[0].X;
@@ -169,14 +185,14 @@ namespace Painter.Android
 
 				foreach (var p in stroke.Points)
 				{
-					canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
+                    canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
 					lastX = p.X;
 					lastY = p.Y;
 				}
 			}
 		}
 
-		private void DrawCurrentStroke()
+		private void DrawCurrentStroke(Canvas _canvas)
 		{
 			if (currentStroke != null && currentStroke.Points.Count > 0)
 			{
@@ -193,7 +209,7 @@ namespace Painter.Android
 
 				foreach (var p in currentStroke.Points)
 				{
-					canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
+                    _canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
 					lastX = p.X;
 					lastY = p.Y;
 				}
@@ -216,7 +232,7 @@ namespace Painter.Android
 				case MotionEventActions.Move:
 					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
 
-					DrawCurrentStroke();
+					DrawCurrentStroke(canvas);
 					Invalidate();
 					break;
 				case MotionEventActions.Up:

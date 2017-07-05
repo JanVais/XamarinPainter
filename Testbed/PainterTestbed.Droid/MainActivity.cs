@@ -5,6 +5,8 @@ using Painter.Android;
 using Java.Interop;
 using Android.Views;
 using System.IO;
+using System;
+using Java.IO;
 
 namespace PainterTestbed.Droid
 {
@@ -22,6 +24,7 @@ namespace PainterTestbed.Droid
 			SetContentView(Resource.Layout.Main);
 
 			painter = (PainterView)FindViewById(Resource.Id.painterView1);
+            painter.BackgroundColor = new Android.Graphics.Color(100, 100, 100);
 			stepper_lbl = (TextView)FindViewById(Resource.Id.stepper_lbl);
 		}
 
@@ -50,7 +53,39 @@ namespace PainterTestbed.Droid
 			painter.Clear();
 		}
 
-		[Export("loadJson")]
+        [Export("saveImage")]
+        public async void saveImage(View v)
+        {
+            try
+            {
+                var data_fit = await painter.GetCurrentImageAsJPG(painter.Width * 2, painter.Height * 3, scaling: Painter.Abstractions.Scaling.Absolute_Fit);
+                var data_fill = await painter.GetCurrentImageAsJPG(painter.Width * 2, painter.Height * 3, scaling: Painter.Abstractions.Scaling.Absolute_Fill);
+                var data_none = await painter.GetCurrentImageAsJPG(painter.Width * 2, painter.Height * 3, scaling: Painter.Abstractions.Scaling.Absolute_None);
+
+                var storageDir = Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryDocuments);
+                Java.IO.File file_fit = new Java.IO.File(storageDir, "image_" + DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds + "_fit.jpg");
+                Java.IO.File file_fill = new Java.IO.File(storageDir, "image_" + DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds + "_fill.jpg");
+                Java.IO.File file_none = new Java.IO.File(storageDir, "image_" + DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds + "_none.jpg");
+
+                FileOutputStream stream_fit = new FileOutputStream(file_fit);
+                stream_fit.Write(data_fit);
+                stream_fit.Close();
+
+                FileOutputStream stream_fill = new FileOutputStream(file_fill);
+                stream_fill.Write(data_fill);
+                stream_fill.Close();
+
+                FileOutputStream stream_none = new FileOutputStream(file_none);
+                stream_none.Write(data_none);
+                stream_none.Close();
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+        }
+
+        [Export("loadJson")]
 		public void loadJson(View v)
 		{
 			string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
