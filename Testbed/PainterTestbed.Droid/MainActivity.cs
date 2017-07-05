@@ -24,7 +24,6 @@ namespace PainterTestbed.Droid
 			SetContentView(Resource.Layout.Main);
 
 			painter = (PainterView)FindViewById(Resource.Id.painterView1);
-            painter.BackgroundColor = new Android.Graphics.Color(100, 100, 100);
 			stepper_lbl = (TextView)FindViewById(Resource.Id.stepper_lbl);
 		}
 

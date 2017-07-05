@@ -16,6 +16,7 @@ using Java.Nio;
 using static Android.Graphics.Bitmap;
 using System.Threading.Tasks;
 using System.IO;
+using Painter.Interfaces;
 
 namespace Painter.Android
 {
@@ -34,7 +35,7 @@ namespace Painter.Android
 		private DisplayMetrics metrics;
 		private Abstractions.Stroke currentStroke;
 		private List<Abstractions.Stroke> strokes = new List<Abstractions.Stroke>();
-        private PainterExport export = new PainterExport();
+        private IPainterExport export = new PainterExport();
 
 		public PainterView(Context context) : base(context)
 		{

@@ -14,12 +14,14 @@ using static Android.Graphics.Bitmap;
 using System.IO;
 using Android.Graphics;
 using Android.Util;
+using Painter.Interfaces;
+using Painter.Android;
 
 namespace Painter.Android
 {
-    public class PainterExport
+    public class PainterExport : IPainterExport
     {
-        DisplayMetrics metrics;
+        private DisplayMetrics metrics;
 
         public PainterExport()
         {
@@ -30,15 +32,15 @@ namespace Painter.Android
 
         public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
         {
-            return await ExportCurrentImage(width, height, strokes, scaling, CompressFormat.Png, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1));
+            return await ExportCurrentImage(width, height, strokes, scaling, Abstractions.ExportFormat.Png, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1));
         }
 
         public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
         {
-            return await ExportCurrentImage(width, height, strokes, scaling, CompressFormat.Jpeg, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1));
+            return await ExportCurrentImage(width, height, strokes, scaling, Abstractions.ExportFormat.Jpeg, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1));
         }
 
-        public async Task<byte[]> ExportCurrentImage(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling, CompressFormat format, int quality, Painter.Abstractions.Color BackgroundColor)
+        public async Task<byte[]> ExportCurrentImage(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling, Abstractions.ExportFormat format, int quality, Painter.Abstractions.Color BackgroundColor)
         {
             //Initialize data holders
             byte[] data;
@@ -125,10 +127,18 @@ namespace Painter.Android
             var tempImage = Bitmap.CreateBitmap(metrics, width, height, Bitmap.Config.Argb8888);
             var tempCanvas = new Canvas(tempImage);
             DrawStrokes(tempCanvas, new Color((byte)(BackgroundColor.R * 255.0), (byte)(BackgroundColor.G * 255.0), (byte)(BackgroundColor.B * 255.0), (byte)(BackgroundColor.A * 255.0)), strokes, scaleX, scaleY, offsetX, offsetY);
-            
-            //Compress the image and save it to the stream
-            await tempImage.CompressAsync(format, quality, str);
 
+            //Compress the image and save it to the stream
+            switch(format)
+            {
+                case Abstractions.ExportFormat.Png:
+                    await tempImage.CompressAsync(CompressFormat.Png, quality, str);
+                    break;
+                case Abstractions.ExportFormat.Jpeg:
+                    await tempImage.CompressAsync(CompressFormat.Jpeg, quality, str);
+                    break;
+            }
+            
             //Memory management
             tempImage.Dispose();
             tempCanvas.Dispose();
