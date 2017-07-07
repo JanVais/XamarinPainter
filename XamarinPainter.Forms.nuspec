@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>com.nitrocrime.XamarinPainter.Forms</id>
-		<version>0.1.4</version>
+		<version>0.1.5.2-beta</version>
 		<title>Xamarin Forms Painter</title>
 		<authors>Miley Hollenberg</authors>
 		<owners>Miley Hollenberg</owners>
@@ -10,10 +10,10 @@
 		<projectUrl>https://github.com/zezioen/XamarinPainter/</projectUrl>
 		<iconUrl>https://github.com/zezioen/XamarinPainter/blob/master/icon.png?raw=true</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>A simple painter widget for Xamarin</description>
+		<description>A simple painter widget for Xamarin Forms</description>
 		<releaseNotes>Initial test release</releaseNotes>
 		<copyright>Copyright 2017</copyright>
-		<tags>painter xamarin forms ios android uwp</tags>
+		<tags>painter xamarin forms ios android uwp paint draw drawing signature painting</tags>
 		<dependencies>
 			<group targetFramework="MonoAndroid">
 				<dependency id="Xamarin.Forms" version="2.3.3" />
@@ -36,6 +36,9 @@
 				<dependency id="Newtonsoft.Json" version="9.0" />
 			</group>
 		</dependencies>
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="Mono.Android.Export.dll" targetFramework="monoandroid" />
+		</frameworkAssemblies>
 	</metadata>
 	<files>
 		<file src="Painter/bin/Release/Painter.dll" target="lib\portable-net45+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Painter.dll" />

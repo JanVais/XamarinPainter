@@ -59,7 +59,21 @@ namespace Painter.UWP
 			}
 		}
 
-		private void updateStroke()
+        private List<Stroke> _strokes;
+        public List<Stroke> Strokes
+        {
+            get
+            {
+                return _strokes;
+            }
+            set
+            {
+                //TODO update view
+                _strokes = value;
+            }
+        }
+
+        private void updateStroke()
 		{
 			InkDrawingAttributes inkDrawingAttributes = new InkDrawingAttributes();
 			inkDrawingAttributes.Color = new Windows.UI.Color()
@@ -73,13 +87,14 @@ namespace Painter.UWP
 			inkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(inkDrawingAttributes);
 		}
 
-		//Private
-		private List<Stroke> strokes;
-		private Stroke currentStroke;
+        //Private
+        private Stroke currentStroke;
 
 		public PainterView()
 		{
 			this.InitializeComponent();
+
+            Strokes = new List<Stroke>();
 
 			StrokeColor = new Color(0, 0, 1, 1);
 			StrokeThickness = 1;
@@ -91,14 +106,14 @@ namespace Painter.UWP
 			core.PointerMoving += Core_PointerMoving;
 			core.PointerReleasing += Core_PointerReleasing;
 
-			strokes = new List<Stroke>();
+			Strokes = new List<Stroke>();
 			
 			DrawLines();
 		}
 
 		public string GetJson()
 		{
-			return JsonConvert.SerializeObject(strokes);
+			return JsonConvert.SerializeObject(Strokes);
 		}
 
 		public async Task Clear()
@@ -113,7 +128,7 @@ namespace Painter.UWP
 		{
 			try
 			{
-				strokes = JsonConvert.DeserializeObject<List<Stroke>>(json);
+                Strokes = JsonConvert.DeserializeObject<List<Stroke>>(json);
 				DrawLines();
 			}
 			catch(Exception e)
@@ -125,7 +140,7 @@ namespace Painter.UWP
 		private async void DrawLines()
 		{
 			await Clear();
-			foreach(var stroke in strokes)
+			foreach(var stroke in Strokes)
 			{
 				InkStrokeBuilder builder = new InkStrokeBuilder();
 				List<Windows.Foundation.Point> points = new List<Windows.Foundation.Point>();
@@ -172,7 +187,7 @@ namespace Painter.UWP
 
 			currentStroke.Points.Add(new Abstractions.Point(pos.X, pos.Y));
 
-			strokes.Add(currentStroke);
+            Strokes.Add(currentStroke);
 		}
 	}
 }

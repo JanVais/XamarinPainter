@@ -123,6 +123,14 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Painter.Forms\Painter.Forms.csproj">
+      <Project>{4D495BF7-F5B1-4957-B514-BD2C9E37C195}</Project>
+      <Name>Painter.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Painter\Painter.csproj">
+      <Project>{F1878F71-C855-4683-91F8-CD9EF98E67FE}</Project>
+      <Name>Painter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PainterTestbed.Forms\PainterTestbed.Forms.csproj">
       <Project>{BBAC0C3F-512B-45C8-9DA6-FBAE2D5BB19B}</Project>
       <Name>PainterTestbed.Forms</Name>

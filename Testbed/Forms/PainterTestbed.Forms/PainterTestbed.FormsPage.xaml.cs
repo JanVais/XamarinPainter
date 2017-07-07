@@ -13,6 +13,7 @@ using System.IO;
 using Painter.Forms;
 using PainterTestbed;
 using Xamarin.Forms;
+using Painter.Interfaces;
 
 namespace PainterTestbed.Forms
 {
@@ -30,6 +31,14 @@ namespace PainterTestbed.Forms
 			var data = await painterView.GetJson();
 			await DependencyService.Get<ISaveAndLoad>().SaveTextAsync("image.json", data);
 		}
+
+        private async void SaveImage()
+        {
+            IPainterExport export = DependencyService.Get<IPainterExport>();
+            var strokes = painterView.GetStrokes();
+            var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Absolute_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1));
+            Debug.WriteLine(data.Length);
+        }
 
 		private void Clear(object sender, System.EventArgs e)
 		{

@@ -11,6 +11,8 @@ using System;
 using System.Threading.Tasks;
 using Painter;
 using Xamarin.Forms;
+using System.Collections.Generic;
+using Painter.Abstractions;
 
 namespace Painter.Forms
 {
@@ -30,6 +32,7 @@ namespace Painter.Forms
 		internal event EventHandler<ThicknessHandler> SetStrokeThicknessEvent;
 		internal event EventHandler<ThicknessHandler> GetStrokeThicknessEvent;
 		internal event EventHandler<SetImageHandler> SetImagePathEvent;
+        internal event EventHandler<StrokesHandler> GetStrokesEvent;
 
 		public Abstractions.Color StrokeColor
 		{
@@ -60,6 +63,13 @@ namespace Painter.Forms
 				SetStrokeThicknessEvent?.Invoke(this, args);
 			}
 		}
+
+        public List<Stroke> GetStrokes()
+        {
+            var args = new StrokesHandler();
+            GetStrokesEvent?.Invoke(this, args);
+            return args.GetStrokes.Result;
+        }
 
 		public Task<string> GetJson()
 		{
@@ -111,5 +121,11 @@ namespace Painter.Forms
 			public string Path { get; set; }
 			public bool InResources { get; set; }
 		}
-	}
+
+        internal class StrokesHandler : EventArgs
+        {
+            public Task<List<Stroke>> GetStrokes { get; set; } = Task.FromResult<List<Stroke>>(null);
+            //TODO Set
+        }
+    }
 }

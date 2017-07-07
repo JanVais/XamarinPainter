@@ -43,7 +43,7 @@
 		</ScrollView>
 		<painter:PainterView x:Name="painterView" Grid.Row="1" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
 		<Button Grid.Row="2" Grid.Column="0" BackgroundColor="White" Text="Save JSON" Clicked="SaveJson" />
-		<Button Grid.Row="2" Grid.Column="1" BackgroundColor="White" Text="Clear" Clicked="Clear" />
+		<Button Grid.Row="2" Grid.Column="1" BackgroundColor="White" Text="Save image" Clicked="SaveImage" />
 		<Button Grid.Row="2" Grid.Column="2" BackgroundColor="White" Text="Load JSON" Clicked="LoadJson" />
 	</Grid>
 </ContentPage>

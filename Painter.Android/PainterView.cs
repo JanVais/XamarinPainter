@@ -26,19 +26,32 @@ namespace Painter.Android
 		public Abstractions.Color StrokeColor { get; set; }
         public Abstractions.Color BackgroundColor { get; set; } = new Abstractions.Color(0, 0, 0, 0); //TODO expose to Forms
 		public double StrokeThickness { get; set; }
+        private List<Abstractions.Stroke> _strokes;
+        public List<Abstractions.Stroke> Strokes
+        {
+            get
+            {
+                return _strokes;
+            }
+            set
+            {
+                //TODO update view
+                _strokes = value;
+            }
+        }
 
-		//Private
-		private Context context;
+        //Private
+        private Context context;
 		private Canvas canvas;
 		private ImageView imageView;
 		private Bitmap image;
 		private DisplayMetrics metrics;
 		private Abstractions.Stroke currentStroke;
-		private List<Abstractions.Stroke> strokes = new List<Abstractions.Stroke>();
         private IPainterExport export = new PainterExport();
 
 		public PainterView(Context context) : base(context)
 		{
+            Strokes = new List<Abstractions.Stroke>();
 			this.context = context;
 			Initialize();
 		}
@@ -70,17 +83,17 @@ namespace Painter.Android
 		//Exports
 		public string GetJson()
 		{
-			return JsonConvert.SerializeObject(strokes);
+			return JsonConvert.SerializeObject(Strokes);
 		}
 
         public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
         {
-            return await export.GetCurrentImageAsPNG(width, height, strokes, scaling, quality, BackgroundColor);
+            return await export.GetCurrentImageAsPNG(width, height, Strokes, scaling, quality, BackgroundColor);
         }
 
         public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
         {
-            return await export.GetCurrentImageAsJPG(width, height, strokes, scaling, quality, BackgroundColor);
+            return await export.GetCurrentImageAsJPG(width, height, Strokes, scaling, quality, BackgroundColor);
         }
 
 
@@ -89,7 +102,7 @@ namespace Painter.Android
 		{
 			try
 			{
-				strokes = JsonConvert.DeserializeObject<List<Abstractions.Stroke>>(json);
+                Strokes = JsonConvert.DeserializeObject<List<Abstractions.Stroke>>(json);
 				DrawStrokes();
 				Invalidate();
 			}
@@ -102,7 +115,7 @@ namespace Painter.Android
 
 		public void Clear()
 		{
-			strokes.Clear();
+            Strokes.Clear();
 			canvas.DrawColor(Color.Transparent, PorterDuff.Mode.Clear);
 			Invalidate();
 		}
@@ -136,7 +149,7 @@ namespace Painter.Android
 
 			var savedState = new SavedImageState(state)
 			{
-				Json = JsonConvert.SerializeObject(strokes)
+				Json = JsonConvert.SerializeObject(Strokes)
 			};
 
 			imageView.SetImageBitmap(null);
@@ -160,7 +173,7 @@ namespace Painter.Android
 			if (savedState != null)
 			{
 				base.OnRestoreInstanceState(savedState.SuperState);
-				strokes = JsonConvert.DeserializeObject<List<Abstractions.Stroke>>(savedState.Json);
+                Strokes = JsonConvert.DeserializeObject<List<Abstractions.Stroke>>(savedState.Json);
 			}
 			else
 				base.OnRestoreInstanceState(state);
@@ -171,7 +184,7 @@ namespace Painter.Android
 		{
             canvas.DrawColor(new Color((byte)(BackgroundColor.R * 255), (byte)(BackgroundColor.G * 255), (byte)(BackgroundColor.B * 255), (byte)(BackgroundColor.A * 255)), PorterDuff.Mode.Src);
             
-			foreach (var stroke in strokes)
+			foreach (var stroke in Strokes)
 			{
 				double lastX = stroke.Points[0].X;
 				double lastY = stroke.Points[0].Y;
@@ -238,7 +251,7 @@ namespace Painter.Android
 					break;
 				case MotionEventActions.Up:
 					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
-					strokes.Add(currentStroke);
+                    Strokes.Add(currentStroke);
 					break;
 				default:
 					return false;

@@ -81,10 +81,22 @@ namespace Painter.iOS
 		//Public UI
 		public Color StrokeColor { get; set; }
 		public double StrokeThickness { get; set; } = 1.0;
+        private List<Stroke> _strokes;
+        public List<Stroke> Strokes
+        {
+            get
+            {
+                return _strokes;
+            }
+            set
+            {
+                //TODO update view
+                _strokes = value;
+            }
+        }
 
-		//Private UI
-		private List<Stroke> Strokes { get; set; }
-		private Stroke CurrentStroke { get; set; }
+        //Private UI
+        private Stroke CurrentStroke { get; set; }
 		private UIImageView ImageView { get; set; }
 		private UIImageView BackgroundImage { get; set; }
 		private BezierView CurrentPathView { get; set; }

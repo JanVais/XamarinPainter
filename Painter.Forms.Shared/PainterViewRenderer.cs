@@ -73,6 +73,7 @@ namespace Painter.Forms.Droid
 				e.NewElement.SetStrokeThicknessEvent -= SetStrokeThicknessEvent;
 				e.NewElement.GetStrokeThicknessEvent -= GetStrokeThicknessEvent;
 				e.NewElement.SetImagePathEvent -= SetImagePathEvent;
+                e.NewElement.GetStrokesEvent -= GetStrokesEvent;
 			}
 			if (e.NewElement != null)
 			{
@@ -84,7 +85,8 @@ namespace Painter.Forms.Droid
 				e.NewElement.SetStrokeThicknessEvent += SetStrokeThicknessEvent;
 				e.NewElement.GetStrokeThicknessEvent += GetStrokeThicknessEvent;
 				e.NewElement.SetImagePathEvent += SetImagePathEvent;
-			}
+                e.NewElement.GetStrokesEvent += GetStrokesEvent;
+            }
 
 			e.NewElement.RendererInitialized();
 		}
@@ -129,5 +131,11 @@ namespace Painter.Forms.Droid
 			//TODO implement on Android and UWP
 			//Control.LoadImage(e.Path, e.InResources);
 		}
-	}
+
+        private void GetStrokesEvent(object sender, PainterView.StrokesHandler e)
+        {
+            e.GetStrokes = Task.Run(() => Control.Strokes);
+        }
+
+    }
 }
