@@ -13,56 +13,72 @@ using Painter;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using Painter.Abstractions;
+using System.ComponentModel;
 
 namespace Painter.Forms
 {
-	public class PainterView : View
-	{
-		public event EventHandler Initialized;
-		internal void RendererInitialized()
-		{
-			Initialized?.Invoke(this, null);
-		}
+    public class PainterView : View, INotifyPropertyChanged
+    {
+        public new event PropertyChangedEventHandler PropertyChanged;
+        override protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null) // if there is any subscribers 
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
-		internal event EventHandler<SaveJsonImageHandler> GetJsonEvent;
+        public event EventHandler Initialized;
+        internal void RendererInitialized()
+        {
+            Initialized?.Invoke(this, null);
+        }
+
+
+        public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(
+            nameof(StrokeColor),
+            typeof(Abstractions.Color),
+            typeof(PainterView),
+            new Abstractions.Color(0, 0, 0, 1));
+
+        public static readonly BindableProperty StrokeThicknessProperty = BindableProperty.Create(
+            nameof(StrokeThickness),
+            typeof(int),
+            typeof(PainterView),
+            1);
+        
+
+        public Abstractions.Color StrokeColor
+        {
+            get
+            {
+                return (Abstractions.Color)GetValue(StrokeColorProperty);
+            }
+            set
+            {
+                SetValue(StrokeColorProperty, value);
+                OnPropertyChanged(nameof(StrokeColor));
+            }
+        }
+
+        public int StrokeThickness
+        {
+            get
+            {
+                return (int)GetValue(StrokeThicknessProperty);
+            }
+            set
+            {
+                SetValue(StrokeThicknessProperty, value);
+                OnPropertyChanged(nameof(StrokeThickness));
+            }
+        }
+
+
+        internal event EventHandler<SaveJsonImageHandler> GetJsonEvent;
 		internal event EventHandler ClearEvent;
 		internal event EventHandler<LoadJsonEventHandler> LoadJsonEvent;
-		internal event EventHandler<ColorHandler> SetStrokeColorEvent;
-		internal event EventHandler<ColorHandler> GetStrokeColorEvent;
-		internal event EventHandler<ThicknessHandler> SetStrokeThicknessEvent;
-		internal event EventHandler<ThicknessHandler> GetStrokeThicknessEvent;
 		internal event EventHandler<SetImageHandler> SetImagePathEvent;
         internal event EventHandler<StrokesHandler> GetStrokesEvent;
-
-		public Abstractions.Color StrokeColor
-		{
-			get
-			{
-				var args = new ColorHandler();
-				GetStrokeColorEvent?.Invoke(this, args);
-				return args.getColor.Result;
-			}
-			set
-			{
-				var args = new ColorHandler() { setColor = value };
-				SetStrokeColorEvent?.Invoke(this, args);
-			}
-		}
-
-		public double StrokeThickness
-		{
-			get
-			{
-				var args = new ThicknessHandler();
-				GetStrokeThicknessEvent?.Invoke(this, args);
-				return args.getThickness.Result;
-			}
-			set
-			{
-				var args = new ThicknessHandler() { setThickness = value };
-				SetStrokeThicknessEvent?.Invoke(this, args);
-			}
-		}
+        
 
         public List<Stroke> GetStrokes()
         {
@@ -103,19 +119,7 @@ namespace Painter.Forms
 		{
 			public string Json { get; set; }
 		}
-
-		internal class ColorHandler : EventArgs
-		{
-			public Abstractions.Color setColor { get; set; }
-			public Task<Abstractions.Color> getColor { get; set; } = Task.FromResult<Abstractions.Color>(new Abstractions.Color());
-		}
-
-		internal class ThicknessHandler : EventArgs
-		{
-			public double setThickness { get; set; }
-			public Task<double> getThickness { get; set; } = Task.FromResult<double>(1.0);
-		}
-
+        
 		internal class SetImageHandler : EventArgs
 		{
 			public string Path { get; set; }

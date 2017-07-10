@@ -77,9 +77,9 @@ namespace Painter.iOS
 	[Register("PainterView")]
 	[DesignTimeVisible(true)]
 	public class PainterView : UIView
-	{
-		//Public UI
-		public Color StrokeColor { get; set; }
+    {
+        //Public UI
+        public Color StrokeColor { get; set; }
 		public double StrokeThickness { get; set; } = 1.0;
         private List<Stroke> _strokes;
         public List<Stroke> Strokes

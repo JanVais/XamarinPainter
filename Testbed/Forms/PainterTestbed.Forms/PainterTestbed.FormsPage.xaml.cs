@@ -23,7 +23,8 @@ namespace PainterTestbed.Forms
 		{
 			InitializeComponent();
 
-			painterView.Initialized += (sender, e) => painterView.LoadImage("background.jpg");
+            painterView.StrokeColor = new Painter.Abstractions.Color(0, 1, 0, 1);
+            painterView.Initialized += (sender, e) => painterView.LoadImage("background.jpg");
 		}
 
 		private async void SaveJson(object sender, System.EventArgs e)
@@ -68,7 +69,7 @@ namespace PainterTestbed.Forms
 
 		private void StepperChanged(object sender, EventArgs e)
 		{
-			painterView.StrokeThickness = stepper.Value;
+			painterView.StrokeThickness = (int)stepper.Value;
 		}
 	}
 }

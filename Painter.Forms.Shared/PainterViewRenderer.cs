@@ -45,7 +45,36 @@ namespace Painter.Forms.Droid
 
 	public class PainterViewRenderer : ViewRenderer<PainterView, NativePainterView>
 	{
-		protected override void OnElementChanged(ElementChangedEventArgs<PainterView> e)
+        private Abstractions.Color _strokeColor;
+        public Abstractions.Color StrokeColor
+        {
+            get
+            {
+                return _strokeColor;
+            }
+            set
+            {
+                _strokeColor = value;
+                (Control as NativePainterView).StrokeColor = _strokeColor;
+            }
+        }
+
+
+        private int _strokeThickness;
+        public int StrokeThickness
+        {
+            get
+            {
+                return _strokeThickness;
+            }
+            set
+            {
+                _strokeThickness = value;
+                (Control as NativePainterView).StrokeThickness = _strokeThickness;
+            }
+        }
+        
+        protected override void OnElementChanged(ElementChangedEventArgs<PainterView> e)
 		{
 			base.OnElementChanged(e);
 
@@ -60,6 +89,11 @@ namespace Painter.Forms.Droid
 #elif WINDOWS_UWP
 				var native = new NativePainterView();
 #endif
+                
+                //Set the default values that are known
+                native.StrokeColor = e.NewElement.StrokeColor;
+                native.StrokeThickness = e.NewElement.StrokeThickness;
+                
 				SetNativeControl(native);
 			}
 
@@ -68,30 +102,31 @@ namespace Painter.Forms.Droid
 				e.OldElement.GetJsonEvent -= HandleGetJson;
 				e.OldElement.ClearEvent -= ClearImage;
 				e.OldElement.LoadJsonEvent -= LoadJson;
-				e.NewElement.SetStrokeColorEvent -= SetStrokeColorEvent;
-				e.NewElement.GetStrokeColorEvent -= GetStrokeColorEvent;
-				e.NewElement.SetStrokeThicknessEvent -= SetStrokeThicknessEvent;
-				e.NewElement.GetStrokeThicknessEvent -= GetStrokeThicknessEvent;
-				e.NewElement.SetImagePathEvent -= SetImagePathEvent;
-                e.NewElement.GetStrokesEvent -= GetStrokesEvent;
+				e.OldElement.SetImagePathEvent -= SetImagePathEvent;
+                e.OldElement.GetStrokesEvent -= GetStrokesEvent;
 			}
 			if (e.NewElement != null)
 			{
 				e.NewElement.GetJsonEvent += HandleGetJson;
 				e.NewElement.ClearEvent += ClearImage;
 				e.NewElement.LoadJsonEvent += LoadJson;
-				e.NewElement.SetStrokeColorEvent += SetStrokeColorEvent;
-				e.NewElement.GetStrokeColorEvent += GetStrokeColorEvent;
-				e.NewElement.SetStrokeThicknessEvent += SetStrokeThicknessEvent;
-				e.NewElement.GetStrokeThicknessEvent += GetStrokeThicknessEvent;
 				e.NewElement.SetImagePathEvent += SetImagePathEvent;
                 e.NewElement.GetStrokesEvent += GetStrokesEvent;
-            }
 
+                e.NewElement.PropertyChanged += Native_PropertyChanged;
+            }
+            
 			e.NewElement.RendererInitialized();
 		}
+        
+        private void Native_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            //TODO find a way to have the bindings do this
+            StrokeColor = Element.StrokeColor;
+            StrokeThickness = Element.StrokeThickness;
+        }
 
-		private void HandleGetJson(object sender, PainterView.SaveJsonImageHandler e)
+        private void HandleGetJson(object sender, PainterView.SaveJsonImageHandler e)
 		{
 			e.Json = Task.Run(() => Control.GetJson());
 		}
@@ -106,26 +141,6 @@ namespace Painter.Forms.Droid
 			Control.LoadJson(e.Json);
 		}
 
-		private void SetStrokeColorEvent(object sender, PainterView.ColorHandler e)
-		{
-			Control.StrokeColor = e.setColor;
-		}
-
-		private void GetStrokeColorEvent(object sender, PainterView.ColorHandler e)
-		{
-			e.getColor = Task.Run(() => Control.StrokeColor);
-		}
-
-		private void SetStrokeThicknessEvent(object sender, PainterView.ThicknessHandler e)
-		{
-			Control.StrokeThickness = e.setThickness;
-		}
-
-		private void GetStrokeThicknessEvent(object sender, PainterView.ThicknessHandler e)
-		{
-			e.getThickness = Task.Run(() => Control.StrokeThickness);
-		}
-
 		private void SetImagePathEvent(object sender, PainterView.SetImageHandler e)
 		{
 			//TODO implement on Android and UWP
@@ -136,6 +151,5 @@ namespace Painter.Forms.Droid
         {
             e.GetStrokes = Task.Run(() => Control.Strokes);
         }
-
     }
 }

@@ -17,11 +17,12 @@ using static Android.Graphics.Bitmap;
 using System.Threading.Tasks;
 using System.IO;
 using Painter.Interfaces;
+using System.ComponentModel;
 
 namespace Painter.Android
 {
 	public class PainterView : RelativeLayout
-	{
+    {
 		//Public UI
 		public Abstractions.Color StrokeColor { get; set; }
         public Abstractions.Color BackgroundColor { get; set; } = new Abstractions.Color(0, 0, 0, 0); //TODO expose to Forms
@@ -73,7 +74,7 @@ namespace Painter.Android
 			imageView = new ImageView(context);
 			imageView.SetBackgroundColor(Color.Transparent);
 
-			StrokeColor = new Abstractions.Color(0, 0, 1);
+			StrokeColor = new Abstractions.Color(0, 0, 0, 1);
 			StrokeThickness = 1.0;
 
 			AddView(imageView);
