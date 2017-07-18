@@ -33,7 +33,11 @@ namespace Painter.UWP
 	{
 		//Public UI
 		private Color _strokeColor;
-		public Color StrokeColor
+
+        public EventHandler FinishedStrokeEvent;
+
+
+        public Color StrokeColor
 		{
 			get
 			{
