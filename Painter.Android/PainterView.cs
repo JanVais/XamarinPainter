@@ -41,6 +41,8 @@ namespace Painter.Android
             }
         }
 
+        public EventHandler FinishedStrokeEvent { get; set; }
+
         //Private
         private Context context;
 		private Canvas canvas;
@@ -185,6 +187,11 @@ namespace Painter.Android
 		{
             canvas.DrawColor(new Color((byte)(BackgroundColor.R * 255), (byte)(BackgroundColor.G * 255), (byte)(BackgroundColor.B * 255), (byte)(BackgroundColor.A * 255)), PorterDuff.Mode.Src);
             
+            if(Strokes == null)
+            {
+                Strokes = new List<Abstractions.Stroke>();
+            }
+
 			foreach (var stroke in Strokes)
 			{
 				double lastX = stroke.Points[0].X;
@@ -253,12 +260,16 @@ namespace Painter.Android
 				case MotionEventActions.Up:
 					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
                     Strokes.Add(currentStroke);
-					break;
+
+                    FinishedStrokeEvent?.Invoke(this, null);
+                    break;
 				default:
 					return false;
 			}
 
 			return true;
 		}
+
+
 	}
 }

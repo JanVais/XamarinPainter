@@ -59,6 +59,20 @@ namespace Painter.Forms.Droid
             }
         }
 
+        private EventHandler _finishedStrokeEvent;
+        public EventHandler FinishedStrokeEvent
+        {
+            get
+            {
+                return _finishedStrokeEvent;
+            }
+            set
+            {
+                _finishedStrokeEvent = value;
+                (Control as NativePainterView).FinishedStrokeEvent = _finishedStrokeEvent;
+            }
+        }
+
 
         private int _strokeThickness;
         public int StrokeThickness
@@ -93,7 +107,8 @@ namespace Painter.Forms.Droid
                 //Set the default values that are known
                 native.StrokeColor = e.NewElement.StrokeColor;
                 native.StrokeThickness = e.NewElement.StrokeThickness;
-                
+                native.FinishedStrokeEvent = e.NewElement.FinishedStrokeEvent;
+
 				SetNativeControl(native);
 			}
 
