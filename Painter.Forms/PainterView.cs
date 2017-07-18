@@ -32,12 +32,19 @@ namespace Painter.Forms
             Initialized?.Invoke(this, null);
         }
 
+        public event EventHandler GetFinishedData;
 
         public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(
-            nameof(StrokeColor),
-            typeof(Abstractions.Color),
+           nameof(StrokeColor),
+           typeof(Abstractions.Color),
+           typeof(PainterView),
+           new Abstractions.Color(0, 0, 0, 1));
+
+        public static readonly BindableProperty FinishedStrokeEventProperty = BindableProperty.Create(
+            nameof(FinishedStrokeEvent),
+            typeof(EventHandler),
             typeof(PainterView),
-            new Abstractions.Color(0, 0, 0, 1));
+            null);
 
         public static readonly BindableProperty StrokeThicknessProperty = BindableProperty.Create(
             nameof(StrokeThickness),
@@ -45,6 +52,15 @@ namespace Painter.Forms
             typeof(PainterView),
             1);
         
+        public EventHandler FinishedStrokeEvent
+        {
+            get { return (EventHandler)GetValue(FinishedStrokeEventProperty); }
+            set
+            {
+                SetValue(FinishedStrokeEventProperty, value);
+                OnPropertyChanged(nameof(FinishedStrokeEvent));
+            }
+        }
 
         public Abstractions.Color StrokeColor
         {
@@ -72,13 +88,20 @@ namespace Painter.Forms
             }
         }
 
+        public void SetEventHandler(EventHandler eventHandler)
+        {
+            this.customEventHandler = eventHandler;
+        }
 
+        public EventHandler customEventHandler;
+        
         internal event EventHandler<SaveJsonImageHandler> GetJsonEvent;
 		internal event EventHandler ClearEvent;
 		internal event EventHandler<LoadJsonEventHandler> LoadJsonEvent;
 		internal event EventHandler<SetImageHandler> SetImagePathEvent;
         internal event EventHandler<StrokesHandler> GetStrokesEvent;
-        
+        public EventHandler<SaveJsonImageHandler> FinishEventHandler;
+
 
         public List<Stroke> GetStrokes()
         {
@@ -110,12 +133,12 @@ namespace Painter.Forms
 			LoadJsonEvent?.Invoke(this, new LoadJsonEventHandler() { Json = json });
 		}
 
-		internal class SaveJsonImageHandler : EventArgs
+		public class SaveJsonImageHandler : EventArgs
 		{
 			public Task<string> Json { get; set; } = Task.FromResult<string>("");
 		}
 
-		internal class LoadJsonEventHandler : EventArgs
+        internal class LoadJsonEventHandler : EventArgs
 		{
 			public string Json { get; set; }
 		}

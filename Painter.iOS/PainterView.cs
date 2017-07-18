@@ -80,7 +80,8 @@ namespace Painter.iOS
     {
         //Public UI
         public Color StrokeColor { get; set; }
-		public double StrokeThickness { get; set; } = 1.0;
+        public EventHandler FinishedStrokeEvent { get; set; }
+        public double StrokeThickness { get; set; } = 1.0;
         private List<Stroke> _strokes;
         public List<Stroke> Strokes
         {
