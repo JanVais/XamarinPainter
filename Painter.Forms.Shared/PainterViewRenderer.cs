@@ -55,7 +55,8 @@ namespace Painter.Forms.Droid
 			set
 			{
 				_strokeColor = value;
-				(Control as NativePainterView).StrokeColor = _strokeColor;
+				if (Control != null)
+					(Control as NativePainterView).StrokeColor = _strokeColor;
 			}
 		}
 
@@ -69,7 +70,8 @@ namespace Painter.Forms.Droid
 			set
 			{
 				_finishedStrokeEvent = value;
-				(Control as NativePainterView).FinishedStrokeEvent = _finishedStrokeEvent;
+				if (Control != null)
+					(Control as NativePainterView).FinishedStrokeEvent = _finishedStrokeEvent;
 			}
 		}
 
@@ -84,7 +86,8 @@ namespace Painter.Forms.Droid
 			set
 			{
 				_strokeThickness = value;
-				(Control as NativePainterView).StrokeThickness = _strokeThickness;
+				if (Control != null)
+					(Control as NativePainterView).StrokeThickness = _strokeThickness;
 			}
 		}
 
