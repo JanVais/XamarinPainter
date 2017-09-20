@@ -19,16 +19,16 @@ namespace PainterTestbed.Forms
 {
 	public partial class PainterTestbed_FormsPage : ContentPage
 	{
-        EventHandler myEvent;
-
         public PainterTestbed_FormsPage()
 		{
 			InitializeComponent();
 
             painterView.StrokeColor = new Painter.Abstractions.Color(0, 1, 0, 1);
-            painterView.Initialized += (sender, e) => painterView.LoadImage("background.jpg");
+			painterView.Initialized += (sender, e) =>
+			{
+				painterView.LoadImage("background.jpg", true, Painter.Abstractions.Scaling.Absolute_Fit);
+			};
             painterView.FinishedStrokeEvent = PainterView_GetFinishedData;
-
         }
 
         private void PainterView_GetFinishedData(object sender, EventArgs e)
@@ -46,7 +46,7 @@ namespace PainterTestbed.Forms
         private async void SaveImage()
         {
             IPainterExport export = DependencyService.Get<IPainterExport>();
-            var strokes = painterView.GetStrokes();
+            //var strokes = painterView.GetStrokes();
             var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Absolute_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1));
             Debug.WriteLine(data.Length);
         }
