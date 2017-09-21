@@ -1,4 +1,5 @@
 ﻿using Painter.Abstractions;
+using Painter.UWP;
 using System;
 using System.Collections.Generic;
 using System.IO;

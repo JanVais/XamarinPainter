@@ -128,6 +128,11 @@ namespace Painter.UWP
 			});
 		}
 
+        public void LoadImage(string path, bool inResources, Scaling scaling)
+        {
+
+        }
+
 		public void LoadJson(string json)
 		{
 			try

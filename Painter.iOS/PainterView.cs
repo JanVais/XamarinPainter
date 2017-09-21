@@ -195,8 +195,13 @@ namespace Painter.iOS
 			drawPath();
 		}
 
-		//Draw the paths to the UIImage view
-		private void drawPath()
+        public void LoadImage(string path, bool inResources, Scaling scaling)
+        {
+
+        }
+
+        //Draw the paths to the UIImage view
+        private void drawPath()
 		{
 			UIGraphics.BeginImageContextWithOptions(Frame.Size, false, UIScreen.MainScreen.Scale);//Support Retina when drawing
 			CGContext context = UIGraphics.GetCurrentContext();
