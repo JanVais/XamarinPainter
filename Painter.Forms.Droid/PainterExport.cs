@@ -26,6 +26,11 @@ namespace Painter.Forms.Droid
             nativePainter = new Painter.Android.PainterExport();
         }
 
+        public void SetBackgroundImage(byte[] BackgroundImage)
+        {
+            nativePainter.SetBackgroundImage(BackgroundImage);
+        }
+
         public Task<byte[]> ExportCurrentImage(int width, int height, List<Stroke> strokes, Scaling scaling, ExportFormat format, int quality, Abstractions.Color BackgroundColor)
         {
             return nativePainter.ExportCurrentImage(width, height, strokes, scaling, format, quality, BackgroundColor);

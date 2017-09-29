@@ -26,7 +26,9 @@ namespace Painter.Android
 		//Public UI
 		public Abstractions.Color StrokeColor { get; set; }
 		public Abstractions.Color BackgroundColor { get; set; } = new Abstractions.Color(0, 0, 0, 0); //TODO expose to Forms
-		public double StrokeThickness { get; set; }
+        
+
+        public double StrokeThickness { get; set; }
 		private List<Abstractions.Stroke> _strokes;
 		public List<Abstractions.Stroke> Strokes
 		{
@@ -152,7 +154,20 @@ namespace Painter.Android
 			{
 				backgroundBitmap = BitmapFactory.DecodeFile(path);
 			}
+
+            export.SetBackgroundImage(BackgroundImageToByte());
 		}
+
+        public byte[] BackgroundImageToByte()
+        {
+            byte[] bitmapData;
+            using (var stream = new MemoryStream())
+            {
+                backgroundBitmap.Compress(Bitmap.CompressFormat.Png, 0, stream);
+                bitmapData = stream.ToArray();
+            }
+            return bitmapData;
+        }
 
 		protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
 		{
