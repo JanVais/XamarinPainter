@@ -25,6 +25,9 @@ namespace PainterTestbed.Droid
 
 			painter = (PainterView)FindViewById(Resource.Id.painterView1);
 			stepper_lbl = (TextView)FindViewById(Resource.Id.stepper_lbl);
+
+			painter.LoadImage("testImage.png", true);
+			painter.BackgroundScaling = Painter.Abstractions.Scaling.Absolute_Fit;
 		}
 
 		[Export("saveJson")]

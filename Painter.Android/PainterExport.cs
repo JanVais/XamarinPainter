@@ -22,12 +22,17 @@ namespace Painter.Android
     public class PainterExport : IPainterExport
     {
         private DisplayMetrics metrics;
-
+        private byte[] BackgroundImage { get; set; }
         public PainterExport()
         {
             IWindowManager windowManager = Application.Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
             metrics = new DisplayMetrics();
             windowManager.DefaultDisplay.GetMetrics(metrics);
+        }
+
+        public void SetBackgroundImage(byte[] backgroundImage)
+        {
+            this.BackgroundImage = backgroundImage;
         }
 
         public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
@@ -124,12 +129,22 @@ namespace Painter.Android
             }
 
             //Compress the image
-            var tempImage = Bitmap.CreateBitmap(metrics, width, height, Bitmap.Config.Argb8888);
-            var tempCanvas = new Canvas(tempImage);
-            DrawStrokes(tempCanvas, new Color((byte)(BackgroundColor.R * 255.0), (byte)(BackgroundColor.G * 255.0), (byte)(BackgroundColor.B * 255.0), (byte)(BackgroundColor.A * 255.0)), strokes, scaleX, scaleY, offsetX, offsetY);
+            Bitmap tempImage = null;
+            Canvas tempCanvas = null;
+            if (BackgroundImage == null)
+            {
+                tempImage = Bitmap.CreateBitmap(metrics, width, height, Bitmap.Config.Argb8888);
+                tempCanvas = new Canvas(tempImage);
+                DrawStrokes(tempCanvas, new Color((byte)(BackgroundColor.R * 255.0), (byte)(BackgroundColor.G * 255.0), (byte)(BackgroundColor.B * 255.0), (byte)(BackgroundColor.A * 255.0)), strokes, scaleX, scaleY, offsetX, offsetY);
+            }
+            else
+            {
+                tempCanvas = new Canvas(BitmapFactory.DecodeByteArray(BackgroundImage, 0, BackgroundImage.Length));
+                DrawStrokes(tempCanvas, strokes, scaleX, scaleY, offsetX, offsetY);
+            }
 
             //Compress the image and save it to the stream
-            switch(format)
+            switch (format)
             {
                 case Abstractions.ExportFormat.Png:
                     await tempImage.CompressAsync(CompressFormat.Png, quality, str);
@@ -157,19 +172,12 @@ namespace Painter.Android
         private void DrawStrokes(Canvas _canvas, Color backgroundColor, List<Abstractions.Stroke> strokes, float scaleX, float scaleY, float offsetX, float offsetY)
         {
             _canvas.DrawColor(backgroundColor, PorterDuff.Mode.Src);
-            
             foreach (var stroke in strokes)
             {
                 double lastX = (stroke.Points[0].X + offsetX) * scaleX;
                 double lastY = (stroke.Points[0].Y + offsetY) * scaleY;
 
-                var paint = new Paint()
-                {
-                    Color = new Color((byte)(stroke.StrokeColor.R * 255.0), (byte)(stroke.StrokeColor.G * 255.0), (byte)(stroke.StrokeColor.B * 255.0), (byte)(stroke.StrokeColor.A * 255.0)),
-                    StrokeWidth = (float)stroke.Thickness * metrics.Density,
-                    AntiAlias = true,
-                    StrokeCap = Paint.Cap.Round
-                };
+                var paint = CreatePaint(stroke.StrokeColor.R, stroke.StrokeColor.G, stroke.StrokeColor.B, stroke.StrokeColor.A, stroke.Thickness, metrics.Density);
 
                 foreach (var p in stroke.Points)
                 {
@@ -178,6 +186,37 @@ namespace Painter.Android
                     lastY = (p.Y + offsetY) * scaleY;
                 }
             }
+        }
+
+        private void DrawStrokes(Canvas _canvas, List<Abstractions.Stroke> strokes, float scaleX, float scaleY, float offsetX, float offsetY)
+        {
+            foreach (var stroke in strokes)
+            {
+                double lastX = (stroke.Points[0].X + offsetX) * scaleX;
+                double lastY = (stroke.Points[0].Y + offsetY) * scaleY;
+
+                var paint = CreatePaint(stroke.StrokeColor.R, stroke.StrokeColor.G, stroke.StrokeColor.B, stroke.StrokeColor.A, stroke.Thickness, metrics.Density);
+
+                foreach (var p in stroke.Points)
+                {
+                    _canvas.DrawLine((float)lastX, (float)lastY, (float)(p.X + offsetX) * scaleX, (float)(p.Y + offsetY) * scaleY, paint);
+                    lastX = (p.X + offsetX) * scaleX;
+                    lastY = (p.Y + offsetY) * scaleY;
+                }
+            }
+        }
+
+        private Paint CreatePaint(double R, double G, double B, double A, double Thickness, float Density)
+        {
+            var paint = new Paint()
+            {
+                Color = new Color((byte)(R * 255.0), (byte)(G * 255.0), (byte)(B * 255.0), (byte)(A * 255.0)),
+                StrokeWidth = (float)Thickness * Density,
+                AntiAlias = true,
+                StrokeCap = Paint.Cap.Round
+            };
+
+            return paint;
         }
     }
 }

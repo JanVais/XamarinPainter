@@ -80,7 +80,8 @@ namespace Painter.iOS
     {
         //Public UI
         public Color StrokeColor { get; set; }
-		public double StrokeThickness { get; set; } = 1.0;
+        public EventHandler FinishedStrokeEvent { get; set; }
+        public double StrokeThickness { get; set; } = 1.0;
         private List<Stroke> _strokes;
         public List<Stroke> Strokes
         {
@@ -194,8 +195,13 @@ namespace Painter.iOS
 			drawPath();
 		}
 
-		//Draw the paths to the UIImage view
-		private void drawPath()
+        public void LoadImage(string path, bool inResources, Scaling scaling)
+        {
+
+        }
+
+        //Draw the paths to the UIImage view
+        private void drawPath()
 		{
 			UIGraphics.BeginImageContextWithOptions(Frame.Size, false, UIScreen.MainScreen.Scale);//Support Retina when drawing
 			CGContext context = UIGraphics.GetCurrentContext();

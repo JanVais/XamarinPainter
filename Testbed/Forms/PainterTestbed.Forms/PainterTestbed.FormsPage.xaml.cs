@@ -19,15 +19,25 @@ namespace PainterTestbed.Forms
 {
 	public partial class PainterTestbed_FormsPage : ContentPage
 	{
-		public PainterTestbed_FormsPage()
+        public PainterTestbed_FormsPage()
 		{
 			InitializeComponent();
 
             painterView.StrokeColor = new Painter.Abstractions.Color(0, 1, 0, 1);
-            painterView.Initialized += (sender, e) => painterView.LoadImage("background.jpg");
-		}
+			painterView.Initialized += (sender, e) =>
+			{
+				painterView.LoadImage("background.jpg", true, Painter.Abstractions.Scaling.Absolute_Fit);
+			};
+            painterView.FinishedStrokeEvent = PainterView_GetFinishedData;
+        }
 
-		private async void SaveJson(object sender, System.EventArgs e)
+        private void PainterView_GetFinishedData(object sender, EventArgs e)
+        {
+            // Done with saving etc
+            // do what you want..
+        }
+
+        private async void SaveJson(object sender, System.EventArgs e)
 		{
 			var data = await painterView.GetJson();
 			await DependencyService.Get<ISaveAndLoad>().SaveTextAsync("image.json", data);
@@ -36,7 +46,8 @@ namespace PainterTestbed.Forms
         private async void SaveImage()
         {
             IPainterExport export = DependencyService.Get<IPainterExport>();
-            var strokes = painterView.GetStrokes();
+
+            //var strokes = painterView.GetStrokes();
             var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Absolute_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1));
             Debug.WriteLine(data.Length);
         }

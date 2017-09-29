@@ -33,7 +33,11 @@ namespace Painter.UWP
 	{
 		//Public UI
 		private Color _strokeColor;
-		public Color StrokeColor
+
+        public EventHandler FinishedStrokeEvent;
+
+
+        public Color StrokeColor
 		{
 			get
 			{
@@ -123,6 +127,11 @@ namespace Painter.UWP
 				inkCanvas.InkPresenter.StrokeContainer.Clear();
 			});
 		}
+
+        public void LoadImage(string path, bool inResources, Scaling scaling)
+        {
+
+        }
 
 		public void LoadJson(string json)
 		{

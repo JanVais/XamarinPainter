@@ -103,9 +103,11 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\testImage.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
+    <Folder Include="Resources\drawable-hdpi\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Painter.Android\Painter.Android.csproj">

@@ -36,7 +36,7 @@
 			<Button Grid.Column="5" Tapped="stepperSub" >-</Button>
 			<Button Grid.Column="6" Tapped="stepperAdd" >+</Button>
 		</Grid>
-		<painter:PainterView Name="painterView" Grid.Row="1" Grid.ColumnSpan="3"/>
+		<painter:PainterView x:Name="painterView" Grid.Row="1" Grid.ColumnSpan="3"/>
 		<Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Tapped="SaveJson">Save Json</Button>
 		<Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Tapped="Clear">Clear</Button>
 		<Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" Tapped="LoadJson">Load Json</Button>
