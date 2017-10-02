@@ -16,24 +16,19 @@ using Android.Graphics;
 using Android.Util;
 using Painter.Interfaces;
 using Painter.Android;
+using Android.Provider;
 
 namespace Painter.Android
 {
     public class PainterExport : IPainterExport
     {
         private DisplayMetrics metrics;
-        //private byte[] BackgroundImage { get; set; }
         public PainterExport()
         {
             IWindowManager windowManager = Application.Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
             metrics = new DisplayMetrics();
             windowManager.DefaultDisplay.GetMetrics(metrics);
         }
-
-        //public void SetBackgroundImage(byte[] backgroundImage)
-        //{
-        //    this.BackgroundImage = backgroundImage;
-        //}
 
         public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, byte[] BackgroundImage = null)
         {
@@ -139,7 +134,11 @@ namespace Painter.Android
             }
             else
             {
-                tempCanvas = new Canvas(BitmapFactory.DecodeByteArray(BackgroundImage, 0, BackgroundImage.Length));
+                var immutableBitmap = await BitmapFactory.DecodeByteArrayAsync(BackgroundImage, 0, BackgroundImage.Length);
+                tempImage = immutableBitmap.Copy(Bitmap.Config.Argb8888, true);
+               // Canvas canvas = new Canvas(mutableBitmap);
+
+                tempCanvas = new Canvas(tempImage);
                 DrawStrokes(tempCanvas, strokes, scaleX, scaleY, offsetX, offsetY);
             }
 

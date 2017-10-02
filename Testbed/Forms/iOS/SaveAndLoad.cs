@@ -59,5 +59,20 @@ namespace PainterTestbed.iOS
 		{
 			return Path.Combine(DocumentsPath, fileName);
 		}
-	}
+
+        public byte[] GetFileBinary(string filePath)
+        {
+            try
+            {
+                filePath = filePath.Replace("file:", "");
+                var bytes = File.ReadAllBytes(filePath);
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+            return null;
+        }
+    }
 }

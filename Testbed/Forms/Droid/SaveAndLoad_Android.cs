@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using PainterTestbed;
 using System.Linq;
 using PainterTestbed.Droid;
+using System.Reflection;
 
 [assembly: Dependency(typeof(SaveAndLoad_Android))]
 
@@ -57,5 +58,38 @@ namespace PainterTestbed.Droid
 		{
 			return Path.Combine(DocumentsPath, fileName);
 		}
-	}
+
+        public byte[] GetFileBinary(string filePath, bool resourceFile)
+        {
+            if(resourceFile)
+            {
+                var assembly = this.GetType().GetTypeInfo().Assembly; // you can replace "this.GetType()" with "typeof(MyType)", where MyType is any type in your assembly.
+                byte[] buffer;
+                using (Stream s = assembly.GetManifestResourceStream(filePath))
+                {
+                    if(s == null)
+                    {
+                        return null;
+                    }
+
+                    long length = s.Length;
+                    buffer = new byte[length];
+                    s.Read(buffer, 0, (int)length);
+                }
+                return buffer;
+            }
+
+            try
+            {
+                filePath = filePath.Replace("file:", "");
+                var bytes = File.ReadAllBytes(filePath);
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+            return null;
+        }
+    }
 }

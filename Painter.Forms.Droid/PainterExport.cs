@@ -26,24 +26,19 @@ namespace Painter.Forms.Droid
             nativePainter = new Painter.Android.PainterExport();
         }
 
-        public void SetBackgroundImage(byte[] BackgroundImage)
-        {
-            nativePainter.SetBackgroundImage(BackgroundImage);
-        }
-
         public Task<byte[]> ExportCurrentImage(int width, int height, List<Stroke> strokes, Scaling scaling, ExportFormat format, int quality, Abstractions.Color BackgroundColor, byte[] BackgroundImage = null)
         {
-            return nativePainter.ExportCurrentImage(width, height, strokes, scaling, format, quality, BackgroundColor);
+            return nativePainter.ExportCurrentImage(width, height, strokes, scaling, format, quality, BackgroundColor, BackgroundImage);
         }
 
         public Task<byte[]> GetCurrentImageAsJPG(int width, int height, List<Stroke> strokes, Scaling scaling = Scaling.Relative_None, int quality = 80, Abstractions.Color BackgroundColor = null, byte[] BackgroundImage = null)
         {
-            return nativePainter.GetCurrentImageAsJPG(width, height, strokes, scaling, quality, BackgroundColor);
+            return nativePainter.GetCurrentImageAsJPG(width, height, strokes, scaling, quality, BackgroundColor, BackgroundImage);
         }
 
         public Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Stroke> strokes, Scaling scaling = Scaling.Relative_None, int quality = 80, Abstractions.Color BackgroundColor = null, byte[] BackgroundImage = null)
         {
-            return nativePainter.GetCurrentImageAsPNG(width, height, strokes, scaling, quality, BackgroundColor);
+            return nativePainter.GetCurrentImageAsPNG(width, height, strokes, scaling, quality, BackgroundColor, BackgroundImage);
         }
     }
 }

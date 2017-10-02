@@ -154,8 +154,6 @@ namespace Painter.Android
 			{
 				backgroundBitmap = BitmapFactory.DecodeFile(path);
 			}
-
-            export.SetBackgroundImage(BackgroundImageToByte());
 		}
 
         public byte[] BackgroundImageToByte()
