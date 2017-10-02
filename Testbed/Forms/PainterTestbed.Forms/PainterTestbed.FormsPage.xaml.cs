@@ -46,10 +46,10 @@ namespace PainterTestbed.Forms
         private async void SaveImage()
         {
             IPainterExport export = DependencyService.Get<IPainterExport>();
-            var test = DependencyService.Get<ISaveAndLoad>().GetFileBinary("/storage/emulated/0/Android/data/com.gappless.forms.droid.test/files/Pictures/Gappless/camera_69687f19-e233-4a4d-b0d8-8fee8f54917b", false);
+            var test = DependencyService.Get<ISaveAndLoad>().GetFileBinary("test", false);
 
             //var strokes = painterView.GetStrokes();
-            var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Absolute_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1), test);
+            var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Absolute_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, test);
             var base64 = Convert.ToBase64String(data);
 
             Debug.WriteLine(data.Length);

@@ -14,8 +14,11 @@ using Xamarin.Forms.Xaml;
 
 namespace PainterTestbed.Forms
 {
+    
 	public partial class App : Application
 	{
+        public static double DeviceDensity { get; set; } 
+
 		public App()
 		{
 			InitializeComponent();

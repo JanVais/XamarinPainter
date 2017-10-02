@@ -17,10 +17,11 @@ using Android.Util;
 using Painter.Interfaces;
 using Painter.Android;
 using Android.Provider;
+using Android.Content.Res;
 
 namespace Painter.Android
 {
-    public class PainterExport : IPainterExport
+    public class PainterExport : IPainterExport 
     {
         private DisplayMetrics metrics;
         public PainterExport()
@@ -30,21 +31,28 @@ namespace Painter.Android
             windowManager.DefaultDisplay.GetMetrics(metrics);
         }
 
-        public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, byte[] BackgroundImage = null)
+        public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
         {
-            return await ExportCurrentImage(width, height, strokes, scaling, Abstractions.ExportFormat.Png, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1), BackgroundImage);
+            return await ExportCurrentImage(width, height, strokes, scaling, Abstractions.ExportFormat.Png, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1), useDevicePixelDensity, BackgroundImage);
         }
 
-        public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, byte[] BackgroundImage = null)
+        public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
         {
-            return await ExportCurrentImage(width, height, strokes, scaling, Abstractions.ExportFormat.Jpeg, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1), BackgroundImage);
+            return await ExportCurrentImage(width, height, strokes, scaling, Abstractions.ExportFormat.Jpeg, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1), useDevicePixelDensity, BackgroundImage);
         }
 
-        public async Task<byte[]> ExportCurrentImage(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling, Abstractions.ExportFormat format, int quality, Painter.Abstractions.Color BackgroundColor, byte[] BackgroundImage = null)
+        public async Task<byte[]> ExportCurrentImage(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling, Abstractions.ExportFormat format, int quality, Painter.Abstractions.Color BackgroundColor, bool useDevicePixelDensity, byte[] BackgroundImage = null)
         {
             //Initialize data holders
             byte[] data;
             Stream str = new MemoryStream();
+
+            if(useDevicePixelDensity)
+            {
+                var density = Resources.System.DisplayMetrics.Density;
+                width = width * (int)density;
+                height = height * (int)density;
+            }
 
             //Calculate the actual area the image will take up
             float minWidth = 0.0f;

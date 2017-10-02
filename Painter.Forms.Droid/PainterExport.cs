@@ -26,19 +26,19 @@ namespace Painter.Forms.Droid
             nativePainter = new Painter.Android.PainterExport();
         }
 
-        public Task<byte[]> ExportCurrentImage(int width, int height, List<Stroke> strokes, Scaling scaling, ExportFormat format, int quality, Abstractions.Color BackgroundColor, byte[] BackgroundImage = null)
+        public Task<byte[]> ExportCurrentImage(int width, int height, List<Stroke> strokes, Scaling scaling, ExportFormat format, int quality, Abstractions.Color BackgroundColor, bool useDevicePixelDensity, byte[] BackgroundImage = null)
         {
-            return nativePainter.ExportCurrentImage(width, height, strokes, scaling, format, quality, BackgroundColor, BackgroundImage);
+            return nativePainter.ExportCurrentImage(width, height, strokes, scaling, format, quality, BackgroundColor, useDevicePixelDensity, BackgroundImage);
         }
 
-        public Task<byte[]> GetCurrentImageAsJPG(int width, int height, List<Stroke> strokes, Scaling scaling = Scaling.Relative_None, int quality = 80, Abstractions.Color BackgroundColor = null, byte[] BackgroundImage = null)
+        public Task<byte[]> GetCurrentImageAsJPG(int width, int height, List<Stroke> strokes, Scaling scaling = Scaling.Relative_None, int quality = 80, Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
         {
-            return nativePainter.GetCurrentImageAsJPG(width, height, strokes, scaling, quality, BackgroundColor, BackgroundImage);
+            return nativePainter.GetCurrentImageAsJPG(width, height, strokes, scaling, quality, BackgroundColor, useDevicePixelDensity, BackgroundImage);
         }
 
-        public Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Stroke> strokes, Scaling scaling = Scaling.Relative_None, int quality = 80, Abstractions.Color BackgroundColor = null, byte[] BackgroundImage = null)
+        public Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Stroke> strokes, Scaling scaling = Scaling.Relative_None, int quality = 80, Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
         {
-            return nativePainter.GetCurrentImageAsPNG(width, height, strokes, scaling, quality, BackgroundColor, BackgroundImage);
+            return nativePainter.GetCurrentImageAsPNG(width, height, strokes, scaling, quality, BackgroundColor, useDevicePixelDensity, BackgroundImage);
         }
     }
 }
