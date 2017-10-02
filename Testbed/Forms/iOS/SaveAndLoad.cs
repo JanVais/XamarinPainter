@@ -74,5 +74,10 @@ namespace PainterTestbed.iOS
             }
             return null;
         }
+
+        public byte[] GetFileBinary(string filePath, bool resourceFile)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
