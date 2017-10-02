@@ -22,7 +22,7 @@ namespace Painter.Android
     public class PainterExport : IPainterExport
     {
         private DisplayMetrics metrics;
-        //private byte[] BackgroundImage { get; set; }
+        private byte[] BackgroundImage { get; set; }
         public PainterExport()
         {
             IWindowManager windowManager = Application.Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
@@ -30,10 +30,10 @@ namespace Painter.Android
             windowManager.DefaultDisplay.GetMetrics(metrics);
         }
 
-        //public void SetBackgroundImage(byte[] backgroundImage)
-        //{
-        //    this.BackgroundImage = backgroundImage;
-        //}
+        public void SetBackgroundImage(byte[] backgroundImage)
+        {
+            this.BackgroundImage = backgroundImage;
+        }
 
         public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, byte[] BackgroundImage = null)
         {
