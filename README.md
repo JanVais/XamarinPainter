@@ -7,8 +7,8 @@ An easy to use view in which you can draw with multiple colors and thicknesses f
 Install the nuget package and add a reference to Mono.Android.Export to your Android project (will be done via the Nuget package in the future)
 ### iOS
 Install the nuget package and call "PainterRenderer.Init();" Inside the FinishedLaunching of your app delegate
-### UWP (untested atm)
-Install the nuget package
+### Windows Phone
+Since Windows Phone is nearing the end of it's life this plugin will no longer be supporting the UWP platform. From now on out only iOS and Android will be supported.
 ## Simple example
 Creating a PainterView in code is done like this
 
@@ -30,8 +30,7 @@ This project is nowhere near a finished product at the moment, keep in mind that
 ## Platforms
 * Xamarin.iOS
 * Xamarin.Droid
-* Xamarin.UWP
-* Xamarin.Forms (iOS, Android and UWP)
+* Xamarin.Forms (iOS, Android)
 
 ## Customization
 * Stroke color
