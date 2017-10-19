@@ -42,9 +42,6 @@
 		<file src="Painter.Forms.Droid/bin/Release/Painter.dll" target="lib\MonoAndroid\Painter.dll" />
 		<file src="Painter.Forms.Droid/bin/Release/Painter.Android.dll" target="lib\MonoAndroid\Painter.Android.dll" />
 		
-		<file src="Painter.Forms.UWP/bin/Release/Painter.dll" target="lib\UAP10\Painter.dll" />
-		<file src="Painter.Forms.UWP/bin/Release/Painter.UWP.dll" target="lib\UAP10\Painter.UWP.dll" />
-		
 		<file src="Painter.Forms.iOS/bin/Release/Painter.dll" target="lib\Xamarin.iOS10\Painter.dll" />
 		<file src="Painter.Forms.iOS/bin/Release/Painter.iOS.dll" target="lib\Xamarin.iOS10\Painter.iOS.dll" />
 	</files>
