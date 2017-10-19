@@ -79,5 +79,10 @@ namespace PainterTestbed.iOS
         {
             throw new NotImplementedException();
         }
+
+        public void SaveFile(byte[] data, string url)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

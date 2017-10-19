@@ -50,8 +50,8 @@ namespace Painter.Android
             if(useDevicePixelDensity)
             {
                 var density = Resources.System.DisplayMetrics.Density;
-                width = width * (int)density;
-                height = height * (int)density;
+                width *= (int)density;
+                height *= (int)density;
             }
 
             //Calculate the actual area the image will take up
@@ -170,7 +170,7 @@ namespace Painter.Android
             //Read the data
             data = new byte[str.Length];
             str.Seek(0, SeekOrigin.Begin);
-            await str.ReadAsync(data, 0, (int)str.Length);
+            var read = await str.ReadAsync(data, 0, (int)str.Length);
 
             //Return the data
             return data;

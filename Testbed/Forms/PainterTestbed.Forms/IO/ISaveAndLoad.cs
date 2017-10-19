@@ -18,5 +18,6 @@ namespace PainterTestbed
 		Task<string> LoadTextAsync(string filename);
 		bool FileExists(string filename);
         byte[] GetFileBinary(string filePath, bool resourceFile);
+        void SaveFile(byte[] data, string url);
     }
 }

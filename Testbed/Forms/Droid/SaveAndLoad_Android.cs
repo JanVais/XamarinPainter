@@ -91,5 +91,22 @@ namespace PainterTestbed.Droid
             }
             return null;
         }
+
+        public void SaveFile(byte[] data, string url)
+        {
+            try
+            {
+                Java.IO.File f = new Java.IO.File(Android.App.Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryPictures), url);
+                f.CreateNewFile();
+
+                Java.IO.FileOutputStream fs = new Java.IO.FileOutputStream(f);
+                fs.Write(data);
+                fs.Close();
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+        }
     }
 }

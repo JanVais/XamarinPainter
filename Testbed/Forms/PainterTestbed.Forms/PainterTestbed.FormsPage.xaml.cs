@@ -46,13 +46,11 @@ namespace PainterTestbed.Forms
         private async void SaveImage()
         {
             IPainterExport export = DependencyService.Get<IPainterExport>();
-            var test = DependencyService.Get<ISaveAndLoad>().GetFileBinary("test", false);
-
+            
             //var strokes = painterView.GetStrokes();
-            var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Absolute_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, test);
-            var base64 = Convert.ToBase64String(data);
-
-            Debug.WriteLine(data.Length);
+            var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Absolute_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, null);
+            
+            DependencyService.Get<ISaveAndLoad>().SaveFile(data, "image.png");
         }
 
 		private void Clear(object sender, System.EventArgs e)
