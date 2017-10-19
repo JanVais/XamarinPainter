@@ -21,18 +21,12 @@ using NativePainterView = Painter.iOS.PainterView;
 using Xamarin.Forms.Platform.Android;
 using Painter.Forms.Droid;
 using NativePainterView = Painter.Android.PainterView;
-#elif WINDOWS_UWP
-using Xamarin.Forms.Platform.UWP;
-using Painter.Forms.UWP;
-using NativePainterView = Painter.UWP.PainterView;
 #endif
 
 
 [assembly: ExportRenderer(typeof(PainterView), typeof(PainterViewRenderer))]
 
-#if WINDOWS_UWP
-namespace Painter.Forms.UWP
-#elif __IOS__
+#if __IOS__
 namespace Painter.Forms.iOS
 #elif __ANDROID__
 namespace Painter.Forms.Droid
@@ -103,12 +97,10 @@ namespace Painter.Forms.Droid
 #elif __IOS__
 				var native = new NativePainterView(new CoreGraphics.CGRect(0, 0, e.NewElement.Bounds.Width, e.NewElement.Bounds.Height));
 				native.Opaque = false;
-#elif WINDOWS_UWP
-				var native = new NativePainterView();
 #endif
 
-				//Set the default values that are known
-				native.StrokeColor = e.NewElement.StrokeColor;
+                //Set the default values that are known
+                native.StrokeColor = e.NewElement.StrokeColor;
 				native.StrokeThickness = e.NewElement.StrokeThickness;
 				native.FinishedStrokeEvent = e.NewElement.FinishedStrokeEvent;
 
@@ -161,7 +153,6 @@ namespace Painter.Forms.Droid
 
 		private void SetImagePathEvent(object sender, PainterView.SetImageHandler e)
 		{
-			//TODO implement on UWP
 			Control.LoadImage(e.Path, e.InResources, e.Scaling);
 		}
 

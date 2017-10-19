@@ -37,4 +37,3 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Painter.Forms.Droid")]
 [assembly: InternalsVisibleTo("Painter.Forms.iOS")]
-[assembly: InternalsVisibleTo("Painter.Forms.UWP")]
