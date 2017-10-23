@@ -53,102 +53,36 @@ namespace Painter.Android
                 width *= (int)density;
                 height *= (int)density;
             }
-
-            //Calculate the actual area the image will take up
-            float minWidth = 0.0f;
-            float minHeight = 0.0f;
-            float minX = float.MaxValue;
-            float minY = float.MaxValue;
-
-            foreach (var stroke in strokes)
-            {
-                foreach (var point in stroke.Points)
-                {
-                    minWidth = (float)Math.Max(point.X + stroke.Thickness, minWidth);
-                    minHeight = (float)Math.Max(point.Y + stroke.Thickness, minHeight);
-
-                    minX = (float)Math.Min(point.X + stroke.Thickness, minX);
-                    minY = (float)Math.Min(point.Y + stroke.Thickness, minY);
-                }
-            }
-
-            float scaleX = 1;
-            float scaleY = 1;
-            float offsetX = 0;
-            float offsetY = 0;
-
-            var dx = minWidth - width;
-            var dy = minHeight - height;
-
-            switch (scaling)
-            {
-                //Fill
-                case Abstractions.Scaling.Relative_Fill:
-                    scaleX = (float)width / (float)minWidth;
-                    scaleY = (float)height / (float)minHeight;
-                    break;
-                case Abstractions.Scaling.Absolute_Fill:
-                    scaleX = (float)width / (float)(minWidth - minX);
-                    scaleY = (float)height / (float)(minHeight - minY);
-                    offsetX = -minX;
-                    offsetY = -minY;
-                    break;
-
-                //Fit
-                case Abstractions.Scaling.Relative_Fit:
-                    if (Math.Abs(dx) < Math.Abs(dy))
-                    {
-                        //Scale based on the width
-                        scaleX = scaleY = (float)width / (float)minWidth;
-                    }
-                    else
-                    {
-                        //Scale based on the height
-                        scaleX = scaleY = (float)height / (float)minHeight;
-                    }
-                    break;
-                case Abstractions.Scaling.Absolute_Fit:
-                    if (Math.Abs(dx) < Math.Abs(dy))
-                    {
-                        //Scale based on the width
-                        scaleX = scaleY = (float)width / (float)(minWidth - minX);
-                    }
-                    else
-                    {
-                        //Scale based on the height
-                        scaleX = scaleY = (float)height / (float)(minHeight - minY);
-                    }
-                    offsetX = -minX;
-                    offsetY = -minY;
-                    break;
-
-                //None
-                case Abstractions.Scaling.Relative_None:
-                    break;
-                case Abstractions.Scaling.Absolute_None:
-                    offsetX = -minX;
-                    offsetY = -minY;
-                    break;
-            }
-
-            //Compress the image
+            
             Bitmap tempImage = null;
+            Bitmap backgroundBitmap = null;
             Canvas tempCanvas = null;
             if (BackgroundImage == null)
             {
                 tempImage = Bitmap.CreateBitmap(metrics, width, height, Bitmap.Config.Argb8888);
                 tempCanvas = new Canvas(tempImage);
-                DrawStrokes(tempCanvas, new Color((byte)(BackgroundColor.R * 255.0), (byte)(BackgroundColor.G * 255.0), (byte)(BackgroundColor.B * 255.0), (byte)(BackgroundColor.A * 255.0)), strokes, scaleX, scaleY, offsetX, offsetY);
             }
             else
             {
-                var immutableBitmap = await BitmapFactory.DecodeByteArrayAsync(BackgroundImage, 0, BackgroundImage.Length);
-                tempImage = immutableBitmap.Copy(Bitmap.Config.Argb8888, true);
-               // Canvas canvas = new Canvas(mutableBitmap);
+                backgroundBitmap = await BitmapFactory.DecodeByteArrayAsync(BackgroundImage, 0, BackgroundImage.Length);
+                var backgroundScale = 1f;
+                if (scaling == Abstractions.Scaling.Absolute_Fit || scaling == Abstractions.Scaling.Relative_Fit)
+                {
+                    if (backgroundBitmap.Width > backgroundBitmap.Height)
+                    {
+                        backgroundScale = (float)width / (float)backgroundBitmap.Width;
+                    }
+                    else
+                    {
+                        backgroundScale = (float)height / (float)backgroundBitmap.Height;
+                    }   
+                }
 
+                tempImage = Bitmap.CreateBitmap(metrics, (int)Math.Min(width, backgroundBitmap.Width * backgroundScale), (int)Math.Min(height, backgroundBitmap.Height * backgroundScale), Bitmap.Config.Argb8888);
                 tempCanvas = new Canvas(tempImage);
-                DrawStrokes(tempCanvas, strokes, scaleX, scaleY, offsetX, offsetY);
             }
+
+            DrawStrokes(tempCanvas, strokes, backgroundBitmap, BackgroundColor, scaling, width, height);
 
             //Compress the image and save it to the stream
             switch (format)
@@ -175,40 +109,54 @@ namespace Painter.Android
             //Return the data
             return data;
         }
-
-        private void DrawStrokes(Canvas _canvas, Color backgroundColor, List<Abstractions.Stroke> strokes, float scaleX, float scaleY, float offsetX, float offsetY)
+        
+        private void DrawStrokes(Canvas _canvas, List<Abstractions.Stroke> strokes, Bitmap backgroundBitmap, Abstractions.Color backgroundColor, Abstractions.Scaling backgroundScaling, int Width, int Height)
         {
-            _canvas.DrawColor(backgroundColor, PorterDuff.Mode.Src);
-            foreach (var stroke in strokes)
+            if (backgroundColor != null)
             {
-                double lastX = (stroke.Points[0].X + offsetX) * scaleX;
-                double lastY = (stroke.Points[0].Y + offsetY) * scaleY;
+                _canvas.DrawColor(new Color((byte)(backgroundColor.R * 255f), (byte)(backgroundColor.G * 255f), (byte)(backgroundColor.B * 255f)), PorterDuff.Mode.Src);
+            }
 
-                var paint = CreatePaint(stroke.StrokeColor.R, stroke.StrokeColor.G, stroke.StrokeColor.B, stroke.StrokeColor.A, stroke.Thickness, metrics.Density);
-
-                foreach (var p in stroke.Points)
+            if (backgroundBitmap != null)
+            {
+                switch (backgroundScaling)
                 {
-                    _canvas.DrawLine((float)lastX, (float)lastY, (float)(p.X + offsetX) * scaleX, (float)(p.Y + offsetY) * scaleY, paint);
-                    lastX = (p.X + offsetX) * scaleX;
-                    lastY = (p.Y + offsetY) * scaleY;
+                    case Abstractions.Scaling.Absolute_None:
+                    case Abstractions.Scaling.Relative_None:
+                        _canvas.DrawBitmap(backgroundBitmap, 0, 0, new Paint());
+                        break;
+                    case Abstractions.Scaling.Absolute_Fit:
+                    case Abstractions.Scaling.Relative_Fit:
+                        float scale = 1.0f;
+                        if (backgroundBitmap.Width > backgroundBitmap.Height)
+                        {
+                            scale = (float)Width / (float)backgroundBitmap.Width;
+                        }
+                        else
+                        {
+                            scale = (float)Height / (float)backgroundBitmap.Height;
+                        }
+                        _canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, (int)(backgroundBitmap.Width * scale), (int)(backgroundBitmap.Height * scale)), new Paint());
+                        break;
+                    case Abstractions.Scaling.Absolute_Fill:
+                    case Abstractions.Scaling.Relative_Fill:
+                        _canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, Width, Height), new Paint());
+                        break;
                 }
             }
-        }
 
-        private void DrawStrokes(Canvas _canvas, List<Abstractions.Stroke> strokes, float scaleX, float scaleY, float offsetX, float offsetY)
-        {
             foreach (var stroke in strokes)
             {
-                double lastX = (stroke.Points[0].X + offsetX) * scaleX;
-                double lastY = (stroke.Points[0].Y + offsetY) * scaleY;
+                double lastX = stroke.Points[0].X;
+                double lastY = stroke.Points[0].Y;
 
                 var paint = CreatePaint(stroke.StrokeColor.R, stroke.StrokeColor.G, stroke.StrokeColor.B, stroke.StrokeColor.A, stroke.Thickness, metrics.Density);
 
                 foreach (var p in stroke.Points)
                 {
-                    _canvas.DrawLine((float)lastX, (float)lastY, (float)(p.X + offsetX) * scaleX, (float)(p.Y + offsetY) * scaleY, paint);
-                    lastX = (p.X + offsetX) * scaleX;
-                    lastY = (p.Y + offsetY) * scaleY;
+                    _canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
+                    lastX = p.X;
+                    lastY = p.Y;
                 }
             }
         }

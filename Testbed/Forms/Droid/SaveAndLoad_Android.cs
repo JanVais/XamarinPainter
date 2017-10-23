@@ -26,7 +26,7 @@ namespace PainterTestbed.Droid
 		{
 			get
 			{
-				return Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+				return Android.App.Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryDocuments).AbsolutePath;
 			}
 		}
 
@@ -63,20 +63,26 @@ namespace PainterTestbed.Droid
         {
             if(resourceFile)
             {
-                var assembly = this.GetType().GetTypeInfo().Assembly; // you can replace "this.GetType()" with "typeof(MyType)", where MyType is any type in your assembly.
-                byte[] buffer;
-                using (Stream s = assembly.GetManifestResourceStream(filePath))
+                try
                 {
-                    if(s == null)
-                    {
-                        return null;
-                    }
+                    var assembly = this.GetType().GetTypeInfo().Assembly; // you can replace "this.GetType()" with "typeof(MyType)", where MyType is any type in your assembly.
+                    byte[] buffer;
+                    var name = filePath.Split('.')[0];
+                    var id = Android.App.Application.Context.Resources.GetIdentifier(name.ToLower(), "drawable", Android.App.Application.Context.PackageName);
 
-                    long length = s.Length;
-                    buffer = new byte[length];
-                    s.Read(buffer, 0, (int)length);
+                    var file = Android.Graphics.BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, id);
+
+                    using (var stream = new System.IO.MemoryStream())
+                    {
+                        file.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 0, stream);
+                        return stream.ToArray();
+                    }
                 }
-                return buffer;
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    return null;
+                }
             }
 
             try

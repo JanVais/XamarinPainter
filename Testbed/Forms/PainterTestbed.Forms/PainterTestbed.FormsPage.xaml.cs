@@ -42,15 +42,17 @@ namespace PainterTestbed.Forms
 			var data = await painterView.GetJson();
 			await DependencyService.Get<ISaveAndLoad>().SaveTextAsync("image.json", data);
 		}
-
+        
         private async void SaveImage()
         {
             IPainterExport export = DependencyService.Get<IPainterExport>();
+            var background = DependencyService.Get<ISaveAndLoad>().GetFileBinary("background.jpg", true);
             
-            //var strokes = painterView.GetStrokes();
-            var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Absolute_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, null);
+            var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Relative_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, background);
             
             DependencyService.Get<ISaveAndLoad>().SaveFile(data, "image.png");
+
+            Debug.WriteLine(data.Length);
         }
 
 		private void Clear(object sender, System.EventArgs e)

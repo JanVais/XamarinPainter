@@ -96,7 +96,11 @@ namespace Painter.Android
 			StrokeColor = new Abstractions.Color(0, 0, 0, 1);
 			StrokeThickness = 1.0;
 
-			AddView(imageView);
+            IWindowManager windowManager = Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
+            metrics = new DisplayMetrics();
+            windowManager.DefaultDisplay.GetMetrics(metrics);
+
+            AddView(imageView);
 		}
 
 
@@ -154,7 +158,7 @@ namespace Painter.Android
 			{
 				backgroundBitmap = BitmapFactory.DecodeFile(path);
 			}
-		}
+        }
 
         public byte[] BackgroundImageToByte()
         {
@@ -173,16 +177,12 @@ namespace Painter.Android
 
 			if (canvas != null)
 				return;
-
-			IWindowManager windowManager = Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
-			metrics = new DisplayMetrics();
-			windowManager.DefaultDisplay.GetMetrics(metrics);
-
+            
 			if (image == null && Width != 0 && Height != 0)
 			{
-				image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
-				canvas = new Canvas(image);
-
+                image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
+                
+                canvas = new Canvas(image);
 				imageView.SetImageBitmap(image);
 			}
 
@@ -308,27 +308,76 @@ namespace Painter.Android
 			}
 		}
 
+        private float GetDrawingScale()
+        {
+            float scale = 1.0f;
+
+            switch (backgroundScaling)
+            {
+                case Abstractions.Scaling.Absolute_None:
+                case Abstractions.Scaling.Relative_None:
+                    scale = 1.0f;
+                    break;
+                case Abstractions.Scaling.Absolute_Fit:
+                case Abstractions.Scaling.Relative_Fit:
+                    if (backgroundBitmap.Width > backgroundBitmap.Height)
+                    {
+                        scale = (float)Width / (float)backgroundBitmap.Width;
+                    }
+                    else
+                    {
+                        scale = (float)Height / (float)backgroundBitmap.Height;
+                    }
+                    break;
+                case Abstractions.Scaling.Absolute_Fill:
+                case Abstractions.Scaling.Relative_Fill:
+                    scale = 1.0f;
+                    break;
+            }
+
+            return scale;
+        }
+
 		public override bool OnTouchEvent(MotionEvent e)
 		{
+            float x = e.GetX();
+            float y = e.GetY();
+
+            if (backgroundBitmap != null)
+            {
+                float scale = GetDrawingScale();
+                if (x < 0)
+                    x = 0;
+
+                if (y < 0)
+                    y = 0;
+
+                if (x > backgroundBitmap.Width * scale)
+                    x = backgroundBitmap.Width * scale;
+                
+                if (y > backgroundBitmap.Height * scale)
+                    y = backgroundBitmap.Height * scale;
+            }
+
 			switch (e.Action)
 			{
 				case MotionEventActions.Down:
-					currentStroke = new Abstractions.Stroke()
-					{
-						StrokeColor = StrokeColor,
-						Thickness = StrokeThickness,
-					};
-					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
+                    currentStroke = new Abstractions.Stroke()
+                    {
+                        StrokeColor = StrokeColor,
+                        Thickness = StrokeThickness
+                    };
+					currentStroke.Points.Add(new Abstractions.Point(x, y));
 
 					return true;
 				case MotionEventActions.Move:
-					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
+					currentStroke.Points.Add(new Abstractions.Point(x, y));
 
 					DrawCurrentStroke(canvas);
 					Invalidate();
 					break;
 				case MotionEventActions.Up:
-					currentStroke.Points.Add(new Abstractions.Point(e.GetX(), e.GetY()));
+					currentStroke.Points.Add(new Abstractions.Point(x, y));
 					Strokes.Add(currentStroke);
 
 					FinishedStrokeEvent?.Invoke(this, null);
