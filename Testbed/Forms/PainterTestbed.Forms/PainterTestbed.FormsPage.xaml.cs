@@ -29,6 +29,8 @@ namespace PainterTestbed.Forms
 				painterView.LoadImage("background.jpg", true, Painter.Abstractions.Scaling.Absolute_Fit);
 			};
             painterView.FinishedStrokeEvent = PainterView_GetFinishedData;
+
+            painterView.IsEnabled = false;
         }
 
         private void PainterView_GetFinishedData(object sender, EventArgs e)

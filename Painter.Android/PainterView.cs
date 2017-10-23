@@ -347,6 +347,9 @@ namespace Painter.Droid
 
 		public override bool OnTouchEvent(MotionEvent e)
 		{
+            if (!Enabled)
+                return true;
+
             float x = e.GetX();
             float y = e.GetY();
 

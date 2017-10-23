@@ -114,6 +114,7 @@ namespace Painter.Forms.Droid
 				e.OldElement.LoadJsonEvent -= LoadJson;
 				e.OldElement.SetImagePathEvent -= SetImagePathEvent;
 				e.OldElement.GetStrokesEvent -= GetStrokesEvent;
+                e.OldElement.PropertyChanged -= FormsPropertyChanged;
 			}
 			if (e.NewElement != null)
 			{
@@ -122,14 +123,24 @@ namespace Painter.Forms.Droid
 				e.NewElement.LoadJsonEvent += LoadJson;
 				e.NewElement.SetImagePathEvent += SetImagePathEvent;
 				e.NewElement.GetStrokesEvent += GetStrokesEvent;
+                e.NewElement.PropertyChanged += FormsPropertyChanged;
 
-				e.NewElement.PropertyChanged += Native_PropertyChanged;
+                e.NewElement.PropertyChanged += Native_PropertyChanged;
 			}
 
 			e.NewElement.RendererInitialized();
 		}
 
-		private void Native_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void FormsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+#if __ANDROID__
+            Control.Enabled = Element.IsEnabled;
+#else
+            //TODO
+#endif
+        }
+
+        private void Native_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			//TODO find a way to have the bindings do this
 			StrokeColor = Element.StrokeColor;
@@ -160,5 +171,5 @@ namespace Painter.Forms.Droid
 		{
 			e.GetStrokes = Task.Run(() => Control.Strokes);
 		}
-	}
+    }
 }
