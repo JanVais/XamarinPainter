@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using Painter.Android;
+using Painter.Droid;
 using Java.Interop;
 using Android.Views;
 using System.IO;

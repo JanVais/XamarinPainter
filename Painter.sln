@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Painter", "Painter\Painter.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Painter.iOS", "Painter.iOS\Painter.iOS.csproj", "{4ED89649-B990-43DC-A789-0B1E5380FCF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Painter.Android", "Painter.Android\Painter.Android.csproj", "{46FDEF94-AC8C-4B45-84EE-E648024E63E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Painter.Droid", "Painter.Android\Painter.Droid.csproj", "{46FDEF94-AC8C-4B45-84EE-E648024E63E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testbeds", "Testbeds", "{4228CDE0-0894-4A4B-B910-70EBFC65D246}"
 EndProject

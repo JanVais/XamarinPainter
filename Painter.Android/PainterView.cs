@@ -19,7 +19,7 @@ using System.IO;
 using Painter.Interfaces;
 using System.ComponentModel;
 
-namespace Painter.Android
+namespace Painter.Droid
 {
 	public class PainterView : RelativeLayout
 	{
@@ -228,6 +228,9 @@ namespace Painter.Android
 
 		private void DrawStrokes()
 		{
+            if (canvas == null)
+                return;
+
 			canvas.DrawColor(new Color((byte)(BackgroundColor.R * 255), (byte)(BackgroundColor.G * 255), (byte)(BackgroundColor.B * 255), (byte)(BackgroundColor.A * 255)), PorterDuff.Mode.Src);
 			if (backgroundBitmap != null)
 			{
@@ -272,16 +275,18 @@ namespace Painter.Android
 					Color = new Color((byte)(stroke.StrokeColor.R * 255.0), (byte)(stroke.StrokeColor.G * 255.0), (byte)(stroke.StrokeColor.B * 255.0), (byte)(stroke.StrokeColor.A * 255.0)),
 					StrokeWidth = (float)stroke.Thickness * metrics.Density,
 					AntiAlias = true,
-					StrokeCap = Paint.Cap.Round
+					StrokeCap = Paint.Cap.Round,
 				};
+                paint.SetStyle(Paint.Style.Stroke);
 
-				foreach (var p in stroke.Points)
-				{
-					canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
-					lastX = p.X;
-					lastY = p.Y;
-				}
-			}
+                var path = new Android.Graphics.Path();
+                path.MoveTo((float)stroke.Points[0].X, (float)stroke.Points[0].Y);
+
+                foreach (var p in stroke.Points)
+                    path.LineTo((float)p.X, (float)p.Y);
+                
+                canvas.DrawPath(path, paint);
+            }
 		}
 
 		private void DrawCurrentStroke(Canvas _canvas)
@@ -296,15 +301,17 @@ namespace Painter.Android
 					Color = new Color((byte)(currentStroke.StrokeColor.R * 255.0), (byte)(currentStroke.StrokeColor.G * 255.0), (byte)(currentStroke.StrokeColor.B * 255.0), (byte)(currentStroke.StrokeColor.A * 255.0)),
 					StrokeWidth = (float)currentStroke.Thickness * metrics.Density,
 					AntiAlias = true,
-					StrokeCap = Paint.Cap.Round
-				};
+					StrokeCap = Paint.Cap.Round,
+                };
+                paint.SetStyle(Paint.Style.Stroke);
+                
+                var path = new Android.Graphics.Path();
+                path.MoveTo((float)currentStroke.Points[0].X, (float)currentStroke.Points[0].Y);
 
-				foreach (var p in currentStroke.Points)
-				{
-					_canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
-					lastX = p.X;
-					lastY = p.Y;
-				}
+                foreach (var p in currentStroke.Points)
+				    path.LineTo((float)p.X, (float)p.Y);
+				
+                _canvas.DrawPath(path, paint);
 			}
 		}
 
@@ -373,6 +380,7 @@ namespace Painter.Android
 				case MotionEventActions.Move:
 					currentStroke.Points.Add(new Abstractions.Point(x, y));
 
+                    DrawStrokes();
 					DrawCurrentStroke(canvas);
 					Invalidate();
 					break;
@@ -380,7 +388,9 @@ namespace Painter.Android
 					currentStroke.Points.Add(new Abstractions.Point(x, y));
 					Strokes.Add(currentStroke);
 
-					FinishedStrokeEvent?.Invoke(this, null);
+                    DrawStrokes();
+                    Invalidate();
+                    FinishedStrokeEvent?.Invoke(this, null);
 					break;
 				default:
 					return false;

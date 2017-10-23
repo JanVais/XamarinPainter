@@ -15,11 +15,10 @@ using System.IO;
 using Android.Graphics;
 using Android.Util;
 using Painter.Interfaces;
-using Painter.Android;
 using Android.Provider;
 using Android.Content.Res;
 
-namespace Painter.Android
+namespace Painter.Droid
 {
     public class PainterExport : IPainterExport 
     {
@@ -151,13 +150,14 @@ namespace Painter.Android
                 double lastY = stroke.Points[0].Y;
 
                 var paint = CreatePaint(stroke.StrokeColor.R, stroke.StrokeColor.G, stroke.StrokeColor.B, stroke.StrokeColor.A, stroke.Thickness, metrics.Density);
+                
+                var path = new Android.Graphics.Path();
+                path.MoveTo((float)stroke.Points[0].X, (float)stroke.Points[0].Y);
 
                 foreach (var p in stroke.Points)
-                {
-                    _canvas.DrawLine((float)lastX, (float)lastY, (float)p.X, (float)p.Y, paint);
-                    lastX = p.X;
-                    lastY = p.Y;
-                }
+                    path.LineTo((float)p.X, (float)p.Y);
+
+                _canvas.DrawPath(path, paint);
             }
         }
 
@@ -170,6 +170,7 @@ namespace Painter.Android
                 AntiAlias = true,
                 StrokeCap = Paint.Cap.Round,
             };
+            paint.SetStyle(Paint.Style.Stroke);
 
             return paint;
         }

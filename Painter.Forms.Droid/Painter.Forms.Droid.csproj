@@ -113,9 +113,9 @@
       <Project>{4D495BF7-F5B1-4957-B514-BD2C9E37C195}</Project>
       <Name>Painter.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Painter.Android\Painter.Android.csproj">
+    <ProjectReference Include="..\Painter.Android\Painter.Droid.csproj">
       <Project>{46FDEF94-AC8C-4B45-84EE-E648024E63E5}</Project>
-      <Name>Painter.Android</Name>
+      <Name>Painter.Droid</Name>
     </ProjectReference>
     <ProjectReference Include="..\Painter\Painter.csproj">
       <Project>{F1878F71-C855-4683-91F8-CD9EF98E67FE}</Project>

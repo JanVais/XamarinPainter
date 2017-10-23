@@ -20,7 +20,7 @@ using NativePainterView = Painter.iOS.PainterView;
 #elif __ANDROID__
 using Xamarin.Forms.Platform.Android;
 using Painter.Forms.Droid;
-using NativePainterView = Painter.Android.PainterView;
+using NativePainterView = Painter.Droid.PainterView;
 #endif
 
 

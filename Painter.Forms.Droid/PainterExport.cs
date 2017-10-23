@@ -23,7 +23,7 @@ namespace Painter.Forms.Droid
 
         public PainterExport()
         {
-            nativePainter = new Painter.Android.PainterExport();
+            nativePainter = new Painter.Droid.PainterExport();
         }
 
         public Task<byte[]> ExportCurrentImage(int width, int height, List<Stroke> strokes, Scaling scaling, ExportFormat format, int quality, Abstractions.Color BackgroundColor, bool useDevicePixelDensity, byte[] BackgroundImage = null)

@@ -68,17 +68,17 @@ namespace PainterTestbed.Forms
 
 		private void setRedColor(object sender, EventArgs e)
 		{
-			painterView.StrokeColor = new Painter.Abstractions.Color(1, 0, 0);
+			painterView.StrokeColor = new Painter.Abstractions.Color(1, 0, 0, 0.2);
 		}
 
 		private void setGreenColor(object sender, EventArgs e)
 		{
-			painterView.StrokeColor = new Painter.Abstractions.Color(0, 1, 0);
+			painterView.StrokeColor = new Painter.Abstractions.Color(0, 1, 0, 0.2);
 		}
 
 		private void setBlueColor(object sender, EventArgs e)
 		{
-			painterView.StrokeColor = new Painter.Abstractions.Color(0, 0, 1);
+			painterView.StrokeColor = new Painter.Abstractions.Color(0, 0, 1, 0.2);
 		}
 
 		private void StepperChanged(object sender, EventArgs e)

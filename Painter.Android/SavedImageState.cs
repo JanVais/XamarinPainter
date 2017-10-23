@@ -11,7 +11,7 @@ using System;
 using Android.OS;
 using Android.Views;
 
-namespace Painter.Android
+namespace Painter.Droid
 {
 	public class SavedImageState : View.BaseSavedState
 	{
