@@ -134,7 +134,8 @@ namespace Painter.Forms.Droid
         private void FormsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
 #if __ANDROID__
-            Control.Enabled = Element.IsEnabled;
+			if (Control != null)
+	            Control.Enabled = Element.IsEnabled;
 #else
             //TODO
 #endif
