@@ -140,7 +140,9 @@ namespace Painter.Droid
 		public void Clear()
 		{
 			Strokes.Clear();
-			canvas.DrawColor(Color.Transparent, PorterDuff.Mode.Clear);
+			canvas.DrawColor(BackgroundColor != null ? new Color((byte)(BackgroundColor.R * 255.0), (byte)(BackgroundColor.G * 255.0), (byte)(BackgroundColor.B * 255.0), (byte)(BackgroundColor.A * 255.0)) : Color.Transparent, PorterDuff.Mode.Clear);
+			if (backgroundBitmap != null)
+				DrawStrokes();
 			Invalidate();
 		}
 
@@ -389,6 +391,10 @@ namespace Painter.Droid
 					break;
 				case MotionEventActions.Up:
 					currentStroke.Points.Add(new Abstractions.Point(x, y));
+
+					var smooth = CatmullRomSmoothing.SmoothPath(currentStroke.Points, 8);
+					currentStroke.Points = smooth;
+
 					Strokes.Add(currentStroke);
 
                     DrawStrokes();

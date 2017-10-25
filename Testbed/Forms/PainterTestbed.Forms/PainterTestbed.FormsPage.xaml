@@ -33,12 +33,14 @@
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="auto" />
 					<ColumnDefinition Width="auto" />
+					<ColumnDefinition Width="auto" />
 				</Grid.ColumnDefinitions>
 				<Button Text="Red" Grid.Column="0" VerticalOptions="Center" Clicked="setRedColor" />
 				<Button Text="Green" Grid.Column="1" VerticalOptions="Center" Clicked="setGreenColor" />
 				<Button Text="Blue" Grid.Column="2" VerticalOptions="Center" Clicked="setBlueColor" />
 				<Label BindingContext="{x:Reference Name=stepper}" Text="{Binding Path=Value}" Grid.Column="4" VerticalOptions="Center" />
 				<Stepper x:Name="stepper" Minimum="1" Value="1" Maximum="100" Grid.Column="5" VerticalOptions="Center" ValueChanged="StepperChanged" />
+				<Button Text="Clear" Grid.Column="6" VerticalOptions="Center" Clicked="clearDrawing"/>
 			</Grid>
 		</ScrollView>
 		<painter:PainterView x:Name="painterView" Grid.Row="1" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />

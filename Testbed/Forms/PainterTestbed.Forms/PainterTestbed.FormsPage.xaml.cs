@@ -29,8 +29,6 @@ namespace PainterTestbed.Forms
 				painterView.LoadImage("background.jpg", true, Painter.Abstractions.Scaling.Absolute_Fit);
 			};
             painterView.FinishedStrokeEvent = PainterView_GetFinishedData;
-
-            painterView.IsEnabled = false;
         }
 
         private void PainterView_GetFinishedData(object sender, EventArgs e)
@@ -38,6 +36,11 @@ namespace PainterTestbed.Forms
             // Done with saving etc
             // do what you want..
         }
+
+		private void clearDrawing()
+		{
+			painterView.Clear();
+		}
 
         private async void SaveJson(object sender, System.EventArgs e)
 		{

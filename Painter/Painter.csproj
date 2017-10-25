@@ -36,6 +36,10 @@
     <Compile Include="Abstractions\Stroke.cs" />
     <Compile Include="Abstractions\Point.cs" />
     <Compile Include="Abstractions\Color.cs" />
+    <Compile Include="PostProcessing\CatmullRomSmoothing.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PostProcessing\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
