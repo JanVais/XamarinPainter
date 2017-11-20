@@ -19,5 +19,6 @@ namespace PainterTestbed
 		bool FileExists(string filename);
         byte[] GetFileBinary(string filePath, bool resourceFile);
         void SaveFile(byte[] data, string url);
+		string GetPathForFile(string fileName);
     }
 }

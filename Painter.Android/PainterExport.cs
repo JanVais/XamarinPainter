@@ -103,7 +103,7 @@ namespace Painter.Droid
             //Read the data
             data = new byte[str.Length];
             str.Seek(0, SeekOrigin.Begin);
-            var read = await str.ReadAsync(data, 0, (int)str.Length);
+            await str.ReadAsync(data, 0, (int)str.Length);
 
             //Return the data
             return data;

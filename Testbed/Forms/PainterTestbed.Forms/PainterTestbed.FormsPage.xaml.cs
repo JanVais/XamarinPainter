@@ -23,11 +23,14 @@ namespace PainterTestbed.Forms
 		{
 			InitializeComponent();
 
-            painterView.StrokeColor = new Painter.Abstractions.Color(0, 1, 0, 1);
+            painterView.StrokeColor = new Painter.Abstractions.Color(0, 1, 0, 0.5);
+			painterView.StrokeThickness = 10;
 			painterView.Initialized += (sender, e) =>
 			{
-				painterView.LoadImage("background.jpg", true, Painter.Abstractions.Scaling.Absolute_Fit);
+				//if (DependencyService.Get<ISaveAndLoad>().FileExists("light.jpeg"))
+				//	painterView.LoadImage(DependencyService.Get<ISaveAndLoad>().GetPathForFile("light.jpeg"), false, Painter.Abstractions.Scaling.Absolute_Fit);
 			};
+
             painterView.FinishedStrokeEvent = PainterView_GetFinishedData;
         }
 
@@ -35,7 +38,7 @@ namespace PainterTestbed.Forms
         {
             // Done with saving etc
             // do what you want..
-        }
+		}
 
 		private void clearDrawing()
 		{
@@ -51,7 +54,7 @@ namespace PainterTestbed.Forms
         private async void SaveImage()
         {
             IPainterExport export = DependencyService.Get<IPainterExport>();
-            var background = DependencyService.Get<ISaveAndLoad>().GetFileBinary("background.jpg", true);
+            var background = DependencyService.Get<ISaveAndLoad>().GetFileBinary("light.jpeg", true);
             
             var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Relative_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, background);
             

@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>com.nitrocrime.XamarinPainter.Forms</id>
-		<version>0.1.17-beta</version>
+		<version>0.1.21-beta</version>
 		<title>Xamarin Forms Painter</title>
 		<authors>Miley Hollenberg</authors>
 		<owners>Miley Hollenberg</owners>
@@ -16,23 +16,23 @@
 		<tags>painter xamarin forms ios android uwp paint draw drawing signature painting</tags>
 		<dependencies>
 			<group targetFramework="MonoAndroid">
-				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Xamarin.Forms" version="2.3.4" />
 				<dependency id="Newtonsoft.Json" version="9.0" />
 			</group>
 			<group targetFramework="UAP10.0">
-				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Xamarin.Forms" version="2.3.4" />
 				<dependency id="Newtonsoft.Json" version="9.0" />
 			</group>
 			<group targetFramework="Xamarin.iOS10">
-				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Xamarin.Forms" version="2.3.4" />
 				<dependency id="Newtonsoft.Json" version="9.0" />
 			</group>
 			<group targetFramework="portable-net45+win8+wp8+UAP10">
-				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Xamarin.Forms" version="2.3.4" />
 				<dependency id="Newtonsoft.Json" version="9.0" />
 			</group>
 			<group targetFramework="portable-net45+win+wp8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10">
-				<dependency id="Xamarin.Forms" version="2.3.3" />
+				<dependency id="Xamarin.Forms" version="2.3.4" />
 				<dependency id="Newtonsoft.Json" version="9.0" />
 			</group>
 		</dependencies>

@@ -31,6 +31,11 @@ namespace PainterTestbed.iOS
 			}
 		}
 
+		public string GetPathForFile(string fileName)
+		{
+			return CreatePathToFile(fileName);
+		}
+
 		public async Task SaveTextAsync(string filename, string text)
 		{
 			string path = CreatePathToFile(filename);

@@ -25,7 +25,6 @@ using NativePainterView = Painter.Droid.PainterView;
 
 
 [assembly: ExportRenderer(typeof(PainterView), typeof(PainterViewRenderer))]
-
 #if __IOS__
 namespace Painter.Forms.iOS
 #elif __ANDROID__

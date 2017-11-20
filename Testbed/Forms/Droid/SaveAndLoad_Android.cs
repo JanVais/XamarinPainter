@@ -49,9 +49,14 @@ namespace PainterTestbed.Droid
 				return null;
 		}
 
-		public bool FileExists(string filename)
+		public bool FileExists(string fileName)
 		{
-			return File.Exists(CreatePathToFile(filename));
+			return File.Exists(CreatePathToFile(fileName));
+		}
+
+		public string GetPathForFile(string fileName)
+		{
+			return CreatePathToFile(fileName);
 		}
 
 		static string CreatePathToFile(string fileName)
@@ -66,7 +71,6 @@ namespace PainterTestbed.Droid
                 try
                 {
                     var assembly = this.GetType().GetTypeInfo().Assembly; // you can replace "this.GetType()" with "typeof(MyType)", where MyType is any type in your assembly.
-                    byte[] buffer;
                     var name = filePath.Split('.')[0];
                     var id = Android.App.Application.Context.Resources.GetIdentifier(name.ToLower(), "drawable", Android.App.Application.Context.PackageName);
 
