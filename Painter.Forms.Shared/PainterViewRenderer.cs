@@ -112,8 +112,6 @@ namespace Painter.Forms.Droid
 				e.OldElement.SetImagePathEvent -= SetImagePathEvent;
 				e.OldElement.GetStrokesEvent -= GetStrokesEvent;
                 e.OldElement.PropertyChanged -= FormsPropertyChanged;
-
-                e.OldElement.RotateTestEvent -= RotateTest;
 			}
 			if (e.NewElement != null)
 			{
@@ -123,18 +121,11 @@ namespace Painter.Forms.Droid
 				e.NewElement.SetImagePathEvent += SetImagePathEvent;
 				e.NewElement.GetStrokesEvent += GetStrokesEvent;
                 e.NewElement.PropertyChanged += FormsPropertyChanged;
-
-                e.NewElement.RotateTestEvent += RotateTest;
             }
 
 			e.NewElement.RendererInitialized();
 		}
-
-        private void RotateTest(object sender, EventArgs e)
-        {
-            (Control as NativePainterView).RotateTest();
-        }
-
+        
         protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);

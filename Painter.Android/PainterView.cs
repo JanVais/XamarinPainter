@@ -242,14 +242,7 @@ namespace Painter.Droid
                 //OnLayout(true, Left, Top, Right, Bottom);
             }
         }
-
-        public void RotateTest()
-        {
-            System.Diagnostics.Debug.WriteLine("Rotate");
-            imageView.Rotation += 90;
-            DrawStrokes();
-            Invalidate();
-        }
+        
 
 		protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
 		{
@@ -447,6 +440,7 @@ namespace Painter.Droid
 					break;
 			}
 
+            Log.Debug("PainterWidget", "Current scale: " + scale.ToString());
 			return scale;
 		}
 
