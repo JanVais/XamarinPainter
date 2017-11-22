@@ -113,6 +113,8 @@ namespace Painter.Forms
 		internal event EventHandler<LoadJsonEventHandler> LoadJsonEvent;
 		internal event EventHandler<SetImageHandler> SetImagePathEvent;
 		internal event EventHandler<StrokesHandler> GetStrokesEvent;
+
+        internal event EventHandler RotateTestEvent;
 		
 		public List<Stroke> GetStrokes()
 		{
@@ -171,5 +173,11 @@ namespace Painter.Forms
 			public Task<List<Stroke>> GetStrokes { get; set; } = Task.FromResult<List<Stroke>>(null);
 			//TODO Set
 		}
-	}
+
+        public void RotateTest()
+        {
+            RotateTestEvent?.Invoke(this, null);
+        }
+
+    }
 }

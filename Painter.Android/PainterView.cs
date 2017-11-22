@@ -243,6 +243,13 @@ namespace Painter.Droid
             }
         }
 
+        public void RotateTest()
+        {
+            System.Diagnostics.Debug.WriteLine("Rotate");
+            imageView.Rotation += 90;
+            DrawStrokes();
+            Invalidate();
+        }
 
 		protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
 		{
@@ -334,7 +341,7 @@ namespace Painter.Droid
 			canvas.Rotate(deviceOrientation);
 			canvas.Translate(-(canvas.Width / 2f), -(canvas.Height / 2f));
 
-			canvas.DrawColor(new Color((byte)(BackgroundColor.R * 255), (byte)(BackgroundColor.G * 255), (byte)(BackgroundColor.B * 255), (byte)(BackgroundColor.A * 255)), PorterDuff.Mode.Src);
+            canvas.DrawColor(new Color((byte)(BackgroundColor.R * 255), (byte)(BackgroundColor.G * 255), (byte)(BackgroundColor.B * 255), (byte)(BackgroundColor.A * 255)), PorterDuff.Mode.Src);
             if (backgroundBitmap != null)
 			{
 				switch (backgroundScaling)
@@ -345,15 +352,8 @@ namespace Painter.Droid
 						break;
 					case Abstractions.Scaling.Absolute_Fit:
 					case Abstractions.Scaling.Relative_Fit:
-						float scale = 1.0f;
-						if (backgroundBitmap.Width > backgroundBitmap.Height)
-						{
-							scale = (float)Width / (float)backgroundBitmap.Width;
-						}
-						else
-						{
-							scale = (float)Height / (float)backgroundBitmap.Height;
-						}
+                        float scale = GetDrawingScale();
+
 						canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, (int)(backgroundBitmap.Width * scale), (int)(backgroundBitmap.Height * scale)), new Paint());
 						break;
 					case Abstractions.Scaling.Absolute_Fill:
@@ -432,15 +432,15 @@ namespace Painter.Droid
 					break;
 				case Abstractions.Scaling.Absolute_Fit:
 				case Abstractions.Scaling.Relative_Fit:
-					if (backgroundBitmap.Width > backgroundBitmap.Height)
-					{
-						scale = (float)Width / (float)backgroundBitmap.Width;
-					}
-					else
-					{
-						scale = (float)Height / (float)backgroundBitmap.Height;
-					}
-					break;
+                    if (backgroundBitmap.Height > Height)
+                    {
+                        scale = (float)Height / (float)backgroundBitmap.Height;
+                    }
+                    else
+                    {
+                        scale = (float)Width / (float)backgroundBitmap.Width;
+                    }
+                    break;
 				case Abstractions.Scaling.Absolute_Fill:
 				case Abstractions.Scaling.Relative_Fill:
 					scale = 1.0f;
@@ -465,11 +465,11 @@ namespace Painter.Droid
 			if (y < 0)
 				y = 0;
 
-			if (x > drawingImage.Width * scale)
-				x = drawingImage.Width * scale;
+			if (x > backgroundBitmap.Width * scale)
+				x = backgroundBitmap.Width * scale;
 
-			if (y > drawingImage.Height * scale)
-				y = drawingImage.Height * scale;
+			if (y > backgroundBitmap.Height * scale)
+				y = backgroundBitmap.Height * scale;
 			
 			switch (e.Action)
 			{
@@ -501,10 +501,10 @@ namespace Painter.Droid
 							p.X = 0;
 						if (p.Y < 0)
 							p.Y = 0;
-						if (p.X > drawingImage.Width * scale)
-							p.X = drawingImage.Width * scale;
-						if (p.Y > drawingImage.Height * scale)
-							p.Y = drawingImage.Height * scale;
+						if (p.X > backgroundBitmap.Width * scale)
+							p.X = backgroundBitmap.Width * scale;
+						if (p.Y > backgroundBitmap.Height * scale)
+							p.Y = backgroundBitmap.Height * scale;
 					}
 					currentStroke.Points = smooth;
 

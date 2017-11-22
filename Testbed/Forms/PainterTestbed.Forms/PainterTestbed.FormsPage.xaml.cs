@@ -27,9 +27,9 @@ namespace PainterTestbed.Forms
 			painterView.StrokeThickness = 10;
 			painterView.Initialized += (sender, e) =>
 			{
-               	//if (DependencyService.Get<ISaveAndLoad>().FileExists("light.jpeg"))
-				//	painterView.LoadImage(DependencyService.Get<ISaveAndLoad>().GetPathForFile("light.jpeg"), false, Painter.Abstractions.Scaling.Absolute_Fit);
-			};
+                if (DependencyService.Get<ISaveAndLoad>().FileExists("light.jpg"))
+                    painterView.LoadImage(DependencyService.Get<ISaveAndLoad>().GetPathForFile("light.jpg"), false, Painter.Abstractions.Scaling.Absolute_Fit);
+            };
         }
 
         protected override void OnAppearing()
@@ -99,5 +99,11 @@ namespace PainterTestbed.Forms
 		{
 			painterView.StrokeThickness = (int)stepper.Value;
 		}
-	}
+
+        private void changeRotation(object sender, EventArgs e)
+        {
+            painterView.RotateTest();
+        }
+
+    }
 }
