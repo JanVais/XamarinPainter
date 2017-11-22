@@ -27,15 +27,26 @@ namespace PainterTestbed.Forms
 			painterView.StrokeThickness = 10;
 			painterView.Initialized += (sender, e) =>
 			{
-				//if (DependencyService.Get<ISaveAndLoad>().FileExists("light.jpeg"))
+               	//if (DependencyService.Get<ISaveAndLoad>().FileExists("light.jpeg"))
 				//	painterView.LoadImage(DependencyService.Get<ISaveAndLoad>().GetPathForFile("light.jpeg"), false, Painter.Abstractions.Scaling.Absolute_Fit);
 			};
+        }
 
-            painterView.FinishedStrokeEvent = PainterView_GetFinishedData;
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            painterView.FinishedStrokeEvent += PainterView_GetFinishedData;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            painterView.FinishedStrokeEvent -= PainterView_GetFinishedData;
         }
 
         private void PainterView_GetFinishedData(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine(sender);
             // Done with saving etc
             // do what you want..
 		}
@@ -62,11 +73,6 @@ namespace PainterTestbed.Forms
 
             Debug.WriteLine(data.Length);
         }
-
-		private void Clear(object sender, System.EventArgs e)
-		{
-			painterView.Clear();
-		}
 
 		private async void LoadJson(object sender, System.EventArgs e)
 		{

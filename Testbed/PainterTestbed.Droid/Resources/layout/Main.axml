@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px">
-    <Painter.Android.PainterView
+    <Painter.Droid.PainterView
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
@@ -102,5 +102,5 @@
                 android:onClick="loadJson"
                 android:layout_marginRight="0.0dp" />
         </RelativeLayout>
-    </Painter.Android.PainterView>
+    </Painter.Droid.PainterView>
 </RelativeLayout>

@@ -32,8 +32,6 @@ namespace Painter.Forms
 			Initialized?.Invoke(this, null);
 		}
 
-		public event EventHandler GetFinishedData;
-
 		public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(
 		   nameof(StrokeColor),
 		   typeof(Abstractions.Color),
@@ -110,21 +108,12 @@ namespace Painter.Forms
 			}
 		}
 
-		public void SetEventHandler(EventHandler eventHandler)
-		{
-			this.customEventHandler = eventHandler;
-		}
-
-		public EventHandler customEventHandler;
-
 		internal event EventHandler<SaveJsonImageHandler> GetJsonEvent;
 		internal event EventHandler ClearEvent;
 		internal event EventHandler<LoadJsonEventHandler> LoadJsonEvent;
 		internal event EventHandler<SetImageHandler> SetImagePathEvent;
 		internal event EventHandler<StrokesHandler> GetStrokesEvent;
-		public EventHandler<SaveJsonImageHandler> FinishEventHandler;
-
-
+		
 		public List<Stroke> GetStrokes()
 		{
 			var args = new StrokesHandler();

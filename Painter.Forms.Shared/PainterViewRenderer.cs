@@ -97,14 +97,12 @@ namespace Painter.Forms.Droid
 				var native = new NativePainterView(new CoreGraphics.CGRect(0, 0, e.NewElement.Bounds.Width, e.NewElement.Bounds.Height));
 				native.Opaque = false;
 #endif
-
-                //Set the default values that are known
-                native.StrokeColor = e.NewElement.StrokeColor;
-				native.StrokeThickness = e.NewElement.StrokeThickness;
-				native.FinishedStrokeEvent = e.NewElement.FinishedStrokeEvent;
-
 				SetNativeControl(native);
 			}
+
+            (Control as NativePainterView).StrokeColor = e.NewElement.StrokeColor;
+            (Control as NativePainterView).StrokeThickness = e.NewElement.StrokeThickness;
+            (Control as NativePainterView).FinishedStrokeEvent = e.NewElement.FinishedStrokeEvent;
 
 			if (e.OldElement != null)
 			{
@@ -123,30 +121,35 @@ namespace Painter.Forms.Droid
 				e.NewElement.SetImagePathEvent += SetImagePathEvent;
 				e.NewElement.GetStrokesEvent += GetStrokesEvent;
                 e.NewElement.PropertyChanged += FormsPropertyChanged;
-
-                e.NewElement.PropertyChanged += Native_PropertyChanged;
 			}
 
 			e.NewElement.RendererInitialized();
 		}
 
+        protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+
+            (Control as NativePainterView).StrokeColor = Element.StrokeColor;
+            (Control as NativePainterView).StrokeThickness = Element.StrokeThickness;
+            (Control as NativePainterView).FinishedStrokeEvent = Element.FinishedStrokeEvent;
+        }
+
         private void FormsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
 #if __ANDROID__
-			if (Control != null)
-	            Control.Enabled = Element.IsEnabled;
+            if (Control != null)
+            {
+                Control.Enabled = Element.IsEnabled;
+                Control.FinishedStrokeEvent = Element.FinishedStrokeEvent;
+                Control.StrokeColor = Element.StrokeColor;
+                Control.StrokeThickness = Element.StrokeThickness;
+            }
 #else
             //TODO
 #endif
         }
-
-        private void Native_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-			//TODO find a way to have the bindings do this
-			StrokeColor = Element.StrokeColor;
-			StrokeThickness = Element.StrokeThickness;
-		}
-
+        
 		private void HandleGetJson(object sender, PainterView.SaveJsonImageHandler e)
 		{
 			e.Json = Task.Run(() => Control.GetJson());

@@ -74,6 +74,9 @@ namespace Painter.Droid
 		private IPainterExport export = new PainterExport();
 		private int deviceOrientation = 0;
 
+        private double originalWidth;
+        private double originalHeight;
+
 		public PainterView(Context context) : base(context)
 		{
 			Strokes = new List<Abstractions.Stroke>();
@@ -127,7 +130,6 @@ namespace Painter.Droid
 		{
 			return await export.GetCurrentImageAsJPG(width, height, Strokes, scaling, quality, BackgroundColor);
 		}
-
 
 		//Imports
 		public void LoadJson(string json)
@@ -200,26 +202,69 @@ namespace Painter.Droid
 			return bitmapData;
 		}
 
+        protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
+        {
+            base.OnSizeChanged(w, h, oldw, oldh);
+
+            if (image != null && canvas != null)
+            { 
+                //Destroy the current views
+                //imageView.SetImageBitmap(null);
+                //drawingImageView.SetImageBitmap(null);
+
+                //image.Recycle();
+                //image.Dispose();
+                //image = null;
+
+                //drawingImage.Recycle();
+                //drawingImage.Dispose();
+                //drawingImage = null;
+
+                //canvas.Dispose();
+                //canvas = null;
+
+                //drawingCanvas.Dispose();
+                //drawingCanvas = null;
+
+                //RemoveView(imageView);
+                //RemoveView(drawingImageView);
+
+                //imageView.Dispose();
+                //imageView = null;
+
+                //drawingImageView.Dispose();
+                //drawingImageView = null;
+
+                ////Collect the GC
+                //GC.Collect();
+
+                //Initialize();
+                //OnLayout(true, Left, Top, Right, Bottom);
+            }
+        }
+
+
 		protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
 		{
 			base.OnLayout(changed, left, top, right, bottom);
 
 			if (canvas != null)
 				return;
-
-			Log.Debug("PainterView", "New size: " + left + " " + top + " " + right + " " + bottom);
-
+            
 			if (image == null && Width != 0 && Height != 0)
 			{
+                originalWidth = Width;
+                originalHeight = Height;
+                
 				image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
 				drawingImage = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
 
 				canvas = new Canvas(image);
 				drawingCanvas = new Canvas(drawingImage);
-
-				imageView.SetImageBitmap(image);
-				drawingImageView.SetImageBitmap(drawingImage);
 			}
+
+            imageView.SetImageBitmap(image);
+            drawingImageView.SetImageBitmap(drawingImage);
 
 			DrawStrokes();
 		}
@@ -249,6 +294,9 @@ namespace Painter.Droid
 
 			canvas.Dispose();
 			canvas = null;
+
+            drawingCanvas.Dispose();
+            drawingCanvas = null;
 
 			GC.Collect();
 
@@ -287,7 +335,7 @@ namespace Painter.Droid
 			canvas.Translate(-(canvas.Width / 2f), -(canvas.Height / 2f));
 
 			canvas.DrawColor(new Color((byte)(BackgroundColor.R * 255), (byte)(BackgroundColor.G * 255), (byte)(BackgroundColor.B * 255), (byte)(BackgroundColor.A * 255)), PorterDuff.Mode.Src);
-			if (backgroundBitmap != null)
+            if (backgroundBitmap != null)
 			{
 				switch (backgroundScaling)
 				{
@@ -342,7 +390,8 @@ namespace Painter.Droid
 
 				canvas.DrawPath(path, paint);
 			}
-			canvas.Restore();
+
+            canvas.Restore();
 		}
 
 		private void DrawCurrentStroke(Canvas _canvas)
