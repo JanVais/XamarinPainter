@@ -74,8 +74,8 @@ namespace Painter.Droid
 		private IPainterExport export = new PainterExport();
 		private int deviceOrientation = 0;
 
-        private double originalWidth;
-        private double originalHeight;
+        public int orientation;
+        public Abstractions.Point imageSize = new Abstractions.Point();
 
 		public PainterView(Context context) : base(context)
 		{
@@ -170,9 +170,9 @@ namespace Painter.Droid
 			{
 				backgroundBitmap = BitmapFactory.DecodeFile(path);
 				ExifInterface exif = new ExifInterface(path);
-				var orientationAttribute = exif.GetAttribute(ExifInterface.TagOrientation);
+                var orientationAttribute = exif.GetAttribute(ExifInterface.TagOrientation);
 
-				Android.Media.Orientation orientationRotate = (Android.Media.Orientation)int.Parse(orientationAttribute);
+                Android.Media.Orientation orientationRotate = (Android.Media.Orientation)int.Parse(orientationAttribute);
 				int imageRotation = 0;
 				switch (orientationRotate)
 				{
@@ -187,6 +187,9 @@ namespace Painter.Droid
 						break;
 				}
 
+                imageSize.X = backgroundBitmap.Width;
+                imageSize.Y = backgroundBitmap.Height;
+                orientation = imageRotation;
 				backgroundBitmap = RotateBitmap(backgroundBitmap, imageRotation);
 			}
 		}
@@ -202,71 +205,37 @@ namespace Painter.Droid
 			return bitmapData;
 		}
 
-        protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
-        {
-            base.OnSizeChanged(w, h, oldw, oldh);
-
-            if (image != null && canvas != null)
-            { 
-                //Destroy the current views
-                //imageView.SetImageBitmap(null);
-                //drawingImageView.SetImageBitmap(null);
-
-                //image.Recycle();
-                //image.Dispose();
-                //image = null;
-
-                //drawingImage.Recycle();
-                //drawingImage.Dispose();
-                //drawingImage = null;
-
-                //canvas.Dispose();
-                //canvas = null;
-
-                //drawingCanvas.Dispose();
-                //drawingCanvas = null;
-
-                //RemoveView(imageView);
-                //RemoveView(drawingImageView);
-
-                //imageView.Dispose();
-                //imageView = null;
-
-                //drawingImageView.Dispose();
-                //drawingImageView = null;
-
-                ////Collect the GC
-                //GC.Collect();
-
-                //Initialize();
-                //OnLayout(true, Left, Top, Right, Bottom);
-            }
-        }
-        
-
 		protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
 		{
 			base.OnLayout(changed, left, top, right, bottom);
 
 			if (canvas != null)
 				return;
-            
+
+            if (imageView == null || drawingImageView == null)
+                return;
+
 			if (image == null && Width != 0 && Height != 0)
 			{
-                originalWidth = Width;
-                originalHeight = Height;
-                
 				image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
 				drawingImage = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);
 
 				canvas = new Canvas(image);
 				drawingCanvas = new Canvas(drawingImage);
+
+                if (backgroundBitmap != null)
+                {
+                    float scale = GetDrawingScale();
+                    float offsetX = (Width - backgroundBitmap.Width * scale) / 2.0f;
+                    float offsetY = (Height - backgroundBitmap.Height * scale) / 2.0f;
+                    drawingCanvas.Translate(offsetX, offsetY);
+                }
+
+                imageView.SetImageBitmap(image);
+                drawingImageView.SetImageBitmap(drawingImage);
+
+                DrawStrokes();
 			}
-
-            imageView.SetImageBitmap(image);
-            drawingImageView.SetImageBitmap(drawingImage);
-
-			DrawStrokes();
 		}
 
 		protected override IParcelable OnSaveInstanceState()
@@ -337,6 +306,11 @@ namespace Painter.Droid
             canvas.DrawColor(new Color((byte)(BackgroundColor.R * 255), (byte)(BackgroundColor.G * 255), (byte)(BackgroundColor.B * 255), (byte)(BackgroundColor.A * 255)), PorterDuff.Mode.Src);
             if (backgroundBitmap != null)
 			{
+                float scale = GetDrawingScale();
+                float offsetX = (Width - backgroundBitmap.Width * scale) / 2.0f;
+                float offsetY = (Height - backgroundBitmap.Height * scale) / 2.0f;
+                canvas.Translate(offsetX, offsetY);
+
 				switch (backgroundScaling)
 				{
 					case Abstractions.Scaling.Absolute_None:
@@ -345,13 +319,11 @@ namespace Painter.Droid
 						break;
 					case Abstractions.Scaling.Absolute_Fit:
 					case Abstractions.Scaling.Relative_Fit:
-                        float scale = GetDrawingScale();
-
-						canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, (int)(backgroundBitmap.Width * scale), (int)(backgroundBitmap.Height * scale)), new Paint());
+                        canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, (int)(backgroundBitmap.Width * scale), (int)(backgroundBitmap.Height * scale)), new Paint());
 						break;
 					case Abstractions.Scaling.Absolute_Fill:
 					case Abstractions.Scaling.Relative_Fill:
-						canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, Width, Height), new Paint());
+                        canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, (int)(Width * scale), (int)(Height * scale)), new Paint());
 						break;
 				}
 			}
@@ -425,13 +397,16 @@ namespace Painter.Droid
 					break;
 				case Abstractions.Scaling.Absolute_Fit:
 				case Abstractions.Scaling.Relative_Fit:
-                    if (backgroundBitmap.Height > Height)
+                    if (backgroundBitmap != null && Width > 0 && Height > 0 )
                     {
-                        scale = (float)Height / (float)backgroundBitmap.Height;
-                    }
-                    else
-                    {
-                        scale = (float)Width / (float)backgroundBitmap.Width;
+                        if (backgroundBitmap.Height > Height && backgroundBitmap.Height > backgroundBitmap.Width)
+                        {
+                            scale = (float)backgroundBitmap.Height / (float)Height;
+                        }
+                        else
+                        {
+                            scale = (float)backgroundBitmap.Width / (float)Width;
+                        }
                     }
                     break;
 				case Abstractions.Scaling.Absolute_Fill:
@@ -453,24 +428,34 @@ namespace Painter.Droid
 			float y = e.GetY();
 
 			float scale = GetDrawingScale();
-			if (x < 0)
-				x = 0;
-
-			if (y < 0)
-				y = 0;
-
-			if (x > backgroundBitmap.Width * scale)
-				x = backgroundBitmap.Width * scale;
-
-			if (y > backgroundBitmap.Height * scale)
-				y = backgroundBitmap.Height * scale;
 			
+            if (backgroundBitmap != null)
+            {
+                float offsetX = (Width - backgroundBitmap.Width * scale) / 2.0f;
+                float offsetY = (Height - backgroundBitmap.Height * scale) / 2.0f;
+
+                x -= offsetX;
+                y -= offsetY;
+
+                if (x > backgroundBitmap.Width * scale)
+                    x = backgroundBitmap.Width * scale;
+
+                if (y > backgroundBitmap.Height * scale)
+                    y = backgroundBitmap.Height * scale;
+            }
+
+            if (x < 0)
+                x = 0;
+
+            if (y < 0)
+                y = 0;
+
 			switch (e.Action)
 			{
 				case MotionEventActions.Down:
 					currentStroke = new Abstractions.Stroke()
 					{
-						StrokeColor = StrokeColor,
+                        StrokeColor = StrokeColor.Clone(),
 						Thickness = StrokeThickness
 					};
 					currentStroke.Points.Add(new Abstractions.Point(x, y));
@@ -491,18 +476,22 @@ namespace Painter.Droid
 					//Clamp the smooth strokes to the view
 					foreach (var p in smooth)
 					{
-						if (p.X < 0)
-							p.X = 0;
-						if (p.Y < 0)
-							p.Y = 0;
-						if (p.X > backgroundBitmap.Width * scale)
-							p.X = backgroundBitmap.Width * scale;
-						if (p.Y > backgroundBitmap.Height * scale)
-							p.Y = backgroundBitmap.Height * scale;
+                        if (p.X < 0)
+                            p.X = 0;
+                        if (p.Y < 0)
+                            p.Y = 0;
+                        if (backgroundBitmap != null)
+                        {
+                            if (p.X > backgroundBitmap.Width * scale)
+                                p.X = backgroundBitmap.Width * scale;
+                            if (p.Y > backgroundBitmap.Height * scale)
+                                p.Y = backgroundBitmap.Height * scale;
+                        }
 					}
 					currentStroke.Points = smooth;
 
 					Strokes.Add(currentStroke);
+                    currentStroke = null;
 
 					DrawStrokes();
 					Invalidate();

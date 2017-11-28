@@ -19,6 +19,8 @@ namespace PainterTestbed.Forms
 {
 	public partial class PainterTestbed_FormsPage : ContentPage
 	{
+        private float alpha = 1.0f;
+
         public PainterTestbed_FormsPage()
 		{
 			InitializeComponent();
@@ -27,8 +29,13 @@ namespace PainterTestbed.Forms
 			painterView.StrokeThickness = 10;
 			painterView.Initialized += (sender, e) =>
 			{
-                if (DependencyService.Get<ISaveAndLoad>().FileExists("light.jpg"))
-                    painterView.LoadImage(DependencyService.Get<ISaveAndLoad>().GetPathForFile("light.jpg"), false, Painter.Abstractions.Scaling.Absolute_Fit);
+                if (DependencyService.Get<ISaveAndLoad>().FileExists("background.jpg"))
+                {
+                    painterView.LoadImage(DependencyService.Get<ISaveAndLoad>().GetPathForFile("background.jpg"), false, Painter.Abstractions.Scaling.Absolute_Fit);
+					var size = painterView.GetImageSize();
+                    int rotation = painterView.GetImageOrientation();
+                    Debug.WriteLine(rotation);
+                }
             };
         }
 
@@ -65,10 +72,10 @@ namespace PainterTestbed.Forms
         private async void SaveImage()
         {
             IPainterExport export = DependencyService.Get<IPainterExport>();
-            var background = DependencyService.Get<ISaveAndLoad>().GetFileBinary("light.jpeg", true);
+            //var background = DependencyService.Get<ISaveAndLoad>().GetFileBinary(DependencyService.Get<ISaveAndLoad>().GetPathForFile("background.jpg"), false);
             
-            var data = await export.ExportCurrentImage((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Relative_Fit, Painter.Abstractions.ExportFormat.Png, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, background);
-            
+            var data = await export.GetCurrentImageAsPNG((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Relative_Fit, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, null);
+
             DependencyService.Get<ISaveAndLoad>().SaveFile(data, "image.png");
 
             Debug.WriteLine(data.Length);
@@ -82,17 +89,17 @@ namespace PainterTestbed.Forms
 
 		private void setRedColor(object sender, EventArgs e)
 		{
-			painterView.StrokeColor = new Painter.Abstractions.Color(1, 0, 0, 0.2);
+			painterView.StrokeColor = new Painter.Abstractions.Color(1, 0, 0, alpha);
 		}
 
 		private void setGreenColor(object sender, EventArgs e)
 		{
-			painterView.StrokeColor = new Painter.Abstractions.Color(0, 1, 0, 0.2);
+            painterView.StrokeColor = new Painter.Abstractions.Color(0, 1, 0, alpha);
 		}
 
 		private void setBlueColor(object sender, EventArgs e)
 		{
-			painterView.StrokeColor = new Painter.Abstractions.Color(0, 0, 1, 0.2);
+            painterView.StrokeColor = new Painter.Abstractions.Color(0, 0, 1, alpha);
 		}
 
 		private void StepperChanged(object sender, EventArgs e)
@@ -100,10 +107,19 @@ namespace PainterTestbed.Forms
 			painterView.StrokeThickness = (int)stepper.Value;
 		}
 
-        private void changeRotation(object sender, EventArgs e)
+        private void debugClick(object sender, EventArgs e)
         {
-            painterView.RotateTest();
-        }
+            if (alpha != 1.0f)
+            {
+                painterView.StrokeColor.A = alpha = 1.0f;
+                painterView.StrokeThickness = 2;
+            }
+            else
+            {
+                painterView.StrokeColor.A = alpha = 0.7f;
+                painterView.StrokeThickness = 10;
+            }
 
+        }
     }
 }

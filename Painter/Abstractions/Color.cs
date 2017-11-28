@@ -32,5 +32,10 @@ namespace Painter.Abstractions
 			this.B = B;
 			this.A = A;
 		}
+
+        public Color Clone()
+        {
+            return new Color(R, G, B, A);
+        }
 	}
 }

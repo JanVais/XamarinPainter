@@ -102,6 +102,9 @@ namespace Painter.iOS
 		private UIImageView BackgroundImage { get; set; }
 		private BezierView CurrentPathView { get; set; }
 
+        public int orientation { get; } //TODO implement
+        public Abstractions.Point imageSize { get; }//TODO implement
+
 		//Constructors
 		public PainterView()
 		{

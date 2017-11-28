@@ -36,7 +36,7 @@
           <ColumnDefinition Width="auto" />
           <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
-      <Button Text="Rotate" Grid.Column="7" VerticalOptions="Center" Clicked="changeRotation" />
+      <Button Text="Debug" Grid.Column="7" VerticalOptions="Center" Clicked="debugClick" />
       <Button Text="Red" Grid.Column="0" VerticalOptions="Center" Clicked="setRedColor" />
 				<Button Text="Green" Grid.Column="1" VerticalOptions="Center" Clicked="setGreenColor" />
 				<Button Text="Blue" Grid.Column="2" VerticalOptions="Center" Clicked="setBlueColor" />

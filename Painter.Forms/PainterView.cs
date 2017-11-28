@@ -50,11 +50,23 @@ namespace Painter.Forms
 			typeof(PainterView),
 			1);
 
-		public static readonly BindableProperty BackgroundScalingProperty = BindableProperty.Create(
-			nameof(BackgroundScaling),
-			typeof(Abstractions.Scaling),
-			typeof(PainterView),
-			Abstractions.Scaling.Absolute_None);
+        public static readonly BindableProperty BackgroundScalingProperty = BindableProperty.Create(
+            nameof(BackgroundScaling),
+            typeof(Abstractions.Scaling),
+            typeof(PainterView),
+            Abstractions.Scaling.Absolute_None);
+
+        public static readonly BindableProperty CanvasWidthProperty = BindableProperty.Create(
+            nameof(CanvasWidth),
+            typeof(double),
+            typeof(PainterView),
+            -1.0);
+
+        public static readonly BindableProperty CanvasHeightProperty = BindableProperty.Create(
+            nameof(CanvasHeight),
+            typeof(double),
+            typeof(PainterView),
+            -1.0);
 
 		public EventHandler FinishedStrokeEvent
 		{
@@ -108,11 +120,30 @@ namespace Painter.Forms
 			}
 		}
 
+        public double CanvasWidth
+        {
+            get
+            {
+                return (double)GetValue(CanvasWidthProperty);
+            }
+        }
+
+        public double CanvasHeight
+        {
+            get
+            {
+                return (double)GetValue(CanvasHeightProperty);
+            }
+        }
+
+
 		internal event EventHandler<SaveJsonImageHandler> GetJsonEvent;
 		internal event EventHandler ClearEvent;
 		internal event EventHandler<LoadJsonEventHandler> LoadJsonEvent;
 		internal event EventHandler<SetImageHandler> SetImagePathEvent;
 		internal event EventHandler<StrokesHandler> GetStrokesEvent;
+        internal event EventHandler<GetImageOrientationHandler> GetImageOrientationEvent;
+        internal event EventHandler<GetImageSizeHandler> GetImageSizeEvent;
 
         internal event EventHandler RotateTestEvent;
 		
@@ -129,6 +160,20 @@ namespace Painter.Forms
 			GetJsonEvent?.Invoke(this, args);
 			return args.Json;
 		}
+
+        public int GetImageOrientation()
+        {
+            var args = new GetImageOrientationHandler();
+            GetImageOrientationEvent?.Invoke(this, args);
+            return args.Orientation;
+        }
+
+        public Abstractions.Point GetImageSize()
+        {
+            var args = new GetImageSizeHandler();
+            GetImageSizeEvent?.Invoke(this, args);
+            return args.ImageSize;
+        }
 
 		public void LoadImage(string imageUri, bool InResources = true, Abstractions.Scaling Scaling = Scaling.Absolute_None)
 		{
@@ -155,6 +200,16 @@ namespace Painter.Forms
 		{
 			public string Json { get; set; }
 		}
+
+        internal class GetImageOrientationHandler : EventArgs
+        {
+            public int Orientation { get; set; }
+        }
+
+        internal class GetImageSizeHandler : EventArgs
+        {
+            public Abstractions.Point ImageSize { get; set; }
+        }
 
 		internal class SetBackgroundScalingHandler : EventArgs
 		{

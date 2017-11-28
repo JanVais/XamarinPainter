@@ -112,6 +112,8 @@ namespace Painter.Forms.Droid
 				e.OldElement.SetImagePathEvent -= SetImagePathEvent;
 				e.OldElement.GetStrokesEvent -= GetStrokesEvent;
                 e.OldElement.PropertyChanged -= FormsPropertyChanged;
+                e.OldElement.GetImageOrientationEvent -= GetImageOrientationEvent;
+                e.OldElement.GetImageSizeEvent -= GetImageSizeEvent;
 			}
 			if (e.NewElement != null)
 			{
@@ -121,10 +123,24 @@ namespace Painter.Forms.Droid
 				e.NewElement.SetImagePathEvent += SetImagePathEvent;
 				e.NewElement.GetStrokesEvent += GetStrokesEvent;
                 e.NewElement.PropertyChanged += FormsPropertyChanged;
+                e.NewElement.GetImageOrientationEvent += GetImageOrientationEvent;
+                e.NewElement.GetImageSizeEvent += GetImageSizeEvent;
             }
 
 			e.NewElement.RendererInitialized();
 		}
+
+        private void GetImageOrientationEvent(object sender, PainterView.GetImageOrientationHandler e)
+        {
+            if (Control != null)
+                e.Orientation = (Control as NativePainterView).orientation;
+        }
+
+        private void GetImageSizeEvent(object sender, PainterView.GetImageSizeHandler e)
+        {
+            if (Control != null)
+                e.ImageSize = (Control as NativePainterView).imageSize;
+        }
         
         protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

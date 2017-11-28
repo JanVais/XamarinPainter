@@ -46,13 +46,12 @@ namespace Painter.Droid
             byte[] data;
             Stream str = new MemoryStream();
 
-            if(useDevicePixelDensity)
+            if (useDevicePixelDensity)
             {
-                var density = Resources.System.DisplayMetrics.Density;
-                width *= (int)density;
-                height *= (int)density;
+                width *= (int)metrics.Density;
+                height *= (int)metrics.Density;
             }
-            
+
             Bitmap tempImage = null;
             Bitmap backgroundBitmap = null;
             Canvas tempCanvas = null;
@@ -64,19 +63,7 @@ namespace Painter.Droid
             else
             {
                 backgroundBitmap = await BitmapFactory.DecodeByteArrayAsync(BackgroundImage, 0, BackgroundImage.Length);
-                var backgroundScale = 1f;
-                if (scaling == Abstractions.Scaling.Absolute_Fit || scaling == Abstractions.Scaling.Relative_Fit)
-                {
-                    if (backgroundBitmap.Width > backgroundBitmap.Height)
-                    {
-                        backgroundScale = (float)width / (float)backgroundBitmap.Width;
-                    }
-                    else
-                    {
-                        backgroundScale = (float)height / (float)backgroundBitmap.Height;
-                    }   
-                }
-
+                var backgroundScale = GetDrawingScale(scaling, backgroundBitmap, width, height);
                 tempImage = Bitmap.CreateBitmap(metrics, (int)Math.Min(width, backgroundBitmap.Width * backgroundScale), (int)Math.Min(height, backgroundBitmap.Height * backgroundScale), Bitmap.Config.Argb8888);
                 tempCanvas = new Canvas(tempImage);
             }
@@ -108,6 +95,40 @@ namespace Painter.Droid
             //Return the data
             return data;
         }
+
+        private float GetDrawingScale(Abstractions.Scaling backgroundScaling, Bitmap backgroundBitmap, double Width, double Height)
+        {
+            float scale = 1.0f;
+
+            switch (backgroundScaling)
+            {
+                case Abstractions.Scaling.Absolute_None:
+                case Abstractions.Scaling.Relative_None:
+                    scale = 1.0f;
+                    break;
+                case Abstractions.Scaling.Absolute_Fit:
+                case Abstractions.Scaling.Relative_Fit:
+                    if (backgroundBitmap != null && Width > 0 && Height > 0)
+                    {
+                        if (backgroundBitmap.Height > Height && backgroundBitmap.Height > backgroundBitmap.Width)
+                        {
+                            scale = (float)backgroundBitmap.Height / (float)Height;
+                        }
+                        else
+                        {
+                            scale = (float)backgroundBitmap.Width / (float)Width;
+                        }
+                    }
+                    break;
+                case Abstractions.Scaling.Absolute_Fill:
+                case Abstractions.Scaling.Relative_Fill:
+                    scale = 1.0f;
+                    break;
+            }
+
+            Log.Debug("PainterWidget", "Current scale: " + scale.ToString());
+            return scale;
+        }
         
         private void DrawStrokes(Canvas _canvas, List<Abstractions.Stroke> strokes, Bitmap backgroundBitmap, Abstractions.Color backgroundColor, Abstractions.Scaling backgroundScaling, int Width, int Height)
         {
@@ -115,6 +136,14 @@ namespace Painter.Droid
             {
                 _canvas.DrawColor(new Color((byte)(backgroundColor.R * 255f), (byte)(backgroundColor.G * 255f), (byte)(backgroundColor.B * 255f)), PorterDuff.Mode.Src);
             }
+
+            float deviceOrientation = 0;//TODO
+
+            //TODO check the replacement for canvas.Save
+            _canvas.Save(SaveFlags.Matrix);
+            _canvas.Translate(_canvas.Width / 2f, _canvas.Height / 2f);
+            _canvas.Rotate(deviceOrientation);
+            _canvas.Translate(-(_canvas.Width / 2f), -(_canvas.Height / 2f));
 
             if (backgroundBitmap != null)
             {
@@ -126,15 +155,7 @@ namespace Painter.Droid
                         break;
                     case Abstractions.Scaling.Absolute_Fit:
                     case Abstractions.Scaling.Relative_Fit:
-                        float scale = 1.0f;
-                        if (backgroundBitmap.Width > backgroundBitmap.Height)
-                        {
-                            scale = (float)Width / (float)backgroundBitmap.Width;
-                        }
-                        else
-                        {
-                            scale = (float)Height / (float)backgroundBitmap.Height;
-                        }
+                        float scale = GetDrawingScale(backgroundScaling, backgroundBitmap, Width, Height);
                         _canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, (int)(backgroundBitmap.Width * scale), (int)(backgroundBitmap.Height * scale)), new Paint());
                         break;
                     case Abstractions.Scaling.Absolute_Fill:
