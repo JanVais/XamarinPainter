@@ -121,14 +121,14 @@ namespace Painter.Droid
 			return JsonConvert.SerializeObject(Strokes);
 		}
 
-		public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
+		public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, float scale, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
 		{
-			return await export.GetCurrentImageAsPNG(width, height, Strokes, scaling, quality, BackgroundColor);
+            return await export.GetCurrentImageAsPNG(width, height, scale, Strokes, scaling, quality, BackgroundColor);
 		}
 
-		public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
+		public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, float scale, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
 		{
-			return await export.GetCurrentImageAsJPG(width, height, Strokes, scaling, quality, BackgroundColor);
+			return await export.GetCurrentImageAsJPG(width, height, scale, Strokes, scaling, quality, BackgroundColor);
 		}
 
 		//Imports
@@ -204,6 +204,14 @@ namespace Painter.Droid
 			}
 			return bitmapData;
 		}
+
+        public Abstractions.Point GetImageSize(bool adjustedForDensity)
+        {
+            if (adjustedForDensity)
+                return new Abstractions.Point(imageSize.X / metrics.Density, imageSize.Y / metrics.Density);
+            else
+                return imageSize;
+        }
 
 		protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
 		{
@@ -385,7 +393,7 @@ namespace Painter.Droid
 			}
 		}
 
-		private float GetDrawingScale()
+		public float GetDrawingScale()
 		{
 			float scale = 1.0f;
 
@@ -399,13 +407,21 @@ namespace Painter.Droid
 				case Abstractions.Scaling.Relative_Fit:
                     if (backgroundBitmap != null && Width > 0 && Height > 0 )
                     {
-                        if (backgroundBitmap.Height > Height && backgroundBitmap.Height > backgroundBitmap.Width)
+                        if (backgroundBitmap.Height > Height && backgroundBitmap.Height < backgroundBitmap.Width)
                         {
-                            scale = (float)backgroundBitmap.Height / (float)Height;
+                            scale = (float)Height / (float)backgroundBitmap.Height;
+                            if (backgroundBitmap.Width * scale > Width)
+                            {
+                                scale = (float)Width / (float)backgroundBitmap.Width;
+                            }
                         }
                         else
                         {
-                            scale = (float)backgroundBitmap.Width / (float)Width;
+                            scale = (float)Width / (float)backgroundBitmap.Width;
+                            if (backgroundBitmap.Height * scale > Height)
+                            {
+                                scale = (float)Height / (float)backgroundBitmap.Height;
+                            }
                         }
                     }
                     break;
@@ -414,9 +430,8 @@ namespace Painter.Droid
 					scale = 1.0f;
 					break;
 			}
-
             Log.Debug("PainterWidget", "Current scale: " + scale.ToString());
-			return scale;
+            return scale;
 		}
 
 		public override bool OnTouchEvent(MotionEvent e)

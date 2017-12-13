@@ -60,9 +60,9 @@ namespace PainterTestbed.Droid
         {
             try
             {
-                var data_fit = await painter.GetCurrentImageAsJPG(painter.Width * 2, painter.Height * 3, scaling: Painter.Abstractions.Scaling.Absolute_Fit);
-                var data_fill = await painter.GetCurrentImageAsJPG(painter.Width * 2, painter.Height * 3, scaling: Painter.Abstractions.Scaling.Absolute_Fill);
-                var data_none = await painter.GetCurrentImageAsJPG(painter.Width * 2, painter.Height * 3, scaling: Painter.Abstractions.Scaling.Absolute_None);
+                var data_fit = await painter.GetCurrentImageAsJPG(painter.Width * 2, painter.Height * 3, 1f, scaling: Painter.Abstractions.Scaling.Absolute_Fit);
+                var data_fill = await painter.GetCurrentImageAsJPG(painter.Width * 2, painter.Height * 3, 1f, scaling: Painter.Abstractions.Scaling.Absolute_Fill);
+                var data_none = await painter.GetCurrentImageAsJPG(painter.Width * 2, painter.Height * 3, 1f, scaling: Painter.Abstractions.Scaling.Absolute_None);
 
                 var storageDir = Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryDocuments);
                 Java.IO.File file_fit = new Java.IO.File(storageDir, "image_" + DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds + "_fit.jpg");

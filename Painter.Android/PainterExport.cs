@@ -30,18 +30,21 @@ namespace Painter.Droid
             windowManager.DefaultDisplay.GetMetrics(metrics);
         }
 
-        public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
+        public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, float scale, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
         {
-            return await ExportCurrentImage(width, height, strokes, scaling, Abstractions.ExportFormat.Png, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1), useDevicePixelDensity, BackgroundImage);
+            return await ExportCurrentImage(width, height, scale, strokes, scaling, Abstractions.ExportFormat.Png, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1), useDevicePixelDensity, BackgroundImage);
         }
 
-        public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
+        public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, float scale, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
         {
-            return await ExportCurrentImage(width, height, strokes, scaling, Abstractions.ExportFormat.Jpeg, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1), useDevicePixelDensity, BackgroundImage);
+            return await ExportCurrentImage(width, height, scale, strokes, scaling, Abstractions.ExportFormat.Jpeg, quality, BackgroundColor ?? new Abstractions.Color(1, 1, 1, 1), useDevicePixelDensity, BackgroundImage);
         }
 
-        public async Task<byte[]> ExportCurrentImage(int width, int height, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling, Abstractions.ExportFormat format, int quality, Painter.Abstractions.Color BackgroundColor, bool useDevicePixelDensity, byte[] BackgroundImage = null)
+        public async Task<byte[]> ExportCurrentImage(int width, int height, float scale, List<Abstractions.Stroke> strokes, Abstractions.Scaling scaling, Abstractions.ExportFormat format, int quality, Painter.Abstractions.Color BackgroundColor, bool useDevicePixelDensity, byte[] BackgroundImage = null)
         {
+            if (scale == 0)
+                scale = 1.0f;
+
             //Initialize data holders
             byte[] data;
             Stream str = new MemoryStream();
@@ -68,7 +71,7 @@ namespace Painter.Droid
                 tempCanvas = new Canvas(tempImage);
             }
 
-            DrawStrokes(tempCanvas, strokes, backgroundBitmap, BackgroundColor, scaling, width, height);
+            DrawStrokes(tempCanvas, strokes, backgroundBitmap, BackgroundColor, scaling, width, height, scale);
 
             //Compress the image and save it to the stream
             switch (format)
@@ -110,13 +113,21 @@ namespace Painter.Droid
                 case Abstractions.Scaling.Relative_Fit:
                     if (backgroundBitmap != null && Width > 0 && Height > 0)
                     {
-                        if (backgroundBitmap.Height > Height && backgroundBitmap.Height > backgroundBitmap.Width)
+                        if (backgroundBitmap.Height > Height && backgroundBitmap.Height < backgroundBitmap.Width)
                         {
-                            scale = (float)backgroundBitmap.Height / (float)Height;
+                            scale = (float)Height / (float)backgroundBitmap.Height;
+                            if (backgroundBitmap.Width * scale > Width)
+                            {
+                                scale = (float)Width / (float)backgroundBitmap.Width;
+                            }
                         }
                         else
                         {
-                            scale = (float)backgroundBitmap.Width / (float)Width;
+                            scale = (float)Width / (float)backgroundBitmap.Width;
+                            if (backgroundBitmap.Height * scale > Height)
+                            {
+                                scale = (float)Height / (float)backgroundBitmap.Height;
+                            }
                         }
                     }
                     break;
@@ -130,7 +141,7 @@ namespace Painter.Droid
             return scale;
         }
         
-        private void DrawStrokes(Canvas _canvas, List<Abstractions.Stroke> strokes, Bitmap backgroundBitmap, Abstractions.Color backgroundColor, Abstractions.Scaling backgroundScaling, int Width, int Height)
+        private void DrawStrokes(Canvas _canvas, List<Abstractions.Stroke> strokes, Bitmap backgroundBitmap, Abstractions.Color backgroundColor, Abstractions.Scaling backgroundScaling, int Width, int Height, float scale)
         {
             if (backgroundColor != null)
             {
@@ -155,8 +166,8 @@ namespace Painter.Droid
                         break;
                     case Abstractions.Scaling.Absolute_Fit:
                     case Abstractions.Scaling.Relative_Fit:
-                        float scale = GetDrawingScale(backgroundScaling, backgroundBitmap, Width, Height);
-                        _canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, (int)(backgroundBitmap.Width * scale), (int)(backgroundBitmap.Height * scale)), new Paint());
+                        float backgroundScale = GetDrawingScale(backgroundScaling, backgroundBitmap, Width, Height);
+                        _canvas.DrawBitmap(backgroundBitmap, new Rect(0, 0, backgroundBitmap.Width, backgroundBitmap.Height), new Rect(0, 0, (int)(backgroundBitmap.Width * backgroundScale), (int)(backgroundBitmap.Height * backgroundScale)), new Paint());
                         break;
                     case Abstractions.Scaling.Absolute_Fill:
                     case Abstractions.Scaling.Relative_Fill:
@@ -167,16 +178,13 @@ namespace Painter.Droid
 
             foreach (var stroke in strokes)
             {
-                double lastX = stroke.Points[0].X;
-                double lastY = stroke.Points[0].Y;
-
                 var paint = CreatePaint(stroke.StrokeColor.R, stroke.StrokeColor.G, stroke.StrokeColor.B, stroke.StrokeColor.A, stroke.Thickness, metrics.Density);
                 
                 var path = new Android.Graphics.Path();
-                path.MoveTo((float)stroke.Points[0].X, (float)stroke.Points[0].Y);
+                path.MoveTo((float)stroke.Points[0].X * scale, (float)stroke.Points[0].Y * scale);
 
                 foreach (var p in stroke.Points)
-                    path.LineTo((float)p.X, (float)p.Y);
+                    path.LineTo((float)p.X * scale, (float)p.Y * scale);
 
                 _canvas.DrawPath(path, paint);
             }

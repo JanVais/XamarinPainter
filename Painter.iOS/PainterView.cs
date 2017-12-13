@@ -104,6 +104,11 @@ namespace Painter.iOS
 
         public int orientation { get; } //TODO implement
         public Abstractions.Point imageSize { get; }//TODO implement
+        public Abstractions.Point GetImageSize(bool adjustedForDensity)
+        {
+            return imageSize;
+        }
+
 
 		//Constructors
 		public PainterView()
@@ -176,6 +181,11 @@ namespace Painter.iOS
 		{
 			return JsonConvert.SerializeObject(Strokes);
 		}
+
+        public float GetDrawingScale()
+        {
+            return -1f;
+        }
 
 		//Imports
 		public void LoadJson(string json)

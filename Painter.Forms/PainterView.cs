@@ -144,6 +144,7 @@ namespace Painter.Forms
 		internal event EventHandler<StrokesHandler> GetStrokesEvent;
         internal event EventHandler<GetImageOrientationHandler> GetImageOrientationEvent;
         internal event EventHandler<GetImageSizeHandler> GetImageSizeEvent;
+        internal event EventHandler<GetDrawingScaleHandler> GetDrawingScaleEvent;
 
         internal event EventHandler RotateTestEvent;
 		
@@ -168,9 +169,19 @@ namespace Painter.Forms
             return args.Orientation;
         }
 
-        public Abstractions.Point GetImageSize()
+        public float GetDrawingScale()
         {
-            var args = new GetImageSizeHandler();
+            var args = new GetDrawingScaleHandler();
+            GetDrawingScaleEvent?.Invoke(this, args);
+            return args.Scale;
+        }
+
+        public Abstractions.Point GetImageSize(bool adjustedForDensity = false)
+        {
+            var args = new GetImageSizeHandler()
+            {
+                AdjustedForDensity = adjustedForDensity
+            };
             GetImageSizeEvent?.Invoke(this, args);
             return args.ImageSize;
         }
@@ -208,6 +219,7 @@ namespace Painter.Forms
 
         internal class GetImageSizeHandler : EventArgs
         {
+            public bool AdjustedForDensity { get; set; }
             public Abstractions.Point ImageSize { get; set; }
         }
 
@@ -228,6 +240,11 @@ namespace Painter.Forms
 			public Task<List<Stroke>> GetStrokes { get; set; } = Task.FromResult<List<Stroke>>(null);
 			//TODO Set
 		}
+
+        internal class GetDrawingScaleHandler : EventArgs
+        {
+            public float Scale { get; set; }
+        }
 
         public void RotateTest()
         {

@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>com.nitrocrime.XamarinPainter.Forms</id>
-		<version>0.1.42-beta</version>
+		<version>0.1.52-beta</version>
 		<title>Xamarin Forms Painter</title>
 		<authors>Miley Hollenberg</authors>
 		<owners>Miley Hollenberg</owners>

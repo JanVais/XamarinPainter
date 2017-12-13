@@ -114,6 +114,7 @@ namespace Painter.Forms.Droid
                 e.OldElement.PropertyChanged -= FormsPropertyChanged;
                 e.OldElement.GetImageOrientationEvent -= GetImageOrientationEvent;
                 e.OldElement.GetImageSizeEvent -= GetImageSizeEvent;
+                e.OldElement.GetDrawingScaleEvent -= GetDrawingScaleEvent;
 			}
 			if (e.NewElement != null)
 			{
@@ -125,6 +126,7 @@ namespace Painter.Forms.Droid
                 e.NewElement.PropertyChanged += FormsPropertyChanged;
                 e.NewElement.GetImageOrientationEvent += GetImageOrientationEvent;
                 e.NewElement.GetImageSizeEvent += GetImageSizeEvent;
+                e.NewElement.GetDrawingScaleEvent += GetDrawingScaleEvent;
             }
 
 			e.NewElement.RendererInitialized();
@@ -139,7 +141,7 @@ namespace Painter.Forms.Droid
         private void GetImageSizeEvent(object sender, PainterView.GetImageSizeHandler e)
         {
             if (Control != null)
-                e.ImageSize = (Control as NativePainterView).imageSize;
+                e.ImageSize = (Control as NativePainterView).GetImageSize(e.AdjustedForDensity);
         }
         
         protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -190,5 +192,10 @@ namespace Painter.Forms.Droid
 		{
 			e.GetStrokes = Task.Run(() => Control.Strokes);
 		}
+
+        void GetDrawingScaleEvent(object sender, PainterView.GetDrawingScaleHandler e)
+        {
+            e.Scale = Control.GetDrawingScale();
+        }
     }
 }

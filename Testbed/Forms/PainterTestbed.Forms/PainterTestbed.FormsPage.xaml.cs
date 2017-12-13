@@ -32,9 +32,8 @@ namespace PainterTestbed.Forms
                 if (DependencyService.Get<ISaveAndLoad>().FileExists("background.jpg"))
                 {
                     painterView.LoadImage(DependencyService.Get<ISaveAndLoad>().GetPathForFile("background.jpg"), false, Painter.Abstractions.Scaling.Absolute_Fit);
-					var size = painterView.GetImageSize();
-                    int rotation = painterView.GetImageOrientation();
-                    Debug.WriteLine(rotation);
+					//var size = painterView.GetImageSize();
+                    //int rotation = painterView.GetImageOrientation();
                 }
             };
         }
@@ -73,8 +72,11 @@ namespace PainterTestbed.Forms
         {
             IPainterExport export = DependencyService.Get<IPainterExport>();
             //var background = DependencyService.Get<ISaveAndLoad>().GetFileBinary(DependencyService.Get<ISaveAndLoad>().GetPathForFile("background.jpg"), false);
-            
-            var data = await export.GetCurrentImageAsPNG((int)painterView.Width, (int)painterView.Height, painterView.GetStrokes(), Painter.Abstractions.Scaling.Relative_Fit, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, null);
+
+            float scale = painterView.GetDrawingScale();
+            Debug.WriteLine(scale);
+
+            var data = await export.GetCurrentImageAsPNG((int)painterView.Width, (int)painterView.Height, 1.0f, painterView.GetStrokes(), Painter.Abstractions.Scaling.Relative_Fit, 80, new Painter.Abstractions.Color(1, 1, 1, 1), true, null);
 
             DependencyService.Get<ISaveAndLoad>().SaveFile(data, "image.png");
 
