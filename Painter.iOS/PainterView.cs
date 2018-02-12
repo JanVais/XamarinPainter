@@ -162,18 +162,10 @@ namespace Painter.iOS
 			CurrentPathView.Opaque = false;
 			AddSubview(CurrentPathView);
 			BringSubviewToFront(CurrentPathView);
-
-			NSNotificationCenter.DefaultCenter.AddObserver(UIDevice.OrientationDidChangeNotification, HandleOrientationChange);
 		}
 
 		~PainterView()
 		{
-			NSNotificationCenter.DefaultCenter.RemoveObserver(this);
-		}
-
-		void HandleOrientationChange(NSNotification obj)
-		{
-			drawPath();
 		}
 
 		//Exports
@@ -315,7 +307,8 @@ namespace Painter.iOS
 		public override void LayoutSubviews()
 		{
 			base.LayoutSubviews();
-
+			// Always redraw when laying out subviews. LayoutSubviews() is caused upon orientation change
+			drawPath();
 			ImageView.Frame = new CGRect(0, 0, Frame.Width, Frame.Height);
 			if (BackgroundImage != null)
 				BackgroundImage.Frame = new CGRect(0, 0, BackgroundImage.Image.Size.Width, BackgroundImage.Image.Size.Height);
