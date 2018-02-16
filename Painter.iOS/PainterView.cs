@@ -91,16 +91,21 @@ namespace Painter.iOS
             }
             set
             {
-                //TODO update view
                 _strokes = value;
+                SetNeedsDisplay();
             }
         }
+
+        public bool Enabled { get; set; } = true;
 
         //Private UI
         private Stroke CurrentStroke { get; set; }
 		private UIImageView ImageView { get; set; }
 		private UIImageView BackgroundImage { get; set; }
 		private BezierView CurrentPathView { get; set; }
+
+
+        private NSObject orientationObserver;
 
         public int orientation { get; } //TODO implement
         public Abstractions.Point imageSize { get; }//TODO implement
@@ -163,17 +168,21 @@ namespace Painter.iOS
 			AddSubview(CurrentPathView);
 			BringSubviewToFront(CurrentPathView);
 
-			NSNotificationCenter.DefaultCenter.AddObserver(UIDevice.OrientationDidChangeNotification, HandleOrientationChange);
+            orientationObserver = NSNotificationCenter.DefaultCenter.AddObserver(UIDevice.OrientationDidChangeNotification, HandleOrientationChange);
 		}
 
 		~PainterView()
 		{
-			NSNotificationCenter.DefaultCenter.RemoveObserver(this);
+            if (orientationObserver != null)
+            {
+                NSNotificationCenter.DefaultCenter.RemoveObserver(orientationObserver);
+                orientationObserver = null;
+            }
 		}
 
 		void HandleOrientationChange(NSNotification obj)
 		{
-			drawPath();
+            SetNeedsDisplay();
 		}
 
 		//Exports
@@ -266,6 +275,9 @@ namespace Painter.iOS
 		{
 			base.TouchesBegan(touches, evt);
 
+            if (!Enabled)
+                return;
+
             //System.Diagnostics.Debug.WriteLine("Start touch");
 
 			CurrentStroke = new Stroke()
@@ -285,7 +297,10 @@ namespace Painter.iOS
 		{
 			base.TouchesMoved(touches, evt);
 
-			var loc = (touches.AnyObject as UITouch).LocationInView(this);
+            if (!Enabled)
+                return;
+
+            var loc = (touches.AnyObject as UITouch).LocationInView(this);
 			CurrentPathView.AddLineTo(loc);
 			CurrentStroke.Points.Add(new Point(loc.X, loc.Y));
 
@@ -296,7 +311,10 @@ namespace Painter.iOS
 		{
 			base.TouchesEnded(touches, evt);
 
-			var loc = (touches.AnyObject as UITouch).LocationInView(this);
+            if (!Enabled)
+                return;
+
+            var loc = (touches.AnyObject as UITouch).LocationInView(this);
 			CurrentStroke.Points.Add(new Point(loc.X, loc.Y));
 			CurrentPathView.AddLineTo(loc);
 

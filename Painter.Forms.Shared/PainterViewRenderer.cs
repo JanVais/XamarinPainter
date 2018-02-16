@@ -164,7 +164,13 @@ namespace Painter.Forms.Droid
                 Control.StrokeThickness = Element.StrokeThickness;
             }
 #else
-            //TODO
+            if (Control != null)
+            {
+                Control.Enabled = Element.IsEnabled;
+                Control.FinishedStrokeEvent = Element.FinishedStrokeEvent;
+                Control.StrokeColor = Element.StrokeColor;
+                Control.StrokeThickness = Element.StrokeThickness;
+            }
 #endif
         }
         
