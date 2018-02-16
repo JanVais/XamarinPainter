@@ -82,12 +82,30 @@ namespace PainterTestbed.iOS
 
         public byte[] GetFileBinary(string filePath, bool resourceFile)
         {
-            throw new NotImplementedException();
+            //TODO implement resource file
+            try
+            {
+                NSData data = NSData.FromFile(CreatePathToFile(filePath));
+                return data.ToArray();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         public void SaveFile(byte[] data, string url)
         {
-            throw new NotImplementedException();
+            try
+            {
+                NSData finalData = NSData.FromArray(data);
+                finalData.Save(NSUrl.FromFilename(CreatePathToFile(url)), true);
+                finalData = null;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }
