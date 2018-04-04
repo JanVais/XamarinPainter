@@ -24,12 +24,12 @@ namespace Painter.Droid
 {
 	public class PainterView : RelativeLayout
 	{
-		//Public UI
-		public Abstractions.Color StrokeColor { get; set; }
+        //Public UI
+        public Abstractions.Color StrokeColor { get; set; } = new Abstractions.Color(0, 0, 0, 1);
 		public Abstractions.Color BackgroundColor { get; set; } = new Abstractions.Color(0, 0, 0, 0); //TODO expose to Forms
 
 
-		public double StrokeThickness { get; set; }
+        public double StrokeThickness { get; set; } = 1f;
 		private List<Abstractions.Stroke> _strokes;
 		public List<Abstractions.Stroke> Strokes
 		{
@@ -103,9 +103,6 @@ namespace Painter.Droid
 
 			drawingImageView = new ImageView(context);
 			drawingImageView.SetBackgroundColor(Color.Transparent);
-
-			StrokeColor = new Abstractions.Color(0, 0, 0, 1);
-			StrokeThickness = 1.0;
 
 			IWindowManager windowManager = Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
 			metrics = new DisplayMetrics();
@@ -221,8 +218,8 @@ namespace Painter.Droid
 				return;
 
             if (imageView == null || drawingImageView == null)
-                return;
-
+                Initialize();
+            
 			if (image == null && Width != 0 && Height != 0)
 			{
 				image = Bitmap.CreateBitmap(metrics, Width, Height, Bitmap.Config.Argb8888);

@@ -1,5 +1,9 @@
 ﻿<Properties StartupConfiguration="{6655E3EE-F478-46EC-BFA3-1D9CD7AE5AF9}|Default">
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Painter.Android/PainterView.cs">
+    <Files>
+      <File FileName="Painter.Android/PainterView.cs" Line="45" Column="4" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.ItemProperties.Testbeds.PainterTestbed.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.ce11160b5428670e03" AndroidDesignerPreferredTheme="Theme.Holo.Light" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
