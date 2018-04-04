@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{6655E3EE-F478-46EC-BFA3-1D9CD7AE5AF9}|Default">
+  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.ItemProperties.Testbeds.PainterTestbed.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.ce11160b5428670e03" AndroidDesignerPreferredTheme="Theme.Holo.Light" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Testbeds.PainterTestbed.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" />
+  <AuthorInfo Name="Miley Hollenberg" Email="miley@nitrocrime.com" Copyright="Nitrocrime 2017" Company="Nitrocrime" Trademark="Nitrocrime Painter" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Testbeds.PainterTestbed.Forms.Droid PreferredExecutionTarget="Android.ce11160b5428670e03" />
+  <MonoDevelop.Ide.ItemProperties.Forms.Painter.Forms.Droid PreferredExecutionTarget="Android.Nexus_5.1.1" />
+  <MonoDevelop.Ide.ItemProperties.Painter.Painter.Android PreferredExecutionTarget="Android.Nexus_5.1.1" />
+  <MonoDevelop.Ide.ItemProperties.Testbeds.PainterTestbed.Forms.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.63D281F7-CA93-4426-A296-B92612244A92" />
+</Properties>
