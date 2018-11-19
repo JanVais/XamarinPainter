@@ -247,6 +247,9 @@ namespace Painter.Droid
 		{
 			var state = base.OnSaveInstanceState();
 
+			if (Strokes == null)
+				Strokes = new List<Abstractions.Stroke>();
+
 			var savedState = new SavedImageState(state)
 			{
 				Json = JsonConvert.SerializeObject(Strokes)

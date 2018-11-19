@@ -43,3 +43,6 @@ Thumbs.db
 *.exe
 *.bak
 *.nupkg
+
+# Visual studio
+.vs*
