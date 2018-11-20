@@ -68,6 +68,10 @@ namespace Painter.Forms
             typeof(PainterView),
             -1.0);
 
+		public PainterView()
+		{
+		}
+
 		public EventHandler FinishedStrokeEvent
 		{
 			get

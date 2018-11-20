@@ -57,18 +57,18 @@ namespace PainterTestbed.Forms
             // do what you want..
 		}
 
-		private void clearDrawing()
+		private void clearDrawing(object sender, EventArgs e)
 		{
 			painterView.Clear();
 		}
 
-        private async void SaveJson(object sender, System.EventArgs e)
+        private async void SaveJson(object sender, EventArgs e)
 		{
 			var data = await painterView.GetJson();
 			await DependencyService.Get<ISaveAndLoad>().SaveTextAsync("image.json", data);
 		}
         
-        private async void SaveImage()
+		private async void SaveImage(object sender, EventArgs e)
         {
             IPainterExport export = DependencyService.Get<IPainterExport>();
             //var background = DependencyService.Get<ISaveAndLoad>().GetFileBinary(DependencyService.Get<ISaveAndLoad>().GetPathForFile("background.jpg"), false);

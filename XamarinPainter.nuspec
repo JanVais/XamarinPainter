@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>com.nitrocrime.XamarinPainter</id>
-		<version>0.1.56-beta</version>
+		<version>0.1.60-beta</version>
 		<title>Xamarin Painter</title>
 		<authors>Miley Hollenberg</authors>
 		<owners>Miley Hollenberg</owners>
@@ -12,23 +12,23 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>A simple painter widget for Xamarin</description>
 		<releaseNotes>Initial test release</releaseNotes>
-		<copyright>Copyright 2017</copyright>
+		<copyright>Copyright 2018</copyright>
 		<tags>painter xamarin ios android uwp paint draw drawing signature painting</tags>
 		<dependencies>
 			<group targetFramework="MonoAndroid">
-				<dependency id="Newtonsoft.Json" version="9.0" />
+				<dependency id="Newtonsoft.Json" version="11.0.1" />
 			</group>
 			<group targetFramework="UAP10.0">
-				<dependency id="Newtonsoft.Json" version="9.0" />
+				<dependency id="Newtonsoft.Json" version="11.0.1" />
 			</group>
 			<group targetFramework="Xamarin.iOS10">
-				<dependency id="Newtonsoft.Json" version="9.0" />
+				<dependency id="Newtonsoft.Json" version="11.0.1" />
 			</group>
 			<group targetFramework="portable-net45+win8+wp8+UAP10">
-				<dependency id="Newtonsoft.Json" version="9.0" />
+				<dependency id="Newtonsoft.Json" version="11.0.1" />
 			</group>
 			<group targetFramework="portable-net45+win+wp8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10">
-				<dependency id="Newtonsoft.Json" version="9.0" />
+				<dependency id="Newtonsoft.Json" version="11.0.1" />
 			</group>
 		</dependencies>
 		<frameworkAssemblies>
