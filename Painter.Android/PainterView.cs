@@ -253,30 +253,53 @@ namespace Painter.Droid
 			if (Strokes == null)
 				Strokes = new List<Abstractions.Stroke>();
 
-			var savedState = new SavedImageState(state)
+			SavedImageState savedState = null;
+
+			if (state != null)
 			{
-				Json = JsonConvert.SerializeObject(Strokes)
-			};
+				savedState = new SavedImageState(state)
+				{
+					Json = JsonConvert.SerializeObject(Strokes)
+				};
+			}
 
-			imageView.SetImageBitmap(null);
-			imageView = null;
+			if(imageView != null)
+			{
+				imageView.SetImageBitmap(null);
+				imageView = null;
+			}
 
-			drawingImageView.SetImageBitmap(null);
-			drawingImageView = null;
+			if(drawingImageView != null)
+			{
+				drawingImageView.SetImageBitmap(null);
+				drawingImageView = null;
+			}
 
-			image.Recycle();
-			image.Dispose();
-			image = null;
+			if(image != null)
+			{
+				image.Recycle();
+				image.Dispose();
+				image = null;
+			}
 
-			drawingImage.Recycle();
-			drawingImage.Dispose();
-			drawingImage = null;
+			if(drawingImage != null)
+			{
+				drawingImage.Recycle();
+				drawingImage.Dispose();
+				drawingImage = null;
+			}
 
-			canvas.Dispose();
-			canvas = null;
+			if(canvas != null)
+			{
+				canvas.Dispose();
+				canvas = null;
+			}
 
-            drawingCanvas.Dispose();
-            drawingCanvas = null;
+			if(drawingCanvas != null)
+			{
+				drawingCanvas.Dispose();
+				drawingCanvas = null;
+			}
 
 			GC.Collect();
 
