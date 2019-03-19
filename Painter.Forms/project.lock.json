@@ -4804,10 +4804,10 @@
       }
     },
     "dependencies": {
-      "Newtonsoft.Json": "11.0.2",
-      "Xamarin.Forms": "3.3.0.912540",
-      "NETStandard.Library": "1.6.0",
-      "Microsoft.NETCore.Portable.Compatibility": "1.0.1"
+      "Microsoft.NETCore.Portable.Compatibility": "[1.0.1, )",
+      "NETStandard.Library": "[1.6.0, )",
+      "Newtonsoft.Json": "[11.0.2, )",
+      "Xamarin.Forms": "[3.3.0.912540, )"
     },
     "frameworks": {
       "netstandard1.5": {}
@@ -4818,7 +4818,7 @@
       "code": "NU1605",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Detected package downgrade: NETStandard.Library from 1.6.1 to 1.6.0. Reference the package directly from the project to select a different version. \n Painter.Forms (>= 1.0.0) -> Newtonsoft.Json (>= 11.0.2) -> NETStandard.Library (>= 1.6.1) \n Painter.Forms (>= 1.0.0) -> NETStandard.Library (>= 1.6.0)",
+      "message": "Detected package downgrade: NETStandard.Library from 1.6.1 to 1.6.0. Reference the package directly from the project to select a different version. \n Painter.Forms -> Newtonsoft.Json 11.0.2 -> NETStandard.Library (>= 1.6.1) \n Painter.Forms -> NETStandard.Library (>= 1.6.0)",
       "libraryId": "NETStandard.Library",
       "targetGraphs": [
         ".NETStandard,Version=v1.5"
