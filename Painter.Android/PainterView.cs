@@ -121,14 +121,14 @@ namespace Painter.Droid
 			return JsonConvert.SerializeObject(Strokes);
 		}
 
-		public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, float scale, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
+		public async Task<byte[]> GetCurrentImageAsPNG(int width, int height, float scale, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
 		{
-            return await export.GetCurrentImageAsPNG(width, height, scale, Strokes, scaling, quality, BackgroundColor);
+            return await export.GetCurrentImageAsPNG(width, height, scale, Strokes, scaling, quality, BackgroundColor, useDevicePixelDensity, BackgroundImage);
 		}
 
-		public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, float scale, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null)
+		public async Task<byte[]> GetCurrentImageAsJPG(int width, int height, float scale, Abstractions.Scaling scaling = Abstractions.Scaling.Relative_None, int quality = 80, Painter.Abstractions.Color BackgroundColor = null, bool useDevicePixelDensity = false, byte[] BackgroundImage = null)
 		{
-			return await export.GetCurrentImageAsJPG(width, height, scale, Strokes, scaling, quality, BackgroundColor);
+			return await export.GetCurrentImageAsJPG(width, height, scale, Strokes, scaling, quality, BackgroundColor, useDevicePixelDensity, BackgroundImage);
 		}
 
 		//Imports

@@ -51,8 +51,12 @@ namespace Painter.Droid
 
             if (useDevicePixelDensity)
             {
-                width *= (int)metrics.Density;
-                height *= (int)metrics.Density;
+                // Calculate width and height with PixelDensity
+                float widthF = (float)width * metrics.Density;
+                float heightF = (float)height * metrics.Density;
+
+                width = (int)widthF;
+                height = (int)heightF;
             }
 
             Bitmap tempImage = null;
