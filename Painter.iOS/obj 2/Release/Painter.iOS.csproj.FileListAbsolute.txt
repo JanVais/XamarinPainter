@@ -1,0 +1,12 @@
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/bin/Release/Painter.iOS.dll
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/bin/Release/Painter.iOS.pdb
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/bin/Release/Newtonsoft.Json.dll
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/bin/Release/Painter.dll
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/bin/Release/Newtonsoft.Json.xml
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/obj/Release/optimized/
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/obj/Release/Painter.iOS.csprojAssemblyReference.cache
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/obj/Release/Painter.iOS.csproj.CoreCompileInputs.cache
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/obj/Release/Painter.iOS.csproj.CopyComplete
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/obj/Release/Painter.iOS.dll
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/obj/Release/Painter.iOS.pdb
+/Users/mileyhollenberg/Documents/Projects/Painter/Painter.iOS/bin/Release/Newtonsoft.Json.pdb
