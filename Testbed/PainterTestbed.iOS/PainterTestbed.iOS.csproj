@@ -103,9 +103,7 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <InterfaceDefinition Include="Main.storyboard" />
@@ -131,6 +129,8 @@
     <ProjectReference Include="..\..\Painter.iOS\Painter.iOS.csproj">
       <Project>{4ED89649-B990-43DC-A789-0B1E5380FCF9}</Project>
       <Name>Painter.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
