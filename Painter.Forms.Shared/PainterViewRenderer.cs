@@ -155,23 +155,20 @@ namespace Painter.Forms.Droid
 
         private void FormsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-#if __ANDROID__
-            if (Control != null)
-            {
-                Control.Enabled = Element.IsEnabled;
-                Control.FinishedStrokeEvent = Element.FinishedStrokeEvent;
-                Control.StrokeColor = Element.StrokeColor;
-                Control.StrokeThickness = Element.StrokeThickness;
-            }
-#else
-            if (Control != null)
-            {
-                Control.Enabled = Element.IsEnabled;
-                Control.FinishedStrokeEvent = Element.FinishedStrokeEvent;
-                Control.StrokeColor = Element.StrokeColor;
-                Control.StrokeThickness = Element.StrokeThickness;
-            }
-#endif
+			try
+			{
+				if (Control != null)
+				{
+					Control.Enabled = Element.IsEnabled;
+					Control.FinishedStrokeEvent = Element.FinishedStrokeEvent;
+					Control.StrokeColor = Element.StrokeColor;
+					Control.StrokeThickness = Element.StrokeThickness;
+				}
+			}
+			catch (ObjectDisposedException)
+			{
+				
+			}
         }
         
 		private void HandleGetJson(object sender, PainterView.SaveJsonImageHandler e)
