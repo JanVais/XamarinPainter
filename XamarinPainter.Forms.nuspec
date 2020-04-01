@@ -2,34 +2,34 @@
 <package >
 	<metadata>
 		<id>com.nitrocrime.XamarinPainter.Forms</id>
-		<version>0.1.64-beta</version>
+		<version>0.1.65-beta</version>
 		<title>Xamarin Forms Painter</title>
-		<authors>Miley Hollenberg</authors>
-		<owners>Miley Hollenberg</owners>
+		<authors>Miley Hollenberg, Jan Schilder</authors>
+		<owners>Miley Hollenberg, Jan Schilder</owners>
 		<licenseUrl>https://github.com/JanVais/XamarinPainter/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/JanVais/XamarinPainter/</projectUrl>
 		<iconUrl>https://github.com/JanVais/XamarinPainter/blob/master/icon.png?raw=true</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>A simple painter widget for Xamarin Forms</description>
-		<releaseNotes>Initial test release</releaseNotes>
+		<releaseNotes>Updated nuget packages</releaseNotes>
 		<copyright>Copyright 2020</copyright>
 		<tags>painter xamarin forms ios android uwp paint draw drawing signature painting</tags>
 		<dependencies>
 			<group targetFramework="MonoAndroid">
 				<dependency id="Xamarin.Forms" version="4.5.0.495" />
-				<dependency id="Newtonsoft.Json" version="12.0.1" />
+				<dependency id="Newtonsoft.Json" version="12.0.3" />
 			</group>
 			<group targetFramework="Xamarin.iOS10">
 				<dependency id="Xamarin.Forms" version="4.5.0.495" />
-				<dependency id="Newtonsoft.Json" version="12.0.1" />
+				<dependency id="Newtonsoft.Json" version="12.0.3" />
 			</group>
 			<group targetFramework="portable-net45+win8+wp8+UAP10">
 				<dependency id="Xamarin.Forms" version="4.5.0.495" />
-				<dependency id="Newtonsoft.Json" version="12.0.1" />
+				<dependency id="Newtonsoft.Json" version="12.0.3" />
 			</group>
 			<group targetFramework="portable-net45+win+wp8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10">
 				<dependency id="Xamarin.Forms" version="4.5.0.495" />
-				<dependency id="Newtonsoft.Json" version="12.0.1" />
+				<dependency id="Newtonsoft.Json" version="12.0.3" />
 			</group>
 		</dependencies>
 		<frameworkAssemblies>
